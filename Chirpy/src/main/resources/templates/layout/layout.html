@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+<meta charset="UTF-8" />
+<title th:text="'Bitbird - ' + ${title}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/mycss.css}" />
+<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+</head>
+<body>
+	<div th:fragment="alerts">
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
+	</div>
+
+
+
+    <div class="container mt-3">
+        <div class="col-md-3" th:fragment="menu">
+            <div class="list-group">
+                <a th:href="@{/home}" class="list-group-item list-group-item-action">Home</a>
+                <a class="list-group-item list-group-item-action" th:href="@{/explorer}">Explorar</a>
+                <a class="list-group-item list-group-item-action" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
+                <a class="list-group-item list-group-item-action" sec:authorize="isAuthenticated()" th:href="@{/mypublication}">Mis Publicaciones</a>
+                
+                <form sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn-link list-group-item list-group-item-action">Cerrar Sesion</button>
+		</form>
+            </div>
+        </div>
+    </div>
+
+	<footer th:fragment="footer" class="container">
+		<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
+	</footer>
+</body>
+</html>

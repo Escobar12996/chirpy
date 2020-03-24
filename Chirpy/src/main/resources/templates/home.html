@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+    <body>
+        <div class="container mt-4">
+            <div th:replace="layout/layout :: alerts"></div>
+            <div class="row">
+                <div th:replace="layout/layout :: menu"></div>
+                <div class="col-md-9">
+                    <div class="p-3 silver">
+                        <div class="container mt-0">
+                            <div class="col-12 text-center mb-3">
+                                <h5>¿Que esta pasando?</h5>
+                            </div>
+                            
+                            <form th:action="@{/home}" th:object="${publication}" method="post">
+                                <div class="col-12 text-center">
+                                    <textarea th:field="*{publication}" placeholder="Publicacion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('publication')}" th:errors="*{publication}"></span>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn mt-2" type="submit">Publicar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="layout/layout :: footer"></div>
+    </body>
+</html>

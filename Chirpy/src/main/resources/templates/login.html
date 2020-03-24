@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/layout :: head"></head>
+    <body>
+        <div class="container">
+            <div th:replace="layout/layout :: alerts"></div>
+
+            <div class="row justify-content-center mt-5">
+                <div class="col-4">
+                    <div class="card mt-2">
+                        <div class="card-header text-center"><h1>Iniciar Sesion</h1></div>
+                        <div class="card-body">
+                            
+                            <form class="form-signin" method="post" th:action="@{/login}">
+                    
+                            <p>
+                                <label for="username" class="sr-only">Usuario</label>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+                            </p>
+                            <p>
+                                <label for="password" class="sr-only">Contraseña</label>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                            </p>
+                            <button class="btn btn-lg btn-outline-success btn-block" type="submit">Iniciar Sesion</button>
+                        </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
+            </div>
+        <div th:replace="layout/layout :: footer"></div>
+    </body>
+</html>
