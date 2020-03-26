@@ -5,7 +5,10 @@
  */
 package com.escobar.chirpy.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,12 +40,25 @@ public class Publication implements Serializable{
     @JoinColumn(name = "user_id")
     private User user;
     
-    @Size(min = 3, message="Debe tener entre 3 y 288 caracteres")
+    @Size(min = 3, max = 300, message="Debe tener entre 3 y 300 caracteres")
     @NotEmpty(message="Debe de tener algo")
     private String publication;
     
     private boolean view;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date dateOfSend;
+
+    public String getDateOfSend() {
+        SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
+        String strDate = sm.format(dateOfSend);
+        return strDate;
+    }
+
+    public void setDateOfSend(Date dateOfSend) {
+        this.dateOfSend = dateOfSend;
+    }
+    
     public Long getId() {
         return id;
     }

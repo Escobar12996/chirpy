@@ -32,11 +32,19 @@ public class PublicationDao {
         query.setParameter("user", user);
         return query.getResultList();
     }
+    
+    public List<Publication> findText(String text) {
+            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%')", Publication.class); 
+        query.setParameter("text", text);
+
+        return query.getResultList();
+    }
+    
 
     @Transactional
     public void save(Publication publication) {
         em.persist(publication);	
     }
 	
-	
+
 }

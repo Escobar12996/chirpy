@@ -38,14 +38,14 @@ and open the template in the editor.
 							</p>
 
 							<p>
-								<label for="namealasname" class="sr-only">Nombre y
+								<label for="name" class="sr-only">Nombre y
 									Apellidos</label> <input type="text" id="namealasname"
-									th:field="*{namealasname}" class="form-control"
+									th:field="*{name}" class="form-control"
 									placeholder="Nombre y Apellidos" required autofocus
 									th:errorclass="'form-control alert-danger'" /> <span
 									class="text-danger"
-									th:if="${#fields.hasErrors('namealasname')}"
-									th:errors="*{namealasname}"></span>
+									th:if="${#fields.hasErrors('name')}"
+									th:errors="*{name}"></span>
 							</p>
 
 							<p>

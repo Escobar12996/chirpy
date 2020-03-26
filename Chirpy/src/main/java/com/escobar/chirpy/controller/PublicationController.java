@@ -5,9 +5,9 @@ import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.Publication;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +40,7 @@ public class PublicationController {
             model.addAttribute("title", "Principal");
             return "home";
         } else {
+            publication.setDateOfSend(new Date());
             publication.setUser(userDao.findByUserName(principal.getName()));
             publication.setView(true);
             publicationDao.save(publication);
@@ -54,6 +55,7 @@ public class PublicationController {
         model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
 
         return "mypublication";
+        
     }
     
     @RequestMapping(value={"/mypublication"}, method = RequestMethod.POST)
@@ -61,24 +63,14 @@ public class PublicationController {
         
         if (result.hasErrors()){
             model.addAttribute("title", "Principal");
+            model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
             return "mypublication";
         } else {
+            publication.setDateOfSend(new Date());
             publication.setUser(userDao.findByUserName(principal.getName()));
             publication.setView(true);
             publicationDao.save(publication);
             return "redirect:/mypublication";
         }
-    }
-    
-    @RequestMapping(value={"/explorer"}, method = RequestMethod.GET)
-    public String explorer(Model model) {
-        return "explorer";
-    }
-    
-    @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
-    public String explorersend(@RequestParam("find") String find, Model model) {
-        List<User> users = userDao.findUsers(find);
-        System.out.println(users.size());
-        return "explorer";
     }
 }

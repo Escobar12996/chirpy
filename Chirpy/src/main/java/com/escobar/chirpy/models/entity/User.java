@@ -33,13 +33,13 @@ public class User implements Serializable {
     private Long id;
 
     @Size(min = 3, max = 30, message="Debe tener mas de 3 letras y menor de 30")
-    @NotEmpty(message="Debe indicar el Nombre de Usuario")
+    @NotEmpty(message="Debe indicar el Nombre de Usuario el cual usará para loguearse y por el cual se le buscara en la aplicacion")
     @Column(unique = true)
     private String username;
 
     @Size(min = 3, message="Debe tener mas de 3 letras")
-    @NotEmpty(message="Debe indicar su nombre y su apellido")
-    private String namealasname;
+    @NotEmpty(message="Debe indicar el nombre que se mostrara como usuario")
+    private String name;
 
 
     @NotEmpty(message="Debe indicar su correo")
@@ -47,12 +47,14 @@ public class User implements Serializable {
     private String email;
 
     @Size(min = 7, message="Debe tener entre 8 o mas letras")
-    @NotEmpty(message="Debe indicar una contraseÃ±a")
+    @NotEmpty(message="Debe indicar una contraseña")
     private String password;
 
     private Boolean enabled;
     
     private Boolean notLocker;
+    
+    private Byte[] imagen;
     
     public Long getId() {
         return id;
@@ -70,12 +72,12 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getNamealasname() {
-        return namealasname;
+    public String getName() {
+        return name;
     }
 
-    public void setNamealasname(String namealasname) {
-        this.namealasname = namealasname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -108,6 +110,14 @@ public class User implements Serializable {
 
     public void setNotLocker(Boolean notLocker) {
         this.notLocker = notLocker;
+    }
+
+    public Byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Byte[] imagen) {
+        this.imagen = imagen;
     }
 }
 

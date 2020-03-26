@@ -28,8 +28,37 @@ and open the template in the editor.
                         </div>
                     </div>
                     
-                    <div>
-                        
+                    <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(users)}" th:each="us : ${users}">
+                        <div class="col-2 col-lg-1">
+                            <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
+                        </div>
+                        <div class="col-10 col-lg-11">
+                            <div class="row">
+                                <div class="col-10">
+                                    <p><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></p>
+                                </div>
+                                <div class="col-2">
+                                    <button class="badge badge-primary">Seguir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}">
+                        <div class="col-2">
+                            <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
+                        </div>
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-10">
+                                    <p><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                </div>
+                                <div class="col-2">
+                                    <button class="badge badge-primary">Seguir</button>
+                                </div>
+                            </div>
+                            <p th:text="${publi.publication}"></p>
+                        </div>
                     </div>
                     
                 </div>
