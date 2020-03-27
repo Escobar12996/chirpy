@@ -38,7 +38,8 @@ public class ExplorerController {
     public String explorersend(@RequestParam("find") String find, Model model) {
         
         if (find.contains("@")){
-            find.replace("@", "");
+            find = find.replace("@", "");
+            System.out.println(find);
             model.addAttribute("title", "Explorador");
             model.addAttribute("users", userDao.findUsers(find));
             return "explorer";

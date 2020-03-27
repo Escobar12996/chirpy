@@ -12,15 +12,15 @@ and open the template in the editor.
             <div th:replace="layout/layout :: alerts"></div>
             <div class="row">
                 <div th:replace="layout/layout :: menu"></div>
-                <div class="col-md-9">
+                <div class="col-10 col-md-10 col-lg-10">
                     <div class="p-3">
                         <div class="container mt-0">                            
                             <form class="" th:action="@{/explorer}" method="post">
                                 <div class="form-row">
-                                    <div class="col-md-10">
+                                    <div class="col-10">
                                         <input type="text" name="find" class="form-control ligthyellow">
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-2">
                                         <button class="btn" type="submit">Buscar</button>
                                     </div>
                                 </div>
@@ -32,15 +32,12 @@ and open the template in the editor.
                         <div class="col-2 col-lg-1">
                             <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
                         </div>
-                        <div class="col-10 col-lg-11">
-                            <div class="row">
-                                <div class="col-10">
-                                    <p><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></p>
-                                </div>
-                                <div class="col-2">
-                                    <button class="badge badge-primary">Seguir</button>
-                                </div>
-                            </div>
+                        <div class="col-8 col-lg-9 d-flex align-content-center flex-wrap">
+                            <p><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></p>
+                        </div>
+                        <div class="col-2 col-lg-2" th:if="${us.username != #authentication.name}">
+                            <button class="badge badge-primary followbutton" th:id="'followbutton' + ${us.id}" th:value="${us.id}">Seguir</button>
+                            <button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${us.id}" th:value="${us.id}" style="display: none;">Dejar de seguir</button>
                         </div>
                     </div>
                     
@@ -50,11 +47,8 @@ and open the template in the editor.
                         </div>
                         <div class="col-10">
                             <div class="row">
-                                <div class="col-10">
+                                <div class="col-12">
                                     <p><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                </div>
-                                <div class="col-2">
-                                    <button class="badge badge-primary">Seguir</button>
                                 </div>
                             </div>
                             <p th:text="${publi.publication}"></p>

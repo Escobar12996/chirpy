@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Follows")
-@NamedQuery(name="Follow.findAll", query="SELECT u FROM Follow u")
+@NamedQuery(name="Follow.findAll", query="SELECT f FROM Follow f")
 public class Follow implements Serializable {
     
     private static final long serialVersionUID = 1L;
