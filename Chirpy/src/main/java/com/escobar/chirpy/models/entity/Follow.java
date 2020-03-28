@@ -35,6 +35,14 @@ public class Follow implements Serializable {
     @JoinColumn(name = "followed_id")
     private User followed;
 
+    public Follow() {
+    }
+    
+    public Follow(User user, User followed) {
+        this.user = user;
+        this.followed = followed;
+    }
+
     public User getUser() {
         return user;
     }

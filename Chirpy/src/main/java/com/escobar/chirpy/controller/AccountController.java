@@ -5,11 +5,15 @@
  */
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.AuthorityDao;
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
+import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserAuthority;
 import java.security.Principal;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +44,10 @@ public class AccountController {
     private FollowDao followDao;
     
     @Autowired
-    private PublicationDao publicationDao;
+    private AuthorityDao authorityDao;
+    
+    @Autowired
+    private UserAuthorityDao userAuthorityDao;
     
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
@@ -92,6 +99,11 @@ public class AccountController {
             user.setEnabled(true);
             user.setNotLocker(true);
             userDao.save(user);
+            followDao.save(new Follow(user, user));
+            UserAuthority au = new UserAuthority();
+            au.setUser(user);
+            au.setAuthority(authorityDao.findByName("user"));
+            userAuthorityDao.save(au);
             return "redirect:/"; 
         }
     }

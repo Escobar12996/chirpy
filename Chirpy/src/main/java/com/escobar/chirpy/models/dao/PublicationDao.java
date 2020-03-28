@@ -28,22 +28,47 @@ public class PublicationDao {
 
     @Transactional(readOnly=true)
     public List<Publication> findByUser(User user) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and view = true ORDER BY dateOfSend DESC", Publication.class); 
         query.setParameter("user", user);
         return query.getResultList();
     }
     
+    @Transactional(readOnly=true)
+    public List<Publication> findByUsers(List<User> users) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true ORDER BY dateOfSend DESC", Publication.class); 
+        query.setParameter("users", users);
+        return query.getResultList();
+    }
+    
     public List<Publication> findText(String text) {
-            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%')", Publication.class); 
+            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%') and view = true", Publication.class); 
         query.setParameter("text", text);
 
         return query.getResultList();
     }
     
+    @Transactional(readOnly=true)
+    public Publication findByUserAndId(Publication publi) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and id = :id", Publication.class); 
+        query.setParameter("user", publi.getUser());
+        query.setParameter("id", publi.getId());
+        
+        try {
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+        
+    }
 
     @Transactional
     public void save(Publication publication) {
         em.persist(publication);	
+    }
+
+    @Transactional
+    public void update(Publication publication) {
+        em.merge(publication);
     }
 	
 

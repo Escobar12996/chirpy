@@ -9,13 +9,12 @@ import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.entity.Follow;
+import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,17 +94,33 @@ public class ApyController {
         User user = userDao.findByUserName(principal.getName());
        
         List<User> list = new ArrayList<User>();
-        for (Follow fo : followDao.getUserFollow(user)){
-            fo.getFollowed().setPassword("");
-            fo.getFollowed().setImagen(null);
-            list.add(fo.getFollowed());
+        for (User fo : followDao.getUserFollow(user)){
+            fo.setPassword("");
+            fo.setImagen(null);
+            list.add(fo);
         }
-        
         return list;
-        
     }
     
-    
+    @RequestMapping(value={"/deletepost/{id}"}, method = RequestMethod.POST)
+    @ResponseBody
+    public String deletepost(Principal principal, @PathVariable("id") Long id) {
+        User user = userDao.findByUserName(principal.getName());
+        Publication pu = new Publication();
+        pu.setUser(user);
+        pu.setId(id);
+        pu = publicationDao.findByUserAndId(pu);
+        
+        if (pu != null){
+            pu.setView(false);
+            publicationDao.update(pu);
+            return "true";
+        } else {
+            return "false";
+        }
+        
+        
+    }
     
     
 }

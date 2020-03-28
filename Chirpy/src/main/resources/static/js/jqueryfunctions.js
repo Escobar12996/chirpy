@@ -34,6 +34,21 @@ $(".unfollowbutton").click(function(){
     });
 });
 
+$(".deletebutton").click(function(){
+    let value = $(this).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/deletepost/"+value,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (response) {
+            $("#post"+value).hide();
+        }
+    });
+});
+
 function loadFollow(){
         $.ajax({
             type: "POST",

@@ -29,6 +29,10 @@ public class AuthorityDao {
 	    query.setParameter("authority", nameAuth);
 	    return query.getSingleResult();
 	}
+        
+        public void save(Authority au){
+            em.persist(au);
+        }
 	
 	
 }

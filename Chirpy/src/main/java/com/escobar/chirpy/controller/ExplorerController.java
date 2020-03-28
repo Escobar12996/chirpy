@@ -37,7 +37,11 @@ public class ExplorerController {
     @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
     public String explorersend(@RequestParam("find") String find, Model model) {
         
-        if (find.contains("@")){
+        if(find.length() < 3){
+            model.addAttribute("title", "Explorador");
+            model.addAttribute("error", "Debes de escribir mas de 3 caracteres");
+            return "explorer";
+        } else if (find.contains("@")){
             find = find.replace("@", "");
             System.out.println(find);
             model.addAttribute("title", "Explorador");
