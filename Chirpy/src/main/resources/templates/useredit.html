@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+    <body>
+        <div class="container mt-4">
+            <div th:replace="layout/layout :: alerts"></div>
+            <div class="row">
+                <div th:replace="layout/layout :: menu"></div>
+                <div class="col-10 col-md-10 col-lg-10">
+                    <div class="card mt-5">
+                        <div class="card-header">Registrar Cuenta</div>
+                        <div class="card-body">
+                        <div  th:replace="layout/layout :: alerts">
+                        </div>
+                            <form class="form-signin" th:action="@{/editperfil}"
+                                    th:object="${user}" method="post">
+                                    <p>
+                                            <label for="username" class="sr-only">Usuario</label> <input
+                                                    type="text" id="username" th:field="*{username}"
+                                                    class="form-control" placeholder="Usuario" required autofocus
+                                                    th:errorclass="'form-control alert-danger'" /> <span
+                                                    class="text-danger" th:if="${#fields.hasErrors('username')}"
+                                                    th:errors="*{username}"></span>
+                                    </p>
+                                    <p>
+                                            <label for="email" class="sr-only">Email </label> <input
+                                                    type="email" id="namealasname" th:field="*{email}"
+                                                    class="form-control" placeholder="Correo" required autofocus
+                                                    th:errorclass="'form-control alert-danger'" /> <span
+                                                    class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                                    th:errors="*{email}"></span>
+                                    </p>
+
+                                    <div class="text-center">
+                                        <button class="btn btn-outline-primary" type="submit" name="function" value="1">Crear
+                                                    Cuenta</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="layout/layout :: footer"></div>
+    </body>
+</html>

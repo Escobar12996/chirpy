@@ -45,11 +45,11 @@ public class ExplorerController {
             find = find.replace("@", "");
             System.out.println(find);
             model.addAttribute("title", "Explorador");
-            model.addAttribute("users", userDao.findUsers(find));
+            model.addAttribute("users", userDao.findUsersOnlyUsername(find));
             return "explorer";
         } else {
             model.addAttribute("title", "Explorador");
-            model.addAttribute("users", userDao.findUsers(find));
+            model.addAttribute("users", userDao.findUsersNameUsername(find));
             model.addAttribute("publications", publicationDao.findText(find));
             return "explorer";
         }

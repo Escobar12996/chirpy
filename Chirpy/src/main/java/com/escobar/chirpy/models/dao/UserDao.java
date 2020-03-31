@@ -34,24 +34,44 @@ public class UserDao {
 	    query.setParameter("username", username);
             
             try {
-                return query.getResultList().get(0);
+                return query.getSingleResult();
             } catch (Exception e) {
                 return null;
             }
-	    
 	}
         
-        public List<User> findUsers(String username) {
+        public User findEmail(String email) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class); 
+	    query.setParameter("email", email);
+            
+            try {
+                return query.getSingleResult();
+            } catch (Exception e) {
+                return null;
+            }
+	}
+        
+        public List<User> findUsersOnlyUsername(String username) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%')", User.class); 
 	    query.setParameter("username", username);
             
             return query.getResultList();
 	}
 
+        public List<User> findUsersNameUsername(String username) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%')", User.class); 
+	    query.setParameter("username", username);
+            
+            return query.getResultList();
+	}
+        
 	@Transactional
 	public void save(User user) {
 		em.persist(user);	
 	}
 	
-	
+	@Transactional
+	public void update(User user) {
+		em.merge(user);	
+	}
 }

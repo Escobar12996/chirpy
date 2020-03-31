@@ -54,30 +54,4 @@ public class PublicationController {
             return "redirect:/home";
         }
     }
-    
-    @RequestMapping(value={"/mypublication"}, method = RequestMethod.GET)
-    public String mypublication(Model model, Principal principal) {
-        model.addAttribute("title", "Mis Publicaciones");
-        model.addAttribute("publication", new Publication());
-        model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
-
-        return "mypublication";
-        
-    }
-    
-    @RequestMapping(value={"/mypublication"}, method = RequestMethod.POST)
-    public String mypublicationnew(@Valid Publication publication, BindingResult result, Model model, Principal principal) {
-        
-        if (result.hasErrors()){
-            model.addAttribute("title", "Principal");
-            model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
-            return "mypublication";
-        } else {
-            publication.setDateOfSend(new Date());
-            publication.setUser(userDao.findByUserName(principal.getName()));
-            publication.setView(true);
-            publicationDao.save(publication);
-            return "redirect:/mypublication";
-        }
-    }
 }

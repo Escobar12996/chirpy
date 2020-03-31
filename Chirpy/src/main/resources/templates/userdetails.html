@@ -19,7 +19,7 @@ and open the template in the editor.
                                 <h5>¿Que esta pasando?</h5>
                             </div>
                             
-                            <form th:action="@{/mypublication}" th:object="${publication}" method="post">
+                            <form th:action="@{/userdetails}" th:object="${publication}" method="post">
                                 <div class="col-12 text-center">
                                     <textarea th:field="*{publication}" placeholder="Publicacion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     <span class="text-danger" th:if="${#fields.hasErrors('publication')}" th:errors="*{publication}"></span>
