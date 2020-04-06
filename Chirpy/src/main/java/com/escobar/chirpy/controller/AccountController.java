@@ -15,8 +15,11 @@ import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
+import com.escobar.chirpy.models.miscellaneous.ImageResizer;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +35,13 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -105,7 +110,15 @@ public class AccountController {
                 model.addAttribute("title", "Registrar Cuenta");
                 model.addAttribute("error", "La cuenta ya existe");
                 return "register";
-        } else {
+        } else if (userDao.findEmail(user.getEmail()) != null) {
+                model.addAttribute("title", "Registrar Cuenta");
+                model.addAttribute("error", "El correo ya existe");
+                return "register";
+        } else if (!esEmailCorrecto(user.getEmail())) {
+                model.addAttribute("title", "Registrar Cuenta");
+                model.addAttribute("error", "El correo no es valido");
+                return "register";
+        }else {
             PasswordEncoder encode = paswordncoder();
             user.setPassword(encode.encode(user.getPassword()));
             user.setEnabled(true);
@@ -154,69 +167,148 @@ public class AccountController {
     }
     
     @RequestMapping(value={"/editperfil"}, method = RequestMethod.POST)
-    public String editperfilPOST(@RequestParam String username, @RequestParam String email,@RequestParam String function, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String editperfilPOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "ima", required = false) MultipartFile file) {
         
-        User user = userDao.findByUserName(principal.getName());
+        //bandera para detectar si se a cambiado el nombre
+        boolean chna = false;
         
-        if (function.equals("1")){
+        //cargamos usuario de la base de datos
+        User userc = userDao.findByUserName(principal.getName());
+        
+        //si hay algun error, volvemos para atras
+        if (result.hasErrors()){
+            return "useredit";
+        }    
+        
+        //si la contraseña es valida
+        if (passwordValidate(user.getPassword(), userc)){
             
-            boolean pass = true;
-            boolean usernamechange = false;
-            String message = "";
+            //guardamos la descripcion y el nombre
+            userc.setDescription(user.getDescription());
+            userc.setName(user.getName());
             
-            if (!username.equals(user.getUsername())){
-                if (username.length() > 3 && username.length() < 30){
-                    if (userDao.findByUserName(username) == null){
-                        user.setUsername(username);
-                        usernamechange = true;
-                    } else {
-                        user.setUsername(username);
-                        pass = false;
-                        message += "Este nombre de usuario ya existe. ";
-                    }
-                } else {
-                    user.setUsername(username);
-                    pass = false;
-                    message += "El tamano del usuario no es correcto, debe de ser mayor de 3 y menor de 30. ";
-                }
-            }
+            //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
+            if (file != null && !file.isEmpty()) {
                 
-            if (!email.equals(user.getEmail())){
-                if (esEmailCorrecto(email)){
-                    if (userDao.findEmail(email) == null){
-                        user.setEmail(email);
-                    } else {
-                        user.setEmail(email);
-                        pass = false;
-                        message += "Este correo ya existe. ";
-                    }
+                //si el fichero es de tipo png o jpeg
+                if (file.getContentType().contains("image/png") || file.getContentType().contains("image/jpeg")){
+                    try {
+                        byte[] imagefile = file.getBytes();
+                        userc.setImagesu(ImageResizer.imageResizeFromImages(imagefile, 600));
+                        userc.setImageperf(ImageResizer.imageResizeFromUser(imagefile, 100, 100));
+                    } catch (IOException e) {}
+                    
+                //si no es una imagen de esos tipos
                 } else {
-                    user.setEmail(email);
-                    pass = false;
-                    message += "El correo no es correcto. ";
+                    model.addAttribute("error", "No has subido una imagen valida");
                 }
             }
             
-            if (!pass){
-                user.setEmail(email);
-                model.addAttribute("error", message);
-                model.addAttribute("user", user);
-                return "useredit";
-            } else {
-                userDao.save(user);
+            //comprobamos que alguno de estos dos casos sea cierto asi evito que se cambien los dos, por seguridad.
+            //-----Si el email es diferente y el nombre es el mismo
+            //-----Si el email es el mismo, pero el nombre es diferente.
+            if ((!userc.getEmail().equalsIgnoreCase(user.getEmail()) && userc.getUsername().equalsIgnoreCase(user.getUsername())) ||
+                    userc.getEmail().equalsIgnoreCase(user.getEmail()) && !userc.getUsername().equalsIgnoreCase(user.getUsername())){
                 
-                if (usernamechange){
+                //si el correo es diferente
+                if (!userc.getEmail().equalsIgnoreCase(user.getEmail())){
+                    
+                    //compruebo que sea correcto
+                    if (esEmailCorrecto(user.getEmail())){
+                        
+                        //compruebo que no este repetido y lo guardo
+                        if (userDao.findEmail(user.getEmail()) == null){
+                            userc.setEmail(user.getEmail());
+                            
+                        //si esta repetido, muestro un error
+                        } else {
+                            model.addAttribute("error", "El correo ya esta en uso");
+                        }
+                    }
+
+                //Si el usuario es diferente y no esta cogido
+                }else if (!userc.getUsername().equalsIgnoreCase(user.getUsername()) && userDao.findByUserName(user.getUsername()) == null){
+                
+                    //introduzco el nuevo usuario
+                    userc.setUsername(user.getUsername());
+                    
+                    //cierro la sesion, para evitar problemas con el autenticador, y activo la bandera
                     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                    if (auth != null) {
-                        new SecurityContextLogoutHandler().logout(request, response, auth);
-                    }
-                    return "redirect:/login?logout";
+                    new SecurityContextLogoutHandler().logout(request, response, auth);
+                    chna = true;
+                    
+                //Si el usuario es diferente, pero ya esta cojido el nombre
+                } else if (!userc.getUsername().equalsIgnoreCase(user.getUsername()) && userDao.findByUserName(user.getUsername()) != null){
+                    model.addAttribute("error", "El nombre de usuario ya existe");
                 }
+                
+            //si deseas cambiar los dos a la vez, muestro error
+            } else if (!userc.getEmail().equalsIgnoreCase(user.getEmail()) && !userc.getUsername().equalsIgnoreCase(user.getUsername())) {
+                model.addAttribute("error", "No es posible cambiar el usuario y el correo a la vez");
             }
+                
+            //Guardo el usuario
+            userDao.update(userc);
+            
+            
+        //contraseña no valida
+        } else {
+            model.addAttribute("error", "Contraseña no valida");
         }
         
+        //reenvio si se a cambiado el nombre, o simplemente muestro el template
+        if (chna){
+            return "redirect:/userdetails";
+        } else {
+            model.addAttribute("user", userc);
+            return "useredit";
+        }
+    }
+    
+    @RequestMapping(value={"/editpass"}, method = RequestMethod.GET)
+    public String editpass() {
         return "redirect:/editperfil";
     }
+    
+    @RequestMapping(value={"/editpass"}, method = RequestMethod.POST)
+    public String editpass(Model model, Principal principal, @RequestParam(value = "password", required = true) String password,
+            @RequestParam(value = "password1", required = true) String password1, @RequestParam(value = "passwordold", required = true) String passwordold) {
+        
+        //cargamos usuario de la base de datos
+        User userc = userDao.findByUserName(principal.getName());
+        
+        //si la contraseña es valida
+        if (passwordValidate(passwordold, userc)){
+            
+            //si las contraseñas son iguales
+            if (password.equals(password1) && password.length() > 7){
+                PasswordEncoder encode = paswordncoder();
+                userc.setPassword(encode.encode(password));
+                userDao.update(userc);
+                model.addAttribute("success", "Contraseña actualizada");
+            //si las contraseñas son menores de 7 letras
+            } else if (password.equals(password1) && password.length() < 7) {
+                model.addAttribute("error", "La contraseña tiene que ser mayor de 8 letras");
+            //Si las contraseñas no son iguales
+            } else {
+                model.addAttribute("error", "Las contraseñas no son identicas");
+            }
+            
+            //si la contraseña no es valida
+        } else {
+            model.addAttribute("error", "Contraseña no valida");
+        }
+        
+        
+        model.addAttribute("title", "Editar Perfil");
+        model.addAttribute("user", userc);
+        return "useredit";
+    }
+    
+    
+    
+    
+    
     
     protected static boolean esEmailCorrecto(String email) {
        
@@ -229,5 +321,13 @@ public class AccountController {
            valid = true; 
         }
         return valid;
+    }
+    
+    protected boolean passwordValidate(String password, User user){
+        
+        //validacion contraseña
+        PasswordEncoder encode = paswordncoder();
+        return encode.matches(password, user.getPassword());
+        
     }
 }

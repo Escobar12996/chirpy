@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -54,7 +55,26 @@ public class User implements Serializable {
     
     private Boolean notLocker;
     
-    private Byte[] imagen;
+    @Lob
+    private byte[] imageperf;
+    
+    @Lob
+    private byte[] imagesu;
+    
+    private String newemail;
+
+    private String codigo;
+    
+    public String getNewemail() {
+        return newemail;
+    }
+
+    public void setNewemail(String newemail) {
+        this.newemail = newemail;
+    }
+    
+    @Size(max = 1000, message="Maximo 1000 letras")
+    private String description;
     
     public Long getId() {
         return id;
@@ -112,12 +132,38 @@ public class User implements Serializable {
         this.notLocker = notLocker;
     }
 
-    public Byte[] getImagen() {
-        return imagen;
+    public byte[] getImageperf() {
+        return imageperf;
     }
 
-    public void setImagen(Byte[] imagen) {
-        this.imagen = imagen;
+    public void setImageperf(byte[] imageperf) {
+        this.imageperf = imageperf;
+    }
+
+    public byte[] getImagesu() {
+        return imagesu;
+    }
+
+    public void setImagesu(byte[] imagesu) {
+        this.imagesu = imagesu;
+    }
+    
+    
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }
 

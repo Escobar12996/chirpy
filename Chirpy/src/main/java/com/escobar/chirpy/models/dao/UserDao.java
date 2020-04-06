@@ -29,6 +29,17 @@ public class UserDao {
 	    return query.getResultList();
 	}
 	
+        public User findById(Long id) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id = :id", User.class); 
+	    query.setParameter("id", id);
+            
+            try {
+                return query.getSingleResult();
+            } catch (Exception e) {
+                return null;
+            }
+	}
+        
 	public User findByUserName(String username) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class); 
 	    query.setParameter("username", username);

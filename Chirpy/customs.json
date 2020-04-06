@@ -1,0 +1,12 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:errorclass": {},
+        "th:action": {},
+        "th:errors": {},
+        "th:replace": {},
+        "th:field": {
+            "context": "input"
+        }
+    }
+}

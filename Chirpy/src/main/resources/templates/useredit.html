@@ -9,40 +9,118 @@ and open the template in the editor.
 <head th:replace="layout/layout :: head"></head>
     <body>
         <div class="container mt-4">
-            <div th:replace="layout/layout :: alerts"></div>
             <div class="row">
                 <div th:replace="layout/layout :: menu"></div>
                 <div class="col-10 col-md-10 col-lg-10">
-                    <div class="card mt-5">
-                        <div class="card-header">Registrar Cuenta</div>
-                        <div class="card-body">
-                        <div  th:replace="layout/layout :: alerts">
-                        </div>
-                            <form class="form-signin" th:action="@{/editperfil}"
-                                    th:object="${user}" method="post">
-                                    <p>
-                                            <label for="username" class="sr-only">Usuario</label> <input
-                                                    type="text" id="username" th:field="*{username}"
-                                                    class="form-control" placeholder="Usuario" required autofocus
-                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                    class="text-danger" th:if="${#fields.hasErrors('username')}"
-                                                    th:errors="*{username}"></span>
-                                    </p>
-                                    <p>
-                                            <label for="email" class="sr-only">Email </label> <input
-                                                    type="email" id="namealasname" th:field="*{email}"
-                                                    class="form-control" placeholder="Correo" required autofocus
-                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                    class="text-danger" th:if="${#fields.hasErrors('email')}"
-                                                    th:errors="*{email}"></span>
-                                    </p>
+                    <div  th:replace="layout/layout :: alerts"></div>
 
-                                    <div class="text-center">
-                                        <button class="btn btn-outline-primary" type="submit" name="function" value="1">Crear
-                                                    Cuenta</button>
+                    <div class="card mt-5">
+                        <div class="card-header">Editar Usuario</div>
+                        <div class="card-body">
+                            <form class="form-signin" th:action="@{/editperfil}"
+                                  th:object="${user}" method="post" enctype="multipart/form-data">
+                                <p>
+                                        <label for="username">Usuario</label> <input
+                                                type="text" id="username" th:field="*{username}"
+                                                class="form-control" placeholder="Usuario" required autofocus
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger" th:if="${#fields.hasErrors('username')}"
+                                                th:errors="*{username}"></span>
+                                </p>
+                                
+                                <p>
+                                        <label for="description">Descripcion</label>
+                                        <textarea id="description" th:field="*{description}" rows="4" class="form-control" placeholder="Usuario" autofocus th:errorclass="'form-control alert-danger'"></textarea>
+                                        <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                                </p>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="card align-content-center text-center">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:src="${'/image/user/' + user.id}" alt="Card image cap" style="width: 100px">
+                                                </div>
+                                            </div>
+                                            <label for="image">Imagen de perfil</label>
+                                        <input id="image" type="file" name="ima" class="form-control">
+                                        </div>
                                     </div>
+                                    
+                                    <div class="col-6">
+                                        <div class="card align-content-center text-center">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:src="${'/image/imagesu/' + user.id}" alt="Card image cap" style="width: 150px">
+                                                </div>
+                                            </div>
+                                            <label for="image">Imagen de perfil</label>
+                                        <input id="image" type="file" name="ima" class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <p>
+                                        <label for="name">Nombre</label> <input type="text" id="namealasname"
+                                                th:field="*{name}" class="form-control"
+                                                placeholder="Nombre y Apellidos" required autofocus
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger"
+                                                th:if="${#fields.hasErrors('name')}"
+                                                th:errors="*{name}"></span>
+                                </p>
+
+                                <p>
+                                        <label for="email">Correo</label> <input
+                                                type="email" id="namealasname" th:field="*{email}"
+                                                class="form-control" placeholder="Correo" required autofocus
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger" th:if="${#fields.hasErrors('email')}"
+                                                th:errors="*{email}"></span>
+                                </p>
+                                
+                                <p>
+                                        <label for="password">Confirma Contraseña</label> <input
+                                                type="password" id="password" th:field="*{password}"
+                                                class="form-control" placeholder="Contraseña" required
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger" th:if="${#fields.hasErrors('password')}"
+                                                th:errors="*{password}"></span>
+                                </p>
+
+                                <div class="text-center">
+                                        <button class="btn btn-outline-primary" type="submit">Crear
+                                                Cuenta</button>
+                                </div>
                             </form>
-                        </div>
+                        </div> 
+                    </div>
+                    
+                    <div class="card mt-5">
+                        <div class="card-header">Editar Contraseña</div>
+                        <div class="card-body">
+                            <form class="form-signin" th:action="@{/editpass}" method="post" enctype="multipart/form-data">
+                                <p>
+                                    <label for="password">Contraseña nueva</label> <input
+                                        type="password" id="password" name="password"
+                                        class="form-control" placeholder="Contraseña" required autofocus/>
+                                </p>
+                                <p>
+                                    <label for="password1">Repite Contraseña nueva</label> <input
+                                        type="password" id="password1" name="password1"
+                                        class="form-control" placeholder="Repite Contraseña" required autofocus/>
+                                </p>
+                                <p>
+                                    <label for="passwordold">Contraseña Antigua</label> <input
+                                        type="password" id="passwordold" name="passwordold"
+                                        class="form-control" placeholder="Contraseña Antigua" required autofocus/>
+                                </p>
+                                <div class="text-center">
+                                        <button class="btn btn-outline-primary" type="submit">Crear
+                                                Cuenta</button>
+                                </div>
+                            </form>
+                        </div> 
                     </div>
                     
                 </div>

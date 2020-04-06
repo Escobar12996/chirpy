@@ -96,7 +96,8 @@ public class ApyController {
         List<User> list = new ArrayList<User>();
         for (User fo : followDao.getUserFollow(user)){
             fo.setPassword("");
-            fo.setImagen(null);
+            fo.setImageperf(null);
+            fo.setImagesu(null);
             list.add(fo);
         }
         return list;
