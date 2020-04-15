@@ -64,7 +64,7 @@ public class User implements Serializable {
     @Size(max = 1000, message="Maximo 1000 caracteres")
     private String description;
     
-    private int citas;
+    private int quotes;
     
     public Long getId() {
         return id;
@@ -146,12 +146,12 @@ public class User implements Serializable {
         this.description = description;
     }
 
-    public int getCitas() {
-        return citas;
+    public int getQuotes() {
+        return quotes;
     }
 
-    public void setCitas(int citas) {
-        this.citas = citas;
+    public void setQuotes(int quotes) {
+        this.quotes = quotes;
     }
     
     
