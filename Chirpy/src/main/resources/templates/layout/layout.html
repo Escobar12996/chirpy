@@ -11,40 +11,78 @@
 <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
 </head>
 <body>
-	<div th:fragment="alerts">
-		<div class="alert alert-success" th:if="${success != null}"
-			th:text="${success}"></div>
-		<div class="alert alert-danger" th:if="${error != null}"
-			th:text="${error}"></div>
-		<div class="alert alert-warning" th:if="${warning != null}"
-			th:text="${warning}"></div>
-		<div class="alert alert-info" th:if="${info != null}"
-			th:text="${info}"></div>
-	</div>
+    <div class="d-flex" id="wrapper">
 
+        <div class="border-right bg-primary" id="sidebar-wrapper" th:fragment="sidebar">
+            <div class="bg-primary text-center"><img th:src="@{/image/Chirpy.png}" class="rounded-circle image-chirpy m-0"></div>
+            <div class="list-group list-group-flush">
+                <a th:href="@{/home}" class="list-group-item list-group-item-action bg-primary text-white">Principal</a>
+                <a class="list-group-item list-group-item-action bg-primary text-white" th:href="@{/explorer}">Explorar</a>
+                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
 
+                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}">Menciones</a>
 
-    <div class="container mt-3">
-        <div class="col-2 col-md-2 col-lg-2" th:fragment="menu">
-            <div class="list-group">
-                <a th:href="@{/home}" class="list-group-item list-group-item-action">Home</a>
-                <a class="list-group-item list-group-item-action" th:href="@{/explorer}">Explorar</a>
-                <a class="list-group-item list-group-item-action" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
-                <a class="list-group-item list-group-item-action" sec:authorize="isAuthenticated()" th:href="@{/userdetails}">Perfil</a>
-                <a class="list-group-item list-group-item-action" sec:authorize="isAuthenticated()" th:href="@{/editperfil}">Editar Perfil</a>
-                <form sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
-                    <button type="submit" class="btn-link list-group-item list-group-item-action">Cerrar Sesion</button>
-		</form>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" sec:authorize="isAuthenticated()" class="dropdown-toggle list-group-item list-group-item-action bg-primary text-white">Mi Perfil</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}">Ver Perfil</a>
+                    </li>
+                    <li>
+                        <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="@{/editperfil}">Editar Perfil</a>
+                    </li>
+                    <li>
+                        <form sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn-link list-group-item list-group-item-action bg-primary text-white">Cerrar Sesion</button>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-primary" th:fragment="navbar">
+                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+            </nav>
+
+            <div class="container-fluid">
+                <div class="row mt-5">
+
+                    <div class="col-xl-7 ml-xl-auto">
+                        <div th:fragment="alerts">
+                            <div class="alert alert-success" th:if="${success != null}"
+                                    th:text="${success}"></div>
+                            <div class="alert alert-danger" th:if="${error != null}"
+                                    th:text="${error}"></div>
+                            <div class="alert alert-warning" th:if="${warning != null}"
+                                    th:text="${warning}"></div>
+                            <div class="alert alert-info" th:if="${info != null}"
+                                    th:text="${info}"></div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         </div>
     </div>
+    <footer th:fragment="footer" class="dark page-footer text-center pt-2">
+    <p class="text-white">© 2020 Copyright: Antonio Escobar Rueda</p>
 
-	<footer th:fragment="footer" class="container">
-		<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-		<script th:src="@{/js/popper.min.js}"></script>
-		<script th:src="@{/js/bootstrap.min.js}"></script>
-		<script th:src="@{/js/jquery-ui.min.js}"></script>
-                <script th:src="@{/js/jqueryfunctions.js}"></script>
-	</footer>
-</body>
+        <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+        <script th:src="@{/js/popper.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/jquery-ui.min.js}"></script>
+        <script th:src="@{/js/jqueryfunctions.js}"></script>
+        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
+        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
+          <!-- Menu Toggle Script -->
+        <script>
+          $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+          });
+        </script>
+    </footer>
+    </body>
 </html>

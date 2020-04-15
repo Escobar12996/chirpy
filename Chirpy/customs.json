@@ -1,12 +1,16 @@
 {
     "elements": {},
     "attributes": {
+        "th:if": {},
         "th:errorclass": {},
         "th:action": {},
+        "th:src": {},
         "th:errors": {},
         "th:replace": {},
         "th:field": {
             "context": "input"
-        }
+        },
+        "th:href": {},
+        "th:fragment": {}
     }
 }

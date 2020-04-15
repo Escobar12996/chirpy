@@ -7,39 +7,80 @@ and open the template in the editor.
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
-    <body>
-        <div class="container mt-4">
-            <div th:replace="layout/layout :: alerts"></div>
-            <div class="row">
-                <div th:replace="layout/layout :: menu"></div>
-                <div class="col-10 col-md-10 col-lg-10">
-                    
-                    
-                    <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
-                        <h3 class="text-danger">No tienes publicaciones</h3>
-                    </div>
-                    
-                    <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="'post' + ${publi.id}">
-                        <div class="col-2">
-                            <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
-                        </div>
-                        <div class="col-10">
-                            <div class="row">
-                                <div class="col-10">
-                                    <p><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+    <body class="">
+        
+        <div class="d-flex" id="wrapper">
+
+            <div th:replace="layout/layout :: sidebar"></div>
+
+            <div id="page-content-wrapper">
+
+                <nav th:replace="layout/layout :: navbar"></nav>
+
+                <div class="container-fluid">
+                    <div class="row mt-4">
+                        
+                        <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
+                            
+                            <div class="jumbotron">
+                                <div class="parent w-100">
+                                <img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid">
+                            </div>
+                            
+                            <div class="row m-3 justify-content-center">
+                                <div class="col-2">
+                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
+                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
                                 </div>
-                                <div class="col-2 col-lg-2">
-                                    <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}">Borrar</button>
+                                <div class="col-7 ">
+                                    <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
+                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}">No hay ninguna descripción</p>
                                 </div>
                             </div>
-                            <p th:text="${publi.publication}"></p>
-                        </div>
-                    </div>
+                            </div>
+                            
+                            
+                            
+                            <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
+                            <h3 class="text-danger">No tienes publicaciones</h3>
+                            </div>
                     
+                            <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="'post' + ${publi.id}">
+                                <div class="col-2">
+                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
+                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
+                                </div>
+                                <div class="col-10">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <p class="text-left"><span class="font-weight-bold" th:text="${userc.name}"></span> <span class="" th:text="'@' + ${userc.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                        </div>
+                                        <div class="col-2 col-lg-2" th:if="${user != null && user.id == userc.id}">
+                                            <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}">Borrar</button>
+                                        </div>
+                                    </div>
+                                    <p th:text="${publi.publication}" class="text-left"></p>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                        </div>
+                        
+                        <div class="col-xl-3 ml-xl-auto ml-5 mr-5">
+                            <div class="card">
+                                <div class="card-header text-center text-chirpy">
+                                    <h5 class="card-title">Tendencias</h5>
+                                </div>
+                                <div class="card-body pb-5">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
-
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

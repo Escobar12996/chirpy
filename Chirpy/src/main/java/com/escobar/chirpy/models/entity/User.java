@@ -61,20 +61,10 @@ public class User implements Serializable {
     @Lob
     private byte[] imagesu;
     
-    private String newemail;
-
-    private String codigo;
-    
-    public String getNewemail() {
-        return newemail;
-    }
-
-    public void setNewemail(String newemail) {
-        this.newemail = newemail;
-    }
-    
-    @Size(max = 1000, message="Maximo 1000 letras")
+    @Size(max = 1000, message="Maximo 1000 caracteres")
     private String description;
+    
+    private int citas;
     
     public Long getId() {
         return id;
@@ -147,8 +137,6 @@ public class User implements Serializable {
     public void setImagesu(byte[] imagesu) {
         this.imagesu = imagesu;
     }
-    
-    
 
     public String getDescription() {
         return description;
@@ -158,12 +146,14 @@ public class User implements Serializable {
         this.description = description;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public int getCitas() {
+        return citas;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setCitas(int citas) {
+        this.citas = citas;
     }
+    
+    
 }
 

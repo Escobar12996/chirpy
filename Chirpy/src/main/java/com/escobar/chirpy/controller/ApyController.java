@@ -56,7 +56,6 @@ public class ApyController {
         if (followDao.findFollow(follow) == null){
             try {
                 followDao.save(follow);
-                System.out.println("a");
                 return "true";
             } catch (Exception e) {
                 return "false";

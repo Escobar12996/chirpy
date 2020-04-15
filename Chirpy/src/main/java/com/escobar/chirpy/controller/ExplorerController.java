@@ -7,6 +7,7 @@ package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,14 +29,21 @@ public class ExplorerController {
     @Autowired
     private PublicationDao publicationDao;
     
-    @RequestMapping(value={"/explorer"}, method = RequestMethod.GET)
-    public String explorer(Model model) {
+    @RequestMapping(value={"/", "/explorer"}, method = RequestMethod.GET)
+    public String explorer(Model model, Principal principal) {
         model.addAttribute("title", "Explorador");
+        if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        }
         return "explorer";
     }
     
     @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
-    public String explorersend(@RequestParam("find") String find, Model model) {
+    public String explorersend(@RequestParam("find") String find, Model model, Principal principal) {
+        
+        if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        }
         
         if(find.length() < 3){
             model.addAttribute("title", "Explorador");

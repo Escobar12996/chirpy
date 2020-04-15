@@ -7,13 +7,79 @@ and open the template in the editor.
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
-    <body>
-        <div class="container mt-4">
-            <div class="row">
-                <div th:replace="layout/layout :: menu"></div>
-                <div class="col-10 col-md-10 col-lg-10">
-                    <div  th:replace="layout/layout :: alerts"></div>
+    <body class="">
+        
+        <div class="d-flex" id="wrapper">
 
+            <div th:replace="layout/layout :: sidebar"></div>
+
+            <div id="page-content-wrapper">
+
+                <nav th:replace="layout/layout :: navbar"></nav>
+
+                <div class="container-fluid">
+                    <div class="row mt-5 justify-content-xl-center">
+                        
+                        <div class="col-xl-7">
+                            <div  th:replace="layout/layout :: alerts"></div>
+
+                    <div class="card">
+                        <div class="card-header">Editar Usuario</div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card align-content-center text-center">
+                                        <form class="form-signin" th:action="@{/editImagePerfil}"
+                                              method="post" enctype="multipart/form-data">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:if="${user.imageperf != null}" th:src="${'/image/user/' + user.id}" alt="Card image cap" style="width: 100px">
+                                                    <img class="card-img-top" th:if="${user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                                    
+                                                </div>
+                                            </div>
+                                            <label for="image">Imagen de perfil</label>
+                                            <input id="image" type="file" name="ima" class="form-control">
+                                            <button class="btn btn-outline-primary" type="submit">Crear
+                                                Cuenta</button>
+                                            <button class="btn btn-outline-primary" name="delete" value="delete" type="submit">Crear
+                                                Cuenta</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-6">
+                                    <div class="card align-content-center text-center">
+                                        <form class="form-signin" th:action="@{/imagesu}"
+                                              method="post" enctype="multipart/form-data">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:if="${user.imagesu != null}" th:src="${'/image/imagesu/' + user.id}" alt="Card image cap" style="max-width: 300px; max-height: 100px">
+                                                    <div th:if="${user.imagesu == null}" style="height: 100px"></div>
+                                                </div>
+                                            </div>
+                                            <label for="image">Imagen de perfil</label>
+                                            <input id="image" type="file" name="ima" class="form-control">
+                                            <button class="btn btn-outline-primary" type="submit">Crear
+                                                Cuenta</button>
+                                            <button class="btn btn-outline-primary" name="delete" value="delete" type="submit">Crear
+                                                Cuenta</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>      
+                        </div>
+                    </div>
+                    
+                    
+                   
+                    
+                    
+                    
+                    
                     <div class="card mt-5">
                         <div class="card-header">Editar Usuario</div>
                         <div class="card-body">
@@ -33,32 +99,6 @@ and open the template in the editor.
                                         <textarea id="description" th:field="*{description}" rows="4" class="form-control" placeholder="Usuario" autofocus th:errorclass="'form-control alert-danger'"></textarea>
                                         <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                                 </p>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="card align-content-center text-center">
-                                            <div class="row align-content-center">
-                                                <div class="col mt-2">
-                                                    <img class="card-img-top" th:src="${'/image/user/' + user.id}" alt="Card image cap" style="width: 100px">
-                                                </div>
-                                            </div>
-                                            <label for="image">Imagen de perfil</label>
-                                        <input id="image" type="file" name="ima" class="form-control">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-6">
-                                        <div class="card align-content-center text-center">
-                                            <div class="row align-content-center">
-                                                <div class="col mt-2">
-                                                    <img class="card-img-top" th:src="${'/image/imagesu/' + user.id}" alt="Card image cap" style="width: 150px">
-                                                </div>
-                                            </div>
-                                            <label for="image">Imagen de perfil</label>
-                                        <input id="image" type="file" name="ima" class="form-control">
-                                        </div>
-                                    </div>
-                                    
-                                </div>
                                 
                                 <p>
                                         <label for="name">Nombre</label> <input type="text" id="namealasname"
@@ -71,12 +111,9 @@ and open the template in the editor.
                                 </p>
 
                                 <p>
-                                        <label for="email">Correo</label> <input
-                                                type="email" id="namealasname" th:field="*{email}"
-                                                class="form-control" placeholder="Correo" required autofocus
-                                                th:errorclass="'form-control alert-danger'" /> <span
-                                                class="text-danger" th:if="${#fields.hasErrors('email')}"
-                                                th:errors="*{email}"></span>
+                                        <label for="email" class="sr-only">Correo</label> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control" placeholder="Correo" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
+                                        <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                 </p>
                                 
                                 <p>
@@ -122,11 +159,14 @@ and open the template in the editor.
                             </form>
                         </div> 
                     </div>
-                    
+                            <div class="m-5 p-3">
+                                
+                            </div>
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
-
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

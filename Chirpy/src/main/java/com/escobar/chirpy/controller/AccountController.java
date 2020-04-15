@@ -133,30 +133,15 @@ public class AccountController {
         }
     }
     
-    @RequestMapping(value={"/userdetails"}, method = RequestMethod.GET)
-    public String userdetalis(Model model, Principal principal) {
-        model.addAttribute("title", "Mis Publicaciones");
-        model.addAttribute("publication", new Publication());
-        model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
-
-        return "userdetails";
-        
-    }
-    
-    @RequestMapping(value={"/userdetails"}, method = RequestMethod.POST)
-    public String userdetalis(@Valid Publication publication, BindingResult result, Model model, Principal principal) {
-        
-        if (result.hasErrors()){
-            model.addAttribute("title", "Principal");
-            model.addAttribute("publications", publicationDao.findByUser(userDao.findByUserName(principal.getName())));
-            return "mypublication";
-        } else {
-            publication.setDateOfSend(new Date());
-            publication.setUser(userDao.findByUserName(principal.getName()));
-            publication.setView(true);
-            publicationDao.save(publication);
-            return "redirect:/userdetails";
+    @RequestMapping(value={"/userdetails/{id}"}, method = RequestMethod.GET)
+    public String userdetalis(Model model, Principal principal, @PathVariable Long id) {
+        model.addAttribute("title", "Detalles del usuario");
+        if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
+        model.addAttribute("userc", userDao.findById(id));
+        model.addAttribute("publications", publicationDao.findByUser(userDao.findById(id)));
+        return "userdetails";
     }
     
     @RequestMapping(value={"/editperfil"}, method = RequestMethod.GET)
@@ -167,7 +152,7 @@ public class AccountController {
     }
     
     @RequestMapping(value={"/editperfil"}, method = RequestMethod.POST)
-    public String editperfilPOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "ima", required = false) MultipartFile file) {
+    public String editperfilPOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {
         
         //bandera para detectar si se a cambiado el nombre
         boolean chna = false;
@@ -187,64 +172,24 @@ public class AccountController {
             userc.setDescription(user.getDescription());
             userc.setName(user.getName());
             
-            //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
-            if (file != null && !file.isEmpty()) {
-                
-                //si el fichero es de tipo png o jpeg
-                if (file.getContentType().contains("image/png") || file.getContentType().contains("image/jpeg")){
-                    try {
-                        byte[] imagefile = file.getBytes();
-                        userc.setImagesu(ImageResizer.imageResizeFromImages(imagefile, 600));
-                        userc.setImageperf(ImageResizer.imageResizeFromUser(imagefile, 100, 100));
-                    } catch (IOException e) {}
-                    
-                //si no es una imagen de esos tipos
-                } else {
-                    model.addAttribute("error", "No has subido una imagen valida");
-                }
-            }
-            
-            //comprobamos que alguno de estos dos casos sea cierto asi evito que se cambien los dos, por seguridad.
-            //-----Si el email es diferente y el nombre es el mismo
-            //-----Si el email es el mismo, pero el nombre es diferente.
-            if ((!userc.getEmail().equalsIgnoreCase(user.getEmail()) && userc.getUsername().equalsIgnoreCase(user.getUsername())) ||
-                    userc.getEmail().equalsIgnoreCase(user.getEmail()) && !userc.getUsername().equalsIgnoreCase(user.getUsername())){
-                
-                //si el correo es diferente
-                if (!userc.getEmail().equalsIgnoreCase(user.getEmail())){
-                    
-                    //compruebo que sea correcto
-                    if (esEmailCorrecto(user.getEmail())){
-                        
-                        //compruebo que no este repetido y lo guardo
-                        if (userDao.findEmail(user.getEmail()) == null){
-                            userc.setEmail(user.getEmail());
-                            
-                        //si esta repetido, muestro un error
-                        } else {
-                            model.addAttribute("error", "El correo ya esta en uso");
-                        }
-                    }
+            //comprobamos si el nombre de usuario ha cambiado
+            if (!userc.getUsername().equalsIgnoreCase(user.getUsername())){
 
-                //Si el usuario es diferente y no esta cogido
-                }else if (!userc.getUsername().equalsIgnoreCase(user.getUsername()) && userDao.findByUserName(user.getUsername()) == null){
+                //comprobamos que no tenga otro usuario el mismo nombre
+                if (userDao.findByUserName(user.getUsername()) == null){
                 
                     //introduzco el nuevo usuario
                     userc.setUsername(user.getUsername());
                     
-                    //cierro la sesion, para evitar problemas con el autenticador, y activo la bandera
+                    //cierro la sesion, para evitar problemas con el autenticador, y activo la bandera de cambio de nombre de usuario
                     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                     new SecurityContextLogoutHandler().logout(request, response, auth);
                     chna = true;
                     
-                //Si el usuario es diferente, pero ya esta cojido el nombre
-                } else if (!userc.getUsername().equalsIgnoreCase(user.getUsername()) && userDao.findByUserName(user.getUsername()) != null){
+                //Si ya existe un usuario
+                } else if (userDao.findByUserName(user.getUsername()) != null){
                     model.addAttribute("error", "El nombre de usuario ya existe");
                 }
-                
-            //si deseas cambiar los dos a la vez, muestro error
-            } else if (!userc.getEmail().equalsIgnoreCase(user.getEmail()) && !userc.getUsername().equalsIgnoreCase(user.getUsername())) {
-                model.addAttribute("error", "No es posible cambiar el usuario y el correo a la vez");
             }
                 
             //Guardo el usuario
@@ -305,9 +250,79 @@ public class AccountController {
         return "useredit";
     }
     
+    @RequestMapping(value={"/editImagePerfil"}, method = RequestMethod.POST)
+    public String editImagePerfil(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
+        
+        //cargamos usuario de la base de datos
+        User userc = userDao.findByUserName(principal.getName());
+        
+        //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
+        if (delete == null && file != null && !file.isEmpty()) {
+
+            //si el fichero es de tipo png o jpeg
+            if (file.getContentType().contains("image/png") || file.getContentType().contains("image/jpeg")){
+                try {
+                    byte[] imagefile = file.getBytes();
+                    userc.setImageperf(ImageResizer.imageResizeFromUser(imagefile, 100, 100));
+                    userDao.save(userc);
+                } catch (IOException e) {}
+
+            //si no es una imagen de esos tipos
+            } else {
+                model.addAttribute("error", "No has subido una imagen valida");
+                model.addAttribute("title", "Editar Perfil");
+                model.addAttribute("user", userDao.findByUserName(principal.getName()));
+                return "useredit"; 
+            }
+        } else if ( delete != null && delete.contains("delete") ){
+            userc.setImageperf(null);
+            userDao.save(userc);
+        }
+        
+        return "redirect:/editperfil";
+    }
     
+    @RequestMapping(value={"/editImagePerfil"}, method = RequestMethod.GET)
+    public String editImagePerfil() {
+        return "redirect:/editperfil";
+    }
     
+    @RequestMapping(value={"/imagesu"}, method = RequestMethod.POST)
+    public String editImageSu(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
+        
+        //cargamos usuario de la base de datos
+        User userc = userDao.findByUserName(principal.getName());
+        
+        //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
+        if (delete == null && file != null && !file.isEmpty()) {
+
+            //si el fichero es de tipo png o jpeg
+            if (file.getContentType().contains("image/png") || file.getContentType().contains("image/jpeg")){
+                try {
+                    byte[] imagefile = file.getBytes();
+                    userc.setImagesu(ImageResizer.imageResizeFromImages(imagefile, 800));
+                    userDao.save(userc);
+                } catch (IOException e) {}
+
+            //si no es una imagen de esos tipos
+            } else {
+                model.addAttribute("error", "No has subido una imagen valida");
+                model.addAttribute("title", "Editar Perfil");
+                model.addAttribute("user", userDao.findByUserName(principal.getName()));
+                return "useredit"; 
+            }
+        } else if ( delete != null && delete.contains("delete") ){
+            userc.setImagesu(null);
+            userDao.save(userc);
+        }
+        
+        return "redirect:/editperfil";
+    }
     
+    @RequestMapping(value={"/imagesu"}, method = RequestMethod.GET)
+    public String editImageSu() {
+        return "redirect:/editperfil";
+    }
     
     
     protected static boolean esEmailCorrecto(String email) {
