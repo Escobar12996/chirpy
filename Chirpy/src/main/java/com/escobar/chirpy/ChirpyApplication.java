@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ChirpyApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ChirpyApplication.class, args);
-	}
+    public static void main(String[] args) {
+            SpringApplication.run(ChirpyApplication.class, args);
+    }
 
 }

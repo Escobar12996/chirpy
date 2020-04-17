@@ -5,6 +5,7 @@
  */
 package com.escobar.chirpy.models.services;
 
+import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
 import com.escobar.chirpy.models.entity.User;
@@ -13,6 +14,11 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.unbescape.html.HtmlEscape;
+import com.escobar.chirpy.models.entity.Publication;
+import com.escobar.chirpy.models.entity.UserQuotePublication;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,7 +29,10 @@ import org.unbescape.html.HtmlEscape;
 public class PublicationService {
     
     @Autowired
-    private UserDao userdao;
+    private UserDao userDao;
+    
+    @Autowired
+    private PublicationDao publicationDao;
     
     @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
@@ -33,9 +42,14 @@ public class PublicationService {
     private Pattern patternhastags = Pattern.compile("#[A-Za-z0-9_-]+\\s?");
     
     
-    public String formated(String publication) {
+    public void formatedAndSave(Publication publi) {
         
-        publication = HtmlEscape.escapeHtml5(publication);
+        List<User> userlist = new ArrayList<User>();
+        List<String> hastags = new ArrayList<>();
+        publi.setDateOfSend(new Date());
+        publi.setView(true);
+
+        String publication = HtmlEscape.escapeHtml5(publi.getPublication());
         
         //comprobamos si tiene alguna mencion
         if (publication.contains("@")){
@@ -51,9 +65,10 @@ public class PublicationService {
                 if (matcheruserone.find()) {
                     String user = matcheruserone.group().replace("@&quot;", "");
                     user = user.replace("&quot;", "");
-                    User userc = userdao.findByUserName(user);
+                    User userc = userDao.findByUserName(user);
                     
                     if (userc != null){
+                        userlist.add(userc);
                         publication = publication.replace(matcheruserone.group(), "<a href=\"/userdetails/"+userc.getId()+"\">@"+userc.getUsername()+"</a>"); 
                     }
                     
@@ -61,9 +76,10 @@ public class PublicationService {
 
                     String user = matcherusertwo.group().replace("@", "");
                     user = user.replace(" ", "");
-                    User userc = userdao.findByUserName(user);
+                    User userc = userDao.findByUserName(user);
                     
                     if (userc != null){
+                        userlist.add(userc);
                         publication = publication.replace(matcherusertwo.group(), "<a href=\"/userdetails/"+userc.getId()+"\">@"+userc.getUsername()+"</a> "); 
                     }
                     
@@ -71,6 +87,7 @@ public class PublicationService {
 
                     String user = matcherhastags.group().replace("#", "");
                     user = user.replace(" ", "");
+                    hastags.add(user);
                     publication = publication.replace(matcherhastags.group(), "<a href=\"/home\">"+matcherhastags.group()+"</a> "); 
                     
                 } else {
@@ -79,6 +96,22 @@ public class PublicationService {
             }
         }
         
-        return publication;
+        publi.setPublication(publication);
+        publicationDao.save(publi);
+        
+        for(User u: userlist){
+            UserQuotePublication uqp = new UserQuotePublication();
+            uqp.setPublication(publi);
+            uqp.setUser(u);
+            try {
+                userQuotePublicationDao.save(uqp);
+                u.setQuotes(u.getQuotes()+1);
+                userDao.update(u);
+            } catch (Exception e) {}
+            
+        }
+        
+        
+        
     }
 }

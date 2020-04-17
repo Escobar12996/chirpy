@@ -29,7 +29,7 @@ public class PublicationController {
     private PublicationDao publicationDao;
     
     @Autowired
-    private PublicationService publicationFormated;
+    private PublicationService publicationService;
     
     
     @Autowired
@@ -66,11 +66,8 @@ public class PublicationController {
             model.addAttribute("publications", publi);
             return "home";
         }else {
-            publication.setDateOfSend(new Date());
-            publication.setPublication(publicationFormated.formated(publication.getPublication()));
             publication.setUser(userDao.findByUserName(principal.getName()));
-            publication.setView(true);
-            publicationDao.save(publication);
+            publicationService.formatedAndSave(publication);
             return "redirect:/home";
         }
     }
