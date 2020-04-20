@@ -20,7 +20,7 @@
                 <a class="list-group-item list-group-item-action bg-primary text-white" th:href="@{/explorer}">Explorar</a>
                 <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
 
-                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}">Menciones</a>
+                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/quotes'}">Menciones <span th:text="${user.quotes}"></span></a>
 
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" sec:authorize="isAuthenticated()" class="dropdown-toggle list-group-item list-group-item-action bg-primary text-white">Mi Perfil</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">

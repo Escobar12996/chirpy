@@ -6,6 +6,7 @@
         "th:action": {},
         "th:src": {},
         "th:errors": {},
+        "sec:authorize": {},
         "th:replace": {},
         "th:field": {
             "context": "input"

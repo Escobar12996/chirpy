@@ -10,14 +10,17 @@ import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
 import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
+import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -62,6 +65,9 @@ public class AccountController {
     
     @Autowired
     private AuthorityDao authorityDao;
+    
+    @Autowired
+    private UserQuotePublicationDao userQuotePublicationDao;
     
     @Autowired
     private UserAuthorityDao userAuthorityDao;
@@ -323,6 +329,29 @@ public class AccountController {
     public String editImageSu() {
         return "redirect:/editperfil";
     }
+    
+    
+    @RequestMapping(value={"/quotes"}, method = RequestMethod.GET)
+    public String principalzone(Model model, Principal principal) {
+        model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        model.addAttribute("title", "Quotes");
+        List<UserQuotePublication> uqps = userQuotePublicationDao.findByUser(userDao.findByUserName(principal.getName()));
+        List<Publication> pu = new ArrayList<Publication>();
+        for (UserQuotePublication uq : uqps){
+            pu.add(uq.getPublication());
+        }
+        model.addAttribute("publications", pu);
+        
+        User u = userDao.findByUserName(principal.getName());
+        u.setQuotes(0);
+        userDao.update(u);
+        
+        return "quotes";
+    }
+    
+    
+    
+    
     
     
     protected static boolean esEmailCorrecto(String email) {

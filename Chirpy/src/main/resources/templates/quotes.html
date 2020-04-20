@@ -22,41 +22,19 @@ and open the template in the editor.
                         
                         <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
                             
-                            <div class="jumbotron">
-                                <div class="parent w-100">
-                                <img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid">
-                            </div>
-                            
-                            <div class="row m-3 justify-content-center">
-                                <div class="col-2">
-                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
-                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
-                                </div>
-                                <div class="col-7 ">
-                                    <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
-                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}">No hay ninguna descripción</p>
-                                </div>
-                            </div>
-                            </div>
-                            
-                            
-                            
                             <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
-                            <h3 class="text-danger">No tienes publicaciones</h3>
+                            <h3 class="text-danger">No te han citado</h3>
                             </div>
                     
                             <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="'post' + ${publi.id}">
                                 <div class="col-2">
-                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
-                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
+                                    <img th:if="${publi.user.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
+                                    <img th:if="${publi.user.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + publi.user.id}">
                                 </div>
                                 <div class="col-10">
                                     <div class="row">
                                         <div class="col-10">
-                                            <p class="text-left"><span class="font-weight-bold" th:text="${userc.name}"></span> <span class="" th:text="'@' + ${userc.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                        </div>
-                                        <div class="col-2 col-lg-2" th:if="${user != null && user.id == userc.id}">
-                                            <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}">Borrar</button>
+                                            <p class="text-left"><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                         </div>
                                     </div>
                                     <p th:utext="${publi.publication}" class="text-left"></p>
