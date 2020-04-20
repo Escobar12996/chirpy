@@ -5,6 +5,8 @@
  */
 package com.escobar.chirpy.models.services;
 
+import com.escobar.chirpy.models.dao.HashtagDao;
+import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
@@ -14,6 +16,9 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.unbescape.html.HtmlEscape;
+
+import com.escobar.chirpy.models.entity.Hashtag;
+import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import java.util.ArrayList;
@@ -35,6 +40,12 @@ public class PublicationService {
     private PublicationDao publicationDao;
     
     @Autowired
+    private HashtagPublicationDao hashtagPublicationDao;
+    
+    @Autowired
+    private HashtagDao hashtagDao;
+    
+    @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
     
     private Pattern patternuserone = Pattern.compile("@&quot;[A-Za-z0-9\\s]+&quot;");
@@ -45,7 +56,7 @@ public class PublicationService {
     public void formatedAndSave(Publication publi) {
         
         List<User> userlist = new ArrayList<User>();
-        List<String> hastags = new ArrayList<>();
+        List<String> hashtags = new ArrayList<>();
         publi.setDateOfSend(new Date());
         publi.setView(true);
 
@@ -87,7 +98,8 @@ public class PublicationService {
 
                     String user = matcherhastags.group().replace("#", "");
                     user = user.replace(" ", "");
-                    hastags.add(user);
+                    hashtags.add(user);
+                    
                     publication = publication.replace(matcherhastags.group(), "<a href=\"/home\">"+matcherhastags.group()+"</a> "); 
                     
                 } else {
@@ -108,10 +120,32 @@ public class PublicationService {
                 u.setQuotes(u.getQuotes()+1);
                 userDao.update(u);
             } catch (Exception e) {}
-            
         }
         
-        
+        for(String h: hashtags){
+        	
+        	Hashtag ha = new Hashtag();
+        	ha.setDatelast(new Date());
+        	ha.setHashtagname(h);
+        	ha.setUsos(1);
+        	
+        	try {
+        		hashtagDao.save(ha);
+        	} catch (Exception e) {
+        		ha = hashtagDao.findByHashtagName(ha.getHashtagname());
+        		ha.setUsos(ha.getUsos()+1);
+        		ha.setDatelast(new Date());
+        		hashtagDao.update(ha);
+        	}
+        	
+        	try {
+        		HashtagPublication hp = new HashtagPublication();
+        		hp.setHashtag(ha);
+        		hp.setPublication(publi);
+        		hashtagPublicationDao.save(hp);
+        	} catch (Exception e) {}
+            
+        }
         
     }
 }
