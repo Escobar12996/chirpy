@@ -34,6 +34,13 @@ public class HashtagDao {
         } catch (Exception e) {
 			return null;
 		}
+    }
+    
+    public List<Hashtag> findUp() {
+        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h order by h.usos DESC, datelast DESC", Hashtag.class); 
+        query.setMaxResults(10);
+
+    	return query.getResultList();
         
 
     }

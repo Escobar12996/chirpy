@@ -63,7 +63,7 @@ public class PublicationService {
         String publication = HtmlEscape.escapeHtml5(publi.getPublication());
         
         //comprobamos si tiene alguna mencion
-        if (publication.contains("@")){
+        if (publication.contains("@") || publication.contains("#")){
             
             Matcher matcheruserone = patternuserone.matcher(publication);
             Matcher matcherusertwo = patternusertwo.matcher(publication);
@@ -109,6 +109,7 @@ public class PublicationService {
         }
         
         publi.setPublication(publication);
+        System.out.println(publication.length());
         publicationDao.save(publi);
         
         for(User u: userlist){

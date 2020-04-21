@@ -45,7 +45,7 @@ public class Publication implements Serializable{
     @JoinColumn(name = "user_id")
     private User user;
     
-    @Size(min = 3, max = 4000, message="Debe tener mas de 3 caracteres")
+    @Size(min = 3, max = 1000000, message="Debe tener mas de 3 caracteres")
     @NotEmpty(message="Debe de tener algo")
     private String publication;
     

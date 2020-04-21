@@ -100,3 +100,7 @@ background-repeat: no-repeat;
     width: 100px;
     height: 100px;
 }
+
+.pequeno {
+	font-size: 10px;
+}

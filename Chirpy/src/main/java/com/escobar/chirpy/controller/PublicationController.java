@@ -1,6 +1,7 @@
 package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.FollowDao;
+import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.entity.User;
@@ -31,7 +32,9 @@ public class PublicationController {
     @Autowired
     private PublicationService publicationService;
     
-    
+    @Autowired
+    private HashtagDao hashtagDao;
+
     @Autowired
     private FollowDao followDao;
     
@@ -43,6 +46,7 @@ public class PublicationController {
         List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
         List<Publication> publi = publicationDao.findByUsers(followsthisuser);
         model.addAttribute("publications", publi);
+        model.addAttribute("tendencias", hashtagDao.findUp());
         
         return "home";
     }
@@ -57,6 +61,7 @@ public class PublicationController {
             List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
             List<Publication> publi = publicationDao.findByUsers(followsthisuser);
             model.addAttribute("publications", publi);
+            model.addAttribute("tendencias", hashtagDao.findUp());
             return "home";
         } else if (publication.getPublication().length() > maxletter) {
             model.addAttribute("title", "Principal");
@@ -64,6 +69,7 @@ public class PublicationController {
             List<Publication> publi = publicationDao.findByUsers(followsthisuser);
             model.addAttribute("errorpublication", "El limite maximo de palabras en la publicacion es de " + maxletter);
             model.addAttribute("publications", publi);
+            model.addAttribute("tendencias", hashtagDao.findUp());
             return "home";
         }else {
             publication.setUser(userDao.findByUserName(principal.getName()));

@@ -5,6 +5,7 @@
  */
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import java.security.Principal;
@@ -29,9 +30,14 @@ public class ExplorerController {
     @Autowired
     private PublicationDao publicationDao;
     
+    @Autowired
+    private HashtagDao hashtagDao;
+    
     @RequestMapping(value={"/", "/explorer"}, method = RequestMethod.GET)
     public String explorer(Model model, Principal principal) {
         model.addAttribute("title", "Explorador");
+        System.out.println(hashtagDao.findUp().size());
+        model.addAttribute("tendencias", hashtagDao.findUp());
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }

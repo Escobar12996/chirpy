@@ -62,6 +62,22 @@
                         </div>
                     </div>
                 </div> 
+                <div class="col-xl-3 ml-xl-auto ml-5 mr-5" th:fragment="tendence">
+	                <div class="card bg-secondary">
+	                    <div class="card-header text-center text-white bg-secondary">
+	                        <h5 class="card-title secondary">Tendencias</h5>
+	                    </div>
+	                    <div class="">
+	                    	<div class="list-group list-group-flush">
+                    			 <a th:each="tendencia : ${tendencias}" href="" class="text-white list-group-item list-group-item-action bg-secondary">
+                    			 	<p th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0"></p>
+                    			 	<p class="m-0 p-0 pequeno"><span th:text="${tendencia.usos}"></span> Publicaciones</p>
+                    			 </a>
+				            </div>
+	                    </div>
+	
+	                </div>
+	            </div>
             </div>
         </div>
     </div>
