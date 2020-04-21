@@ -62,14 +62,14 @@ and open the template in the editor.
                                             <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                         </div>
                                     </div>
-                                    <p th:text="${publi.publication}"></p>
+                                    <p th:utext="${publi.publication}"></p>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
-                        
-                        <div th:replace="layout/layout :: tendence" ></div>
+                        <div class="col-xl-3 ml-xl-auto ml-5 mr-5" >
+                        	<div th:replace="layout/layout :: tendencee"></div>
+                        </div>
                     </div> 
                 </div>
             </div>

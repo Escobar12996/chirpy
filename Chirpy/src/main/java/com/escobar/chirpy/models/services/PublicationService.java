@@ -97,7 +97,7 @@ public class PublicationService {
                 } else if (matcherhastags.find()){
 
                     String user = matcherhastags.group().replace("#", "");
-                    user = user.replace(" ", "");
+                    user = user.trim();
                     hashtags.add(user);
                     
                     publication = publication.replace(matcherhastags.group(), "<a href=\"/home\">"+matcherhastags.group()+"</a> "); 

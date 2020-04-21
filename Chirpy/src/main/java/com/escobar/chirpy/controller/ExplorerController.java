@@ -8,10 +8,17 @@ package com.escobar.chirpy.controller;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
+
+import java.io.IOException;
 import java.security.Principal;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +64,6 @@ public class ExplorerController {
             return "explorer";
         } else if (find.contains("@")){
             find = find.replace("@", "");
-            System.out.println(find);
             model.addAttribute("title", "Explorador");
             model.addAttribute("users", userDao.findUsersOnlyUsername(find));
             return "explorer";
@@ -68,4 +74,28 @@ public class ExplorerController {
             return "explorer";
         }
     }
+    
+    
+    
+    @RequestMapping(value={"/explorer/{hashtag}"}, method = RequestMethod.GET)
+    public String hastags(@PathVariable String hashtag, Model model, Principal principal){
+    	System.out.println(hashtag);
+    	if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        }
+    	
+    	model.addAttribute("title", "Explorador");
+        model.addAttribute("publications", publicationDao.findText(hashtag));
+        return "explorer";
+    	
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

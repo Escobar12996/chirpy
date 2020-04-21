@@ -41,7 +41,12 @@ public class HashtagDao {
         query.setMaxResults(10);
 
     	return query.getResultList();
-        
+    }
+    
+    public List<Hashtag> findHastagsName(String name) {
+        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h WHERE h.hashtagname LIKE CONCAT('%',:hashtagname,'%')", Hashtag.class); 
+        query.setParameter("hashtagname", name);
+        return query.getResultList();
 
     }
         
