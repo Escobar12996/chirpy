@@ -73,5 +73,8 @@ $(function() {
     }
 });
 
-
+$(document).on('cilck', '[data-toggle="lightbox"]', function(event) {
+	event.preventDefault();
+	$(this).ekkoLightbox();
+});
 

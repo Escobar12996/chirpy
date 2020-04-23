@@ -9,6 +9,8 @@
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/mycss.css}" />
 <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+<link rel="stylesheet" th:href="@{/css/ekko-lightbox.css}" />
+
 </head>
 <body>
     <div class="d-flex" id="wrapper">
@@ -101,6 +103,9 @@
         <script th:src="@{/js/bootstrap.min.js}"></script>
         <script th:src="@{/js/jquery-ui.min.js}"></script>
         <script th:src="@{/js/jqueryfunctions.js}"></script>
+        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
+        
+        
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
@@ -109,6 +114,11 @@
           $("#menu-toggle").click(function(e) {
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
+          });
+          
+          $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+              event.preventDefault();
+              $(this).ekkoLightbox();
           });
         </script>
     </footer>

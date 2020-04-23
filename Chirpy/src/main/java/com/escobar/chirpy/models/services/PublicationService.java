@@ -10,17 +10,23 @@ import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.unbescape.html.HtmlEscape;
 
 import com.escobar.chirpy.models.entity.Hashtag;
 import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
+import com.escobar.chirpy.models.entity.Vidma;
+import com.escobar.chirpy.models.miscellaneous.ImageResizer;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +52,9 @@ public class PublicationService {
     private HashtagDao hashtagDao;
     
     @Autowired
+    private VidmaDao vidmaDao;
+    
+    @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
     
     private Pattern patternuserone = Pattern.compile("@&quot;[A-Za-z0-9\\s]+&quot;");
@@ -53,7 +62,7 @@ public class PublicationService {
     private Pattern patternhastags = Pattern.compile("#[A-Za-z0-9_-]+\\s?");
     
     
-    public void formatedAndSave(Publication publi) {
+    public void formatedAndSave(Publication publi, MultipartFile files[]) {
         
         List<User> userlist = new ArrayList<User>();
         List<String> hashtags = new ArrayList<>();
@@ -100,7 +109,7 @@ public class PublicationService {
                     user = user.trim();
                     hashtags.add(user);
                     
-                    publication = publication.replace(matcherhastags.group(), "<a href=\"/home\">"+matcherhastags.group()+"</a> "); 
+                    publication = publication.replace(matcherhastags.group(), "<a href=\"/explorer/"+user+"\">"+matcherhastags.group()+"</a> "); 
                     
                 } else {
                     bandera = true;
@@ -109,7 +118,6 @@ public class PublicationService {
         }
         
         publi.setPublication(publication);
-        System.out.println(publication.length());
         publicationDao.save(publi);
         
         for(User u: userlist){
@@ -148,5 +156,18 @@ public class PublicationService {
             
         }
         
+        for(int i = 0; i < files.length; i++) {
+        	MultipartFile file = files[i];
+        	if (file != null && !file.isEmpty()) {
+        		
+        		try {
+        			Vidma v = new Vidma(file.getBytes());
+                    v.setPubli(publi);
+                    v.setUser(publi.getUser());
+                    vidmaDao.save(v);
+                } catch (IOException e) {}
+        		
+        	}
+        }
     }
 }
