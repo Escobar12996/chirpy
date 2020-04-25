@@ -40,4 +40,10 @@ public class VidmaDao {
 		
 	    return query.getResultList();
 	}
+	
+	public List<Vidma> findByUser(Long id) {
+		TypedQuery<Vidma> query = em.createQuery("SELECT v FROM Vidma v WHERE v.user = "+ id +"", Vidma.class); 
+		
+	    return query.getResultList();
+	}
 }

@@ -11,6 +11,7 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
@@ -71,6 +72,9 @@ public class AccountController {
     
     @Autowired
     private UserAuthorityDao userAuthorityDao;
+    
+    @Autowired
+    private VidmaDao vidmaDao;
     
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
@@ -149,6 +153,21 @@ public class AccountController {
         model.addAttribute("publications", publicationDao.findByUser(userDao.findById(id)));
         return "userdetails";
     }
+    
+    @RequestMapping(value={"/userimages/{id}"}, method = RequestMethod.GET)
+    public String userimages(Model model, Principal principal, @PathVariable Long id) {
+        model.addAttribute("title", "Detalles del usuario");
+        if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        }
+        model.addAttribute("userc", userDao.findById(id));
+        model.addAttribute("images", vidmaDao.findByUser(id));
+        return "userimages";
+    }
+
+    
+    
+    
     
     @RequestMapping(value={"/editperfil"}, method = RequestMethod.GET)
     public String editperfil(Model model, Principal principal) {

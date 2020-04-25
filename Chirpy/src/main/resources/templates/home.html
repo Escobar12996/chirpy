@@ -79,7 +79,7 @@ and open the template in the editor.
                                     <div class="col-2"></div>
                                     <div class="col-10">
                                     	<div class="row">
-                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" data-gallery="publi.id">
+                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
 												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
 											</a>
                                     	</div>
