@@ -98,29 +98,18 @@
     <footer th:fragment="footer" class="dark page-footer text-center pt-2">
     <p class="text-white">© 2020 Copyright: Antonio Escobar Rueda</p>
 
-        <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-        <script th:src="@{/js/popper.min.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <script th:src="@{/js/jquery-ui.min.js}"></script>
-        <script th:src="@{/js/jqueryfunctions.js}"></script>
-        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
-        
+		<script th:src="@{/js/jquery.js}"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
         
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
-          <!-- Menu Toggle Script -->
-        <script>
-          $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-          });
-          
-          $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-              event.preventDefault();
-              $(this).ekkoLightbox();
-          });
-        </script>
+        
+        
+        <script th:src="@{/js/popper.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
+        <script th:src="@{/js/jqueryfunctions.js}"></script>
     </footer>
     </body>
 </html>

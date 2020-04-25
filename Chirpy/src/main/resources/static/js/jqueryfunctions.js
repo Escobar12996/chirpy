@@ -50,21 +50,25 @@ $(".deletebutton").click(function(){
 });
 
 function loadFollow(){
-        $.ajax({
-            type: "POST",
-            url: "/getfollows",
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(header, token);
-            },
-            success: function(response){
-                $.each(response,function(indice,objeto){
-                    $("#followbutton"+objeto.id).hide();
-                    $("#unfollowbutton"+objeto.id).show();
-                });
-            }
-        });
+    $.ajax({
+        type: "POST",
+        url: "/getfollows",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(response){
+            $.each(response,function(indice,objeto){
+                $("#followbutton"+objeto.id).hide();
+                $("#unfollowbutton"+objeto.id).show();
+            });
+        }
+    });
 }
 
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
 
 
 $(function() {
@@ -73,8 +77,52 @@ $(function() {
     }
 });
 
-$(document).on('cilck', '[data-toggle="lightbox"]', function(event) {
-	event.preventDefault();
-	$(this).ekkoLightbox();
+  
+$(document).on('click', '[data-toggle="lightbox"]', function(event) {
+  event.preventDefault();
+  $(this).ekkoLightbox();
 });
+
+$(".r-button").click(function(e) {
+    
+    let res = $(this).attr("value");
+    e.preventDefault();
+    setCookie("resp", res, 1);
+});
+
+function setCookie(cname, cvalue, hours) {
+   var d = new Date();
+   d.setTime(d.getTime() + (hours*60*60*1000));
+   var expires = "expires="+ d.toUTCString();
+   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

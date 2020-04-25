@@ -26,7 +26,6 @@ and open the template in the editor.
 	                            <div class="text-center">
 	                                <h5>¿Que esta pasando?</h5>
 	                            </div>
-	
 	                            <form th:action="@{/home}" th:object="${publication}" method="post" enctype="multipart/form-data" class="row">
 	                                <div class="col-12 text-center">
 	                                    <textarea th:field="*{publication}" placeholder="Publicacion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -36,18 +35,6 @@ and open the template in the editor.
 	                                <div class="col-9 mt-2">
 	                                	<div class="row">
 	                                	<div class="col-6">
-	                                			<input type="file" name="image[]" id="1" class="form-control">
-	                               			</div>
-	                                		<div class="col-6">
-	                                			<input type="file" name="image[]" id="2" class="form-control">
-	                                		</div>
-	                                		<div class="col-6">
-	                                			<input type="file" name="image[]" id="1" class="form-control">
-	                               			</div>
-	                                		<div class="col-6">
-	                                			<input type="file" name="image[]" id="2" class="form-control">
-	                                		</div>
-	                                		<div class="col-6">
 	                                			<input type="file" name="image[]" id="1" class="form-control">
 	                               			</div>
 	                                		<div class="col-6">
@@ -83,7 +70,11 @@ and open the template in the editor.
 												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
 											</a>
                                     	</div>
-                                    	
+                                    	<div class="row mt-2">
+                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
+                                    			Responder
+                                    		</button>
+                                    	</div>
                                     </div>
                                 </div>
                             </div>
@@ -93,6 +84,22 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+		<div id="myModal" class="modal fade" role="dialog">
+	  		<div class="modal-dialog">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+			        	<h4 class="modal-title">Respuesta</h4>
+			      	</div>
+			      	<div class="modal-body">
+			        	<p>Some text in the modal.</p>
+			      	</div>
+			      	<div class="modal-footer">
+			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      	</div>
+		    	</div>
+		  	</div>
+		</div>
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

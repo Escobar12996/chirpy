@@ -50,6 +50,8 @@ public class Publication implements Serializable{
     private String publication;
     
     private boolean view;
+    
+    private Publication publi;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfSend;
@@ -95,6 +97,12 @@ public class Publication implements Serializable{
     public void setView(boolean view) {
         this.view = view;
     }
-    
-        
+
+	public Publication getPubli() {
+		return publi;
+	}
+
+	public void setPubli(Publication publi) {
+		this.publi = publi;
+	}
 }
