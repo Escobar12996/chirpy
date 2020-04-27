@@ -172,7 +172,7 @@ public class ApyController {
         	publication.setPubli(publicationDao.findById(id));
             publication.setUser(userDao.findByUserName(principal.getName()));
             publicationService.formatedAndSave(publication, file);
-            return "true";
+            return "<span class='bg-primary'>Hello <b>Again</b></span>";
         }
     }
     

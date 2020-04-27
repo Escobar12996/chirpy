@@ -55,6 +55,7 @@ public class PublicationController {
         model.addAttribute("publications", publi);
         model.addAttribute("tendencias", hashtagDao.findUp());
         model.addAttribute("vidmaDao", vidmaDao);
+        model.addAttribute("publicationDao", publicationDao);
         return "home";
     }
     

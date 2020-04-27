@@ -62,9 +62,25 @@ and open the template in the editor.
                                             </div>
                                         </div>
                                         <p th:utext="${publi.publication}"></p>
-                                    </div>
-                                    <div class="col-2"></div>
-                                    <div class="col-10">
+                                        <div class="row" th:if="${publi.publi != null}">
+                                        	<div class="col cornsilk border p-3 m-3">
+	                                        	<p class="font-weight-bold">En respuesta a:</p>
+	                                        	
+	                                       		<div class="row">
+				                                    <div class="col-2">
+				                                    	<img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
+				                                	</div>
+			                                		<div class="col-10">
+				                                    	<div class="row">
+				                                        	<div class="col-12">
+				                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.dateOfSend}"></span></p>
+				                                        	</div>
+				                                    	</div>
+				                                    	<p th:utext="${publi.publi.publication}"></p>
+			                                    	</div>
+				                                </div>
+                                        	</div>
+                                        </div>
                                     	<div class="row">
                                     		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
 												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
@@ -74,6 +90,10 @@ and open the template in the editor.
                                     		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
                                     			Responder
                                     		</button>
+                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
+                                    			 Respuestas <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
+                                    		</button>
+                                    		
                                     	</div>
                                     </div>
                                 </div>
@@ -106,7 +126,7 @@ and open the template in the editor.
 	                        			<input type="file" name="image[]" id="2" class="form-control">
 	                        		</div>
 	                        	</div>
-	                            <span class="text-danger" id="errorview"></span>
+	                            <p id="errorview"></p>
 	                        </div>
 	                        
 	                        <div class="col-3 text-center">
