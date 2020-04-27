@@ -118,6 +118,7 @@ public class PublicationService {
         }
         
         publi.setPublication(publication);
+        System.out.println(publi.getPublication());
         publicationDao.save(publi);
         
         for(User u: userlist){
@@ -156,18 +157,21 @@ public class PublicationService {
             
         }
         
-        for(int i = 0; i < files.length; i++) {
-        	MultipartFile file = files[i];
-        	if (file != null && !file.isEmpty()) {
-        		
-        		try {
-        			Vidma v = new Vidma(file.getBytes());
-                    v.setPubli(publi);
-                    v.setUser(publi.getUser());
-                    vidmaDao.save(v);
-                } catch (IOException e) {}
-        		
-        	}
+        if (files != null) {
+        	for(int i = 0; i < files.length; i++) {
+            	MultipartFile file = files[i];
+            	if (file != null && !file.isEmpty()) {
+            		
+            		try {
+            			Vidma v = new Vidma(file.getBytes());
+                        v.setPubli(publi);
+                        v.setUser(publi.getUser());
+                        vidmaDao.save(v);
+                    } catch (IOException e) {}
+            		
+            	}
+            }
         }
+        
     }
 }

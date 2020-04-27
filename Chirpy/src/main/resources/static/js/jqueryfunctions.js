@@ -98,14 +98,25 @@ function setCookie(cname, cvalue, hours) {
 }
 
 
-
-
-
-
-
-
-
-
+$("#sendPublication").submit(function(event){
+	event.preventDefault();
+	var formData = new FormData(this);
+	
+	$.ajax({
+		url : "/home/response",
+		type: "POST",
+		data : formData,
+		processData: false,
+	    contentType: false,
+		beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(response){
+        	
+        	$("#errorview").html(response);
+        }});
+        return false;
+});
 
 
 

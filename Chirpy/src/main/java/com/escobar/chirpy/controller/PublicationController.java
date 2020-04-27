@@ -79,69 +79,29 @@ public class PublicationController {
             model.addAttribute("tendencias", hashtagDao.findUp());
             return "home";
         }else {
-        	for(int i = 0; i < file.length; i++) {
-            	MultipartFile fi = file[i];
-            	
-            	if(fi != null && !fi.isEmpty()) {
-            		if (!fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
-            			model.addAttribute("title", "Principal");
-                        List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
-                        List<Publication> publi = publicationDao.findByUsers(followsthisuser);
-                        model.addAttribute("errorimage", "Una imagen no es valida");
-                        model.addAttribute("publications", publi);
-                        model.addAttribute("tendencias", hashtagDao.findUp());
-                        return "home";
-                	}
-            	}
-            	
-            }
+        	
+        	if (file != null) {
+	        	for(int i = 0; i < file.length; i++) {
+	            	MultipartFile fi = file[i];
+	            	
+	            	if(fi != null && !fi.isEmpty()) {
+	            		if (!fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
+	            			model.addAttribute("title", "Principal");
+	                        List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
+	                        List<Publication> publi = publicationDao.findByUsers(followsthisuser);
+	                        model.addAttribute("errorimage", "Una imagen no es valida");
+	                        model.addAttribute("publications", publi);
+	                        model.addAttribute("tendencias", hashtagDao.findUp());
+	                        return "home";
+	                	}
+	            	}
+	            }
+        	}
         	
             publication.setUser(userDao.findByUserName(principal.getName()));
             publicationService.formatedAndSave(publication, file);
             return "redirect:/home";
         }
     }
-    
-    @RequestMapping(value={"/home/response"}, method = RequestMethod.POST)
-    public String principalzone(@Valid Publication publication, BindingResult result, Model model, Principal principal, @RequestParam(value = "image[]", required = false) MultipartFile file[], @CookieValue(value = "resp") String cook) {
-model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        
-        if (result.hasErrors()){
-            model.addAttribute("title", "Principal");
-            List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
-            List<Publication> publi = publicationDao.findByUsers(followsthisuser);
-            model.addAttribute("publications", publi);
-            model.addAttribute("tendencias", hashtagDao.findUp());
-            return "home";
-        } else if (publication.getPublication().length() > maxletter) {
-            model.addAttribute("title", "Principal");
-            List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
-            List<Publication> publi = publicationDao.findByUsers(followsthisuser);
-            model.addAttribute("errorpublication", "El limite maximo de palabras en la publicacion es de " + maxletter);
-            model.addAttribute("publications", publi);
-            model.addAttribute("tendencias", hashtagDao.findUp());
-            return "home";
-        }else {
-        	for(int i = 0; i < file.length; i++) {
-            	MultipartFile fi = file[i];
-            	
-            	if(fi != null && !fi.isEmpty()) {
-            		if (!fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
-            			model.addAttribute("title", "Principal");
-                        List<User> followsthisuser = followDao.getUserFollow(userDao.findByUserName(principal.getName()));
-                        List<Publication> publi = publicationDao.findByUsers(followsthisuser);
-                        model.addAttribute("errorimage", "Una imagen no es valida");
-                        model.addAttribute("publications", publi);
-                        model.addAttribute("tendencias", hashtagDao.findUp());
-                        return "home";
-                	}
-            	}
-            	
-            }
-        	
-            publication.setUser(userDao.findByUserName(principal.getName()));
-            publicationService.formatedAndSave(publication, file);
-            return "redirect:/home";
-        }
-    }
+
 }

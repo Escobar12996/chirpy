@@ -51,6 +51,8 @@ public class Publication implements Serializable{
     
     private boolean view;
     
+    @ManyToOne
+    @JoinColumn(name = "publi_id")
     private Publication publi;
 
     @JsonFormat(pattern="yyyy-MM-dd")

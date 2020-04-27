@@ -28,6 +28,19 @@ public class PublicationDao {
     }
 
     @Transactional(readOnly=true)
+    public Publication findById(Long id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id = :id", Publication.class); 
+        query.setParameter("id", id);
+        
+        try {
+        	return query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+        
+    }
+    
+    @Transactional(readOnly=true)
     public List<Publication> findByUser(User user) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and view = true ORDER BY dateOfSend DESC", Publication.class); 
         query.setParameter("user", user);
