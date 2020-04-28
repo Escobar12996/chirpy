@@ -104,3 +104,8 @@ background-repeat: no-repeat;
 .pequeno {
 	font-size: 10px;
 }
+
+.publication:hover {
+  background-color: #F0F8FF !important;
+}
+

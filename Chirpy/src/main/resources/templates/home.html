@@ -50,7 +50,8 @@ and open the template in the editor.
 	                            </form>
                             </div>
 
-                            <div class="p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}">
+                            <div class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+                                
                                 <div class="row">
                                     <div class="col-2">
                                         <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
@@ -98,6 +99,7 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                         <div th:replace="layout/layout :: tendence" ></div>
                     </div> 
