@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,6 +59,24 @@ public class PublicationController {
         model.addAttribute("publicationDao", publicationDao);
         return "home";
     }
+    
+    
+    
+    @RequestMapping(value={"/viewpublication/{id}"}, method = RequestMethod.GET)
+    public String viewpublication(Model model, Principal principal, @PathVariable Long id) {
+        model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        model.addAttribute("title", "Ver Publicacion");
+        model.addAttribute("publicationview", publicationDao.findById(id));
+        model.addAttribute("tendencias", hashtagDao.findUp());
+        model.addAttribute("vidmaDao", vidmaDao);
+        List<Publication> publi = publicationDao.findResponse(publicationDao.findById(id));
+        model.addAttribute("publications", publi);
+        model.addAttribute("publicationDao", publicationDao);
+        model.addAttribute("publication", new Publication());
+        return "viewpublication";
+    }
+    
+    
     
     @RequestMapping(value={"/home"}, method = RequestMethod.POST)
     public String principalzonesendpublication(@Valid Publication publication, BindingResult result, Model model, Principal principal, @RequestParam(value = "image[]", required = false) MultipartFile file[]) {
