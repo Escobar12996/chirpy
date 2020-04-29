@@ -37,19 +37,10 @@ background-repeat: no-repeat;
     Color: #19AFFF;
 }
 
-.page-footer{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
 .minh-100 {
   height: 100vh;
 }
 
-.page-footer {
-    z-index: 999;
-}
 
 #sidebar-wrapper {
   min-height: 100vh;
@@ -93,7 +84,7 @@ background-repeat: no-repeat;
 }
 
 .image-chirpy{
-    width: 50px;
+    width: 100px;
 }
 
 .user-image {

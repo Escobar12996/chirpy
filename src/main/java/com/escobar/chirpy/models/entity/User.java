@@ -33,22 +33,21 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 3, max = 30, message="Debe tener mas de 3 letras y menor de 30")
-    @NotEmpty(message="Debe indicar el Nombre de Usuario el cual usará para loguearse y por el cual se le buscara en la aplicacion")
+    @Size(min = 3, max = 30)
+    @NotEmpty
     @Column(unique = true)
     private String username;
 
-    @Size(min = 3, message="Debe tener mas de 3 letras")
-    @NotEmpty(message="Debe indicar el nombre que se mostrara como usuario")
+    @Size(min = 3)
+    @NotEmpty
     private String name;
 
-
-    @NotEmpty(message="Debe indicar su correo")
+    @NotEmpty
     @Column(unique = true)
     private String email;
 
-    @Size(min = 7, message="Debe tener entre 8 o mas letras")
-    @NotEmpty(message="Debe indicar una contraseña")
+    @Size(min = 7)
+    @NotEmpty
     private String password;
 
     private Boolean enabled;
@@ -61,7 +60,7 @@ public class User implements Serializable {
     @Lob
     private byte[] imagesu;
     
-    @Size(max = 1000, message="Maximo 1000 caracteres")
+    @Size(max = 1000)
     private String description;
     
     private int quotes;

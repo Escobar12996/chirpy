@@ -6,45 +6,51 @@
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <title th:text="'Bitbird - ' + ${title}"></title>
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
 <link rel="stylesheet" th:href="@{/css/mycss.css}" />
 <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
 <link rel="stylesheet" th:href="@{/css/ekko-lightbox.css}" />
+
 
 </head>
 <body>
     <div class="d-flex" id="wrapper">
 
-        <div class="border-right bg-primary" id="sidebar-wrapper" th:fragment="sidebar">
-            <div class="bg-primary text-center"><img th:src="@{/image/Chirpy.png}" class="rounded-circle image-chirpy m-0"></div>
+        <div class="border-right bg-light" id="sidebar-wrapper" th:fragment="sidebar"><button type="button" id="sidebarCollapse" class="btn btn-primary">
+	          <i class="fa fa-bars"></i>
+	          <span class="sr-only">Toggle Menu</span>
+	        </button>
+            <div class="bg-light text-center"><img th:src="@{/image/Chirpy.png}" class="rounded-circle image-chirpy m-0"></div>
             <div class="list-group list-group-flush">
-                <a th:href="@{/home}" class="list-group-item list-group-item-action bg-primary text-white">Principal</a>
-                <a class="list-group-item list-group-item-action bg-primary text-white" th:href="@{/explorer}">Explorar</a>
-                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
+                <a th:href="@{/home}" class="list-group-item list-group-item-action bg-light">Principal</a>
+                <a class="list-group-item list-group-item-action bg-light" th:href="@{/explorer}">Explorar</a>
+                <a class="list-group-item list-group-item-action bg-light" sec:authorize="!isAuthenticated()" th:href="@{/login}">Iniciar Sesion</a>
 
-                <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/quotes'}">Menciones <span th:text="${user.quotes}"></span></a>
+                <a class="list-group-item list-group-item-action bg-light" sec:authorize="isAuthenticated()" th:href="${'/quotes'}">Menciones <span th:text="${user.quotes}"></span></a>
 
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" sec:authorize="isAuthenticated()" class="dropdown-toggle list-group-item list-group-item-action bg-primary text-white">Mi Perfil</a>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" sec:authorize="isAuthenticated()" class="dropdown-toggle list-group-item list-group-item-action bg-light">Mi Perfil</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}">Ver Perfil</a>
+                        <a class="list-group-item list-group-item-action bg-light" sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}">Ver Perfil</a>
                     </li>
                     <li>
-                        <a class="list-group-item list-group-item-action bg-primary text-white" sec:authorize="isAuthenticated()" th:href="@{/editperfil}">Editar Perfil</a>
+                        <a class="list-group-item list-group-item-action bg-light" sec:authorize="isAuthenticated()" th:href="@{/editperfil}">Editar Perfil</a>
                     </li>
                     <li>
                         <form sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
-                            <button type="submit" class="btn-link list-group-item list-group-item-action bg-primary text-white">Cerrar Sesion</button>
+                            <button type="submit" class="btn-link list-group-item list-group-item-action bg-light">Cerrar Sesion</button>
                         </form>
                     </li>
 
                 </ul>
+                <p class="">© 2020 Copyright: Antonio Escobar Rueda</p>
             </div>
         </div>
 
         <div id="page-content-wrapper">
 
-            <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-primary" th:fragment="navbar">
+            <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-light" th:fragment="navbar">
                 <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
             </nav>
 
@@ -95,21 +101,21 @@
             </div>
         </div>
     </div>
-    <footer th:fragment="footer" class="dark page-footer text-center pt-2">
-    <p class="text-white">© 2020 Copyright: Antonio Escobar Rueda</p>
-
-		<script th:src="@{/js/jquery.js}"></script>
-		<script th:src="@{/js/jquery-ui.min.js}"></script>
-        
-        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
-        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
-        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
-        
-        
-        <script th:src="@{/js/popper.min.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
-        <script th:src="@{/js/jqueryfunctions.js}"></script>
-    </footer>
-    </body>
+	    <footer th:fragment="footer" class="dark page-footer text-center pt-2">
+	    
+	
+			<script th:src="@{/js/jquery.js}"></script>
+			<script th:src="@{/js/jquery-ui.min.js}"></script>
+	        
+	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
+	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
+	        
+	        
+	        <script th:src="@{/js/popper.min.js}"></script>
+	        <script th:src="@{/js/bootstrap.min.js}"></script>
+	        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
+	        <script th:src="@{/js/jqueryfunctions.js}"></script>
+	    </footer>
+	</body>
 </html>
