@@ -19,6 +19,8 @@ import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
+import com.escobar.chirpy.models.services.JpaUserDetailsService;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -76,6 +78,9 @@ public class AccountController {
     @Autowired
     private VidmaDao vidmaDao;
     
+    @Autowired
+    private JpaUserDetailsService jpaUserDetailsService;
+    
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
             return new BCryptPasswordEncoder();
@@ -130,6 +135,7 @@ public class AccountController {
                 return "register";
         }else {
             PasswordEncoder encode = paswordncoder();
+            String pass = user.getPassword();
             user.setPassword(encode.encode(user.getPassword()));
             user.setEnabled(true);
             user.setNotLocker(true);
@@ -139,7 +145,10 @@ public class AccountController {
             au.setUser(user);
             au.setAuthority(authorityDao.findByName("user"));
             userAuthorityDao.save(au);
-            return "redirect:/"; 
+            
+            jpaUserDetailsService.autoLogin(user.getUsername(), pass);
+            
+            return "redirect:/login"; 
         }
     }
     
@@ -228,7 +237,7 @@ public class AccountController {
         
         //reenvio si se a cambiado el nombre, o simplemente muestro el template
         if (chna){
-            return "redirect:/userdetails";
+            return "redirect:/login";
         } else {
             model.addAttribute("user", userc);
             return "useredit";

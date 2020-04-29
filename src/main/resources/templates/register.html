@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -7,66 +7,73 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="layout/layout :: head"></head>
+	<head th:replace="layout/layout :: head"></head>
 
-<body>
-	<div class="container mt-5 pt-5">
-		<div class="row justify-content-center">
-			<div class="col-6">
-				<div class="card mt-5">
-					<div class="card-header">Registrar Cuenta</div>
-					<div class="card-body">
-					<div  th:replace="layout/layout :: alerts">
-					</div>
-						<form class="form-signin" th:action="@{/register}"
-							th:object="${user}" method="post">
-                                                    <p>
-                                                            <label for="username" class="sr-only">Usuario</label> <input
-                                                                    type="text" id="username" th:field="*{username}"
-                                                                    class="form-control" placeholder="Usuario" required autofocus
-                                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                                    class="text-danger" th:if="${#fields.hasErrors('username')}"
-                                                                    th:errors="*{username}"></span>
-                                                    </p>
-                                                    <p>
-                                                            <label for="password" class="sr-only">Contraseña</label> <input
-                                                                    type="password" id="password" th:field="*{password}"
-                                                                    class="form-control" placeholder="Contraseña" required
-                                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                                    class="text-danger" th:if="${#fields.hasErrors('password')}"
-                                                                    th:errors="*{password}"></span>
-                                                    </p>
+	    <body class="bg-gradient-chirpy">
+        <div class="container">
+            
 
-                                                    <p>
-                                                            <label for="name" class="sr-only">Nombre</label> <input type="text" id="namealasname"
-                                                                    th:field="*{name}" class="form-control"
-                                                                    placeholder="Nombre y Apellidos" required autofocus
-                                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                                    class="text-danger"
-                                                                    th:if="${#fields.hasErrors('name')}"
-                                                                    th:errors="*{name}"></span>
-                                                    </p>
-
-                                                    <p>
-                                                            <label for="namealasname" class="sr-only">Email </label> <input
-                                                                    type="email" id="namealasname" th:field="*{email}"
-                                                                    class="form-control" placeholder="Correo" required autofocus
-                                                                    th:errorclass="'form-control alert-danger'" /> <span
-                                                                    class="text-danger" th:if="${#fields.hasErrors('email')}"
-                                                                    th:errors="*{email}"></span>
-                                                    </p>
-
-                                                    <div class="text-center">
-                                                            <button class="btn btn-outline-primary" type="submit">Crear
-                                                                    Cuenta</button>
-                                                    </div>
-						</form>
+            <div class="row justify-content-center align-items-center minh-100">
+                <div class="col-12">
+                    <div th:replace="layout/layout :: alerts"></div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+							<div class="card">
+								<div class="card-header">Registrar Cuenta</div>
+								<div class="card-body">
+								<div  th:replace="layout/layout :: alerts">
+								</div>
+									<form class="form-signin" th:action="@{/register}"
+										th:object="${user}" method="post">
+										
+				                        <p>
+				                            <label for="username">Usuario</label> <input
+				                                    type="text" id="username" th:field="*{username}"
+				                                    class="form-control" placeholder="Usuario" required autofocus
+				                                    th:errorclass="'form-control alert-danger'" /> <span
+				                                    class="text-danger" th:if="${#fields.hasErrors('username')}"
+				                                    th:errors="*{username}"></span>
+				                        </p>
+				                        <p>
+			                                <label for="password">Contraseña</label> <input
+			                                        type="password" id="password" th:field="*{password}"
+			                                        class="form-control" placeholder="Contraseña" required
+			                                        th:errorclass="'form-control alert-danger'" /> <span
+			                                        class="text-danger" th:if="${#fields.hasErrors('password')}"
+			                                        th:errors="*{password}"></span>
+				                        </p>
+				
+				                        <p>
+			                                <label for="name">Nombre</label> <input type="text" id="namealasname"
+			                                        th:field="*{name}" class="form-control"
+			                                        placeholder="Nombre y Apellidos" required autofocus
+			                                        th:errorclass="'form-control alert-danger'" /> <span
+			                                        class="text-danger"
+			                                        th:if="${#fields.hasErrors('name')}"
+			                                        th:errors="*{name}"></span>
+				                        </p>
+				
+				                        <p>
+			                                <label for="namealasname">Email </label> <input
+			                                        type="email" id="namealasname" th:field="*{email}"
+			                                        class="form-control" placeholder="Correo" required autofocus
+			                                        th:errorclass="'form-control alert-danger'" /> <span
+			                                        class="text-danger" th:if="${#fields.hasErrors('email')}"
+			                                        th:errors="*{email}"></span>
+				                        </p>
+				
+				                        <div class="text-center">
+			                                <button class="btn btn-outline-primary" type="submit">Crear
+			                                        Cuenta</button>
+				                        </div>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
-	</div>
-	<div th:replace="layout/layout :: footer"></div>
-</body>
+		<div th:replace="layout/layout :: footer"></div>
+	</body>
 </html>
