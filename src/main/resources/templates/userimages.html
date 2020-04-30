@@ -7,18 +7,14 @@ and open the template in the editor.
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
-    <body class="">
-        
-        <div class="d-flex" id="wrapper">
+<body>
+	
+		<div class="wrapper d-flex align-items-stretch">
+		<nav th:replace="layout/layout :: navbar"></nav>
 
-            <div th:replace="layout/layout :: sidebar"></div>
-
-            <div id="page-content-wrapper">
-
-                <nav th:replace="layout/layout :: navbar"></nav>
-
-                <div class="container-fluid">
-                    <div class="row mt-4">
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+                    <div class="row mt-5">
                         
                         <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
                             
