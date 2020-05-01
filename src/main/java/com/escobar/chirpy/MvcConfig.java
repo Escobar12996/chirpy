@@ -1,7 +1,6 @@
 package com.escobar.chirpy;
 
 import java.util.Locale;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -19,6 +18,7 @@ public class MvcConfig implements WebMvcConfigurer{
 		return localeResolver;
 	}
 	
+	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
 		localeInterceptor.setParamName("lang");
@@ -30,6 +30,4 @@ public class MvcConfig implements WebMvcConfigurer{
 		// TODO Auto-generated method stub
 		registry.addInterceptor(localeChangeInterceptor());
 	}
-	
-	
 }

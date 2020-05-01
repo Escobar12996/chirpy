@@ -47,7 +47,8 @@ public class JpaUserDetailsService implements UserDetailsService{
                     authorities.add(new SimpleGrantedAuthority(userauth.getAuthority().getAuthority()));
                 }
                 
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, user.getNotLocker(), true, user.getEnabled(), authorities);
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), 
+				user.getPassword(), true, user.getNotLocker(), true, user.getEnabled(), authorities);
                 
 	}
 	

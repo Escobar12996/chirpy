@@ -24,80 +24,32 @@ and open the template in the editor.
 	                            </div>
 	                            <form th:action="@{/home}" th:object="${publication}" method="post" enctype="multipart/form-data" class="row">
 	                                <div class="col-12 text-center">
-	                                    <textarea th:field="*{publication}" placeholder="Publicacion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+	                                    <textarea th:field="*{publication}" placeholder="Publicacion" class="border" id="exampleFormControlTextarea1" rows="3"></textarea>
 	                                    <span class="text-danger" th:if="${#fields.hasErrors('publication')}" th:errors="*{publication}"></span>
 	                                    <span class="text-danger" th:if="${errorpublication != null}" th:text="${errorpublication}"></span>
 	                                </div>
 	                                <div class="col-9 mt-2">
 	                                	<div class="row">
 	                                	<div class="col-6">
-	                                			<input type="file" name="image[]" id="1" class="form-control">
+	                                			<input type="file" name="image[]" id="1" class="form-control border">
 	                               			</div>
 	                                		<div class="col-6">
-	                                			<input type="file" name="image[]" id="2" class="form-control">
+	                                			<input type="file" name="image[]" id="2" class="form-control border">
 	                                		</div>
 	                                	</div>
 	                                    <span class="text-danger" th:if="${errorimage != null}" th:text="${errorimage}"></span>
 	                                </div>
 	                                
 	                                <div class="col-3 text-center">
-	                                    <button class="btn mt-2" type="submit">Publicar</button>
+	                                    <button class="btn btn-secondary mt-2" type="submit">Publicar</button>
 	                                </div>
 	                            </form>
                             </div>
 
-                            <div class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
-                                
-                                <div class="row">
-                                    <div class="col-2">
-                                        <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                            </div>
-                                        </div>
-                                        <p th:utext="${publi.publication}"></p>
-                                        <div class="row" th:if="${publi.publi != null}">
-                                        	<div class="col cornsilk border p-3 m-3">
-	                                        	<p class="font-weight-bold">En respuesta a:</p>
-	                                        	
-	                                       		<div class="row">
-				                                    <div class="col-2">
-				                                    	<img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
-				                                	</div>
-			                                		<div class="col-10">
-				                                    	<div class="row">
-				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.dateOfSend}"></span></p>
-				                                        	</div>
-				                                    	</div>
-				                                    	<p th:utext="${publi.publi.publication}"></p>
-			                                    	</div>
-				                                </div>
-                                        	</div>
-                                        </div>
-                                    	<div class="row">
-                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
-												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
-											</a>
-                                    	</div>
-                                    	<div class="row mt-2">
-                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
-                                    			Responder
-                                    		</button>
-                                    		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
-                                    			 Respuestas <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
-                                    		</a>
-                                    		
-                                    	</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                            <div th:replace="layout/layout :: coments-1"></div>
+
                         </div>
-                        <div th:replace="layout/layout :: tendence" ></div>
+                        <div th:replace="layout/layout :: tendence-1"></div>
                     </div> 
                 </div>
             </div>

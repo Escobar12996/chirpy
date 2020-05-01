@@ -201,6 +201,7 @@ button,
 select,
 optgroup,
 textarea {
+
   margin: 0;
   font-family: inherit;
   font-size: inherit;
@@ -249,8 +250,11 @@ input[type="month"] {
   -webkit-appearance: listbox; }
 
 textarea {
-  overflow: auto;
-  resize: vertical; }
+	position:relative;
+	overflow: auto;
+	width: 100%;
+	padding: 10px;
+	resize: none;}
 
 fieldset {
   min-width: 0;
@@ -7992,6 +7996,11 @@ button.bg-dark:focus {
 
 .text-primary {
   color: #007bff !important; }
+
+.text-blue {
+  color: #007bff !important; }
+
+
 
 a.text-primary:hover, a.text-primary:focus {
   color: #0056b3 !important; }
