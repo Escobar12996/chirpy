@@ -1,7 +1,6 @@
 package com.escobar.chirpy.models.entity;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,11 +10,13 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import com.escobar.chirpy.models.entity.Publication;
+import com.escobar.chirpy.models.entity.User;
 
 @Entity
-@Table(name = "Vidmas")
-@NamedQuery(name="Vidma.findAll", query="SELECT v FROM Vidma v")
-public class Vidma implements Serializable{
+@Table(name = "Images")
+@NamedQuery(name="Image.findAll", query="SELECT i FROM Image i")
+public class Image implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,10 +25,6 @@ public class Vidma implements Serializable{
     private Long id;
 
     private boolean block;
-    
-    private boolean image;
-    
-    private String videourl;
     
 	@Lob
     private byte[] images;
@@ -39,21 +36,15 @@ public class Vidma implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
-
-	public Vidma() {
+	
+	public Image() {
 		super();
 	}
 	
-	public Vidma(byte[] image) {
-		this.image = true;
+	public Image(byte[] image) {
 		this.images = image;
 	}
-	
-	public Vidma(String video) {
-		this.image = false;
-		this.videourl = video;
-	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -68,22 +59,6 @@ public class Vidma implements Serializable{
 
 	public void setBlock(boolean block) {
 		this.block = block;
-	}
-
-	public boolean isImage() {
-		return image;
-	}
-
-	public void setImage(boolean image) {
-		this.image = image;
-	}
-
-	public String getVideourl() {
-		return videourl;
-	}
-
-	public void setVideourl(String videourl) {
-		this.videourl = videourl;
 	}
 
 	public byte[] getImages() {
@@ -109,7 +84,6 @@ public class Vidma implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 	
 	
 }

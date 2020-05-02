@@ -5,10 +5,10 @@
  */
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.UserDao;
-import com.escobar.chirpy.models.dao.VidmaDao;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.User;
-import com.escobar.chirpy.models.entity.Vidma;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -30,7 +30,7 @@ public class ImageController {
     private UserDao userDao;
     
     @Autowired
-    private VidmaDao vidmadao;
+    private ImageDao imageDao;
     
     @RequestMapping(value={"/image/{tipo}/{id}"}, method = RequestMethod.GET)
     public void showImage(@PathVariable String tipo, @PathVariable Long id, HttpServletResponse response) 
@@ -59,7 +59,7 @@ public class ImageController {
 		    }
         } else if (tipo.equals("image")) {
         	
-        	Vidma v = vidmadao.findById(id);
+        	Image v = imageDao.findById(id);
         	
         	if (v != null && v.getImages() != null) {
 		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");

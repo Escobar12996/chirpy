@@ -2,10 +2,11 @@ package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
+import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
-import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.services.PublicationService;
 import java.security.Principal;
@@ -32,7 +33,7 @@ public class PublicationController {
     private UserDao userDao;
     
     @Autowired
-    private VidmaDao vidmaDao;
+    private ImageDao imageDao;
     
     @Autowired
     private PublicationDao publicationDao;
@@ -55,7 +56,7 @@ public class PublicationController {
         List<Publication> publi = publicationDao.findByUsers(followsthisuser);
         model.addAttribute("publications", publi);
         model.addAttribute("tendencias", hashtagDao.findUp());
-        model.addAttribute("vidmaDao", vidmaDao);
+        model.addAttribute("imageDao", imageDao);
         model.addAttribute("publicationDao", publicationDao);
         return "home";
     }
@@ -68,7 +69,7 @@ public class PublicationController {
         model.addAttribute("title", "Ver Publicacion");
         model.addAttribute("publicationview", publicationDao.findById(id));
         model.addAttribute("tendencias", hashtagDao.findUp());
-        model.addAttribute("vidmaDao", vidmaDao);
+        model.addAttribute("imageDao", imageDao);
         List<Publication> publi = publicationDao.findResponse(publicationDao.findById(id));
         model.addAttribute("publications", publi);
         model.addAttribute("publicationDao", publicationDao);

@@ -7,11 +7,11 @@ package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.AuthorityDao;
 import com.escobar.chirpy.models.dao.FollowDao;
+import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
-import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
@@ -76,7 +76,7 @@ public class AccountController {
     private UserAuthorityDao userAuthorityDao;
     
     @Autowired
-    private VidmaDao vidmaDao;
+    private ImageDao imageDao;
     
     @Autowired
     private JpaUserDetailsService jpaUserDetailsService;
@@ -170,7 +170,7 @@ public class AccountController {
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
         model.addAttribute("userc", userDao.findById(id));
-        model.addAttribute("images", vidmaDao.findByUser(id));
+        model.addAttribute("images", imageDao.findByUser(userDao.findById(id)));
         return "userimages";
     }
 

@@ -9,7 +9,6 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.escobar.chirpy.models.entity.Publication;
-import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.entity.User;
 
 @Repository

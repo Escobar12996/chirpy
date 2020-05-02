@@ -7,10 +7,10 @@ package com.escobar.chirpy.models.services;
 
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.HashtagPublicationDao;
+import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
-import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,9 +21,9 @@ import org.unbescape.html.HtmlEscape;
 
 import com.escobar.chirpy.models.entity.Hashtag;
 import com.escobar.chirpy.models.entity.HashtagPublication;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
-import com.escobar.chirpy.models.entity.Vidma;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class PublicationService {
     private HashtagDao hashtagDao;
     
     @Autowired
-    private VidmaDao vidmaDao;
+    private ImageDao imageDao;
     
     @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
@@ -163,10 +163,10 @@ public class PublicationService {
             	if (file != null && !file.isEmpty()) {
             		
             		try {
-            			Vidma v = new Vidma(file.getBytes());
+            			Image v = new Image(file.getBytes());
                         v.setPubli(publi);
                         v.setUser(publi.getUser());
-                        vidmaDao.save(v);
+                        imageDao.save(v);
                     } catch (IOException e) {}
             		
             	}

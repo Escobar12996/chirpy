@@ -7,9 +7,9 @@ package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
+import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
-import com.escobar.chirpy.models.dao.VidmaDao;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
@@ -47,7 +47,7 @@ public class ApyController {
     private UserDao userDao;
     
     @Autowired
-    private VidmaDao vidmaDao;
+    private ImageDao imageDao;
     
     @Autowired
     private PublicationDao publicationDao;
