@@ -15,38 +15,41 @@ and open the template in the editor.
 
             <div class="row justify-content-center align-items-center minh-100">
                 <div class="col-12">
-                    <div th:replace="layout/layout :: alerts"></div>
                     <div class="row justify-content-center">
                         <div class="col-md-8">
 							<div class="card">
-								<div class="card-header" th:text="#{text.register.formTittle}"></div>
+								<div class="card-header">	
+									<span th:text="#{text.register.formTittle}"></span>		                        	
+									
+								</div>
 								<div class="card-body">
 								<div  th:replace="layout/layout :: alerts">
 								</div>
-									<form class="form-signin" th:action="@{/register}"
+									<a class="" th:href="@{/login}" th:text="#{text.register.login}"></a>
+									<form class="form-signin mt-2" th:action="@{/register}"
 										th:object="${user}" method="post">
 										
 				                        <p>
-				                            <label for="username">Usuario</label> <input
+				                            <label for="username" th:text="#{text.register.user}"></label> <input
 				                                    type="text" id="username" th:field="*{username}"
-				                                    class="form-control" placeholder="Usuario" required autofocus
+				                                    class="form-control border" th:placeholder="#{text.register.user}" required autofocus
 				                                    th:errorclass="'form-control alert-danger'" /> <span
 				                                    class="text-danger" th:if="${#fields.hasErrors('username')}"
 				                                    th:errors="*{username}"></span>
 				                        </p>
 				                        <p>
-			                                <label for="password">Contraseña</label> <input
+			                                <label for="password" th:text="#{text.register.password}"></label> <input
 			                                        type="password" id="password" th:field="*{password}"
-			                                        class="form-control" placeholder="Contraseña" required
+			                                        class="form-control border" th:placeholder="#{text.register.password}" required
 			                                        th:errorclass="'form-control alert-danger'" /> <span
 			                                        class="text-danger" th:if="${#fields.hasErrors('password')}"
 			                                        th:errors="*{password}"></span>
 				                        </p>
 				
 				                        <p>
-			                                <label for="name">Nombre</label> <input type="text" id="namealasname"
-			                                        th:field="*{name}" class="form-control"
-			                                        placeholder="Nombre y Apellidos" required autofocus
+			                                <label for="name" th:text="#{text.register.name}"></label> <input type="text" id="namealasname"
+			                                        th:field="*{name}" class="form-control border"
+			                                        th:placeholder="#{text.register.name}" required autofocus
 			                                        th:errorclass="'form-control alert-danger'" /> <span
 			                                        class="text-danger"
 			                                        th:if="${#fields.hasErrors('name')}"
@@ -54,17 +57,16 @@ and open the template in the editor.
 				                        </p>
 				
 				                        <p>
-			                                <label for="namealasname">Email </label> <input
+			                                <label for="namealasname" th:text="#{text.register.email}"></label> <input
 			                                        type="email" id="namealasname" th:field="*{email}"
-			                                        class="form-control" placeholder="Correo" required autofocus
+			                                        class="form-control border" th:placeholder="#{text.register.email}" required autofocus
 			                                        th:errorclass="'form-control alert-danger'" /> <span
 			                                        class="text-danger" th:if="${#fields.hasErrors('email')}"
 			                                        th:errors="*{email}"></span>
 				                        </p>
 				
 				                        <div class="text-center">
-			                                <button class="btn btn-outline-primary" type="submit">Crear
-			                                        Cuenta</button>
+			                                <button class="btn btn-outline-primary" type="submit" th:text="#{text.register.createacount}"></button>
 				                        </div>
 									</form>
 								</div>

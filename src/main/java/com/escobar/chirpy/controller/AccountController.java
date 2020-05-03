@@ -12,7 +12,6 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
-import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
@@ -20,11 +19,9 @@ import com.escobar.chirpy.models.entity.UserAuthority;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 import com.escobar.chirpy.models.services.JpaUserDetailsService;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,12 +40,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -81,72 +78,105 @@ public class AccountController {
     @Autowired
     private JpaUserDetailsService jpaUserDetailsService;
     
+    @Autowired
+    private MessageSource messages;
+    
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
             return new BCryptPasswordEncoder();
     }
     
-     @RequestMapping(value={"/login"}, method = RequestMethod.GET)
-    public String loginPanel(@RequestParam(value="error", required = false) String error,
-            Model model, Principal principal, @RequestParam(value = "logout", required = false) String logout) {
-        
-        if (principal != null){
-            return "redirect:/home";
-        }
-        
-        if (error != null){
-            model.addAttribute("error", error);
-            System.out.println(error);
-        }
-        
-        if(logout != null) {
-            model.addAttribute("success", "Sesion Cerrada");
-        }
-        
-        model.addAttribute("title", "Iniciar Sesion");
-        return "login";
-    }
+    //TODO Login de la aplicacion
     
-    @RequestMapping(value= {"/register"}, method = RequestMethod.GET)
-    public String register(Model model) {
-
-            model.addAttribute("user", new User());
-            model.addAttribute("title", "Registrar Cuenta");
-            return "register";
-    }
+	@RequestMapping(value={"/login"}, method = RequestMethod.GET)
+	public String loginPanel(Model model, Principal principal, @RequestParam(value = "logout", required = false) String logout) {
+	
+		//Si ya existe un usuario logeado, reenvia a home
+		if (principal != null){
+			return "redirect:/home";
+		}
+		
+		//si has cerrado sesion añade sesion cerrada
+		if(logout != null) {
+			model.addAttribute("success", messages.getMessage("text.login.sesclo", null, LocaleContextHolder.getLocale()));
+		}
+		
+		//titulo de la pagina
+		model.addAttribute("title", messages.getMessage("text.login.tittle", null, LocaleContextHolder.getLocale()));
+		return "login";
+	}
+    
+     
+	//TODO Metodo get de la ventana de registro
+	
+	@RequestMapping(value= {"/register"}, method = RequestMethod.GET)
+		public String register(Model model) {
+		
+		//Crea el usuario y lo añade como atributo al modelo y ademas el titulo de la pagina
+		model.addAttribute("user", new User());
+		model.addAttribute("title", messages.getMessage("text.register.tittle", null, LocaleContextHolder.getLocale()));
+		return "register";
+	}
+	
+	//TODO Metodo Post de la ventana de registro
 	
     @RequestMapping(value={"/register"}, method = RequestMethod.POST)
     public String chech(@Valid User user, BindingResult result, Model model) {
 
+    	//titulo de la ventana
+    	model.addAttribute("title", messages.getMessage("text.register.tittle", null, LocaleContextHolder.getLocale()));
+    	
+    	//si hay un error al validar
         if (result.hasErrors()) {
-                model.addAttribute("title", "Registrar Cuenta");
-                return "register";
+	        return "register";
+	        
+        //si la cuenta ya existe
         } else if (userDao.findByUserName(user.getUsername()) != null){
-                model.addAttribute("title", "Registrar Cuenta");
-                model.addAttribute("error", "La cuenta ya existe");
-                return "register";
+	        model.addAttribute("error", messages.getMessage("text.register.error.accountexists", null, LocaleContextHolder.getLocale()));
+	        return "register";
+                
+        //si el correo ya existe
         } else if (userDao.findEmail(user.getEmail()) != null) {
-                model.addAttribute("title", "Registrar Cuenta");
-                model.addAttribute("error", "El correo ya existe");
-                return "register";
+            model.addAttribute("error", messages.getMessage("text.register.error.emailexists", null, LocaleContextHolder.getLocale()));
+            return "register";
+                
+        //si el correo no es valido
         } else if (!esEmailCorrecto(user.getEmail())) {
-                model.addAttribute("title", "Registrar Cuenta");
-                model.addAttribute("error", "El correo no es valido");
-                return "register";
+            model.addAttribute("error", messages.getMessage("text.register.error.emailinvalid", null, LocaleContextHolder.getLocale()));
+            return "register";
+         
+        //si tiene mas de x caracteres la contraseña
+        } else if (user.getPassword().length() > User.passwordmax) {
+        	model.addAttribute("error", messages.getMessage("text.register.error.passwordmaxone", null, LocaleContextHolder.getLocale()) + " " + User.passwordmax + " " + messages.getMessage("text.register.error.passwordmaxtwo", null, LocaleContextHolder.getLocale()));
+        	return "register";
+        	
+        //si todo es valido
         }else {
+        	
+        	//extraemos la contraseña para el autologin
+        	String pass = user.getPassword();
+        	
+        	//codificamos la contraseña
             PasswordEncoder encode = paswordncoder();
-            String pass = user.getPassword();
             user.setPassword(encode.encode(user.getPassword()));
+            
+            //activamos la cuenta y la guardamos
             user.setEnabled(true);
             user.setNotLocker(true);
             userDao.save(user);
+            
+            //hacemos que se siga a si mismo
             followDao.save(new Follow(user, user));
+            
+            //le añadimos su rol
             UserAuthority au = new UserAuthority();
             au.setUser(user);
             au.setAuthority(authorityDao.findByName("user"));
             userAuthorityDao.save(au);
             
+            //hacemos autologin
             jpaUserDetailsService.autoLogin(user.getUsername(), pass);
+            
             
             return "redirect:/login"; 
         }

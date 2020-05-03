@@ -28,7 +28,8 @@ import javax.validation.constraints.Size;
 public class User implements Serializable {
 	
     private static final long serialVersionUID = 1L;
-
+    public static final int passwordmax = 30;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
