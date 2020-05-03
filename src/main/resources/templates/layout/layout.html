@@ -11,6 +11,9 @@
 		<link rel="stylesheet" th:href="@{/css/mycss.css}" />
 		<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
 		<link rel="stylesheet" th:href="@{/css/ekko-lightbox.css}" />
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
 	</head>
 	
 	<body>
@@ -106,7 +109,7 @@
                                         
                                         <div class="row" th:if="${publi.publi != null}">
                                         	<div class="col cornsilk border p-3 m-3">
-	                                        	<p class="font-weight-bold">En respuesta a:</p>
+	                                        	<p class="font-weight-bold" th:text="#{text.layout.coment-1.inresponse}"></p>
 	                                        	
 	                                       		<div class="row">
 				                                    <div class="col-2">
@@ -125,17 +128,15 @@
                                         </div>
                                         
                                     	<div class="row">
-                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
+                                    		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publi)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
 												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
 											</a>
                                     	</div>
                                     	
                                     	<div class="row mt-2">
-                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
-                                    			Responder
-                                    		</button>
+                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
                                     		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
-                                    			 Respuestas <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
+                                    			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
                                     		</a>
                                     	</div>
                                     	
@@ -155,13 +156,13 @@
                 <div class="col-xl-4 d-none d-xl-block ml-xl-auto ml-5 mr-5" th:fragment="tendence-1">
 	                <div class="card bg-secondary">
 	                    <div class="card-header text-center text-white bg-secondary">
-	                        <h5 class="card-title secondary">Tendencias</h5>
+	                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
 	                    </div>
 	                    <div class="">
 	                    	<div class="list-group list-group-flush">
 		                    	<a th:each="tendencia : ${tendencias}" th:href="${'/explorer/' + tendencia.hashtagname}" class="text-white p-2 mt-2 mb-2">
-		                    		<p th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0" ></p>
-		                    		<p class="m-0 p-0 pequeno"><span th:text="${tendencia.usos}"></span> Publicaciones</p>
+		                    		<span th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0"></span><br/>
+		                    		<span class="m-0 p-0 pequeno" th:text="${tendencia.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
 		                    	</a>
 				            </div>
 	                    </div>
@@ -169,17 +170,19 @@
 	            </div>
 	            
                 <div class="card bg-secondary" th:if="${publications != null || publications != null}" th:fragment="tendence-2">
-                    <div class="card-header text-center text-white bg-secondary">
-                        <h5 class="card-title secondary">Tendencias</h5>
-                    </div>
-                    <div class="">
-                    	<div class="list-group list-group-flush">
-	                    	<a th:each="tendencia : ${tendencias}" th:href="${'/explorer/' + tendencia.hashtagname}" class="text-white p-2 mt-2 mb-2">
-	                    		<p th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0" ></p>
-	                    		<p class="m-0 p-0 pequeno"><span th:text="${tendencia.usos}"></span> Publicaciones</p>
-	                    	</a>
-			            </div>
-                    </div>
+                    <div class="card bg-secondary">
+	                    <div class="card-header text-center text-white bg-secondary">
+	                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
+	                    </div>
+	                    <div class="">
+	                    	<div class="list-group list-group-flush">
+		                    	<a th:each="tendencia : ${tendencias}" th:href="${'/explorer/' + tendencia.hashtagname}" class="text-white p-2 mt-2 mb-2">
+		                    		<span th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0"></span><br/>
+		                    		<span class="m-0 p-0 pequeno" th:text="${tendencia.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+		                    	</a>
+				            </div>
+	                    </div>
+	                </div>
                 </div>
             </div>
         </div>
@@ -189,12 +192,6 @@
 	
 			<script th:src="@{/js/jquery.js}"></script>
 			<script th:src="@{/js/jquery-ui.min.js}"></script>
-	        
-	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
-	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
-	        <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
-	        
-	        
 	        <script th:src="@{/js/popper.min.js}"></script>
 	        <script th:src="@{/js/bootstrap.min.js}"></script>
 	        <script th:src="@{/js/ekko-lightbox.min.js}"></script>

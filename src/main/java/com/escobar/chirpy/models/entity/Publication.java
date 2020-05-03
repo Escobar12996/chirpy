@@ -30,6 +30,7 @@ import javax.validation.constraints.Size;
 @NamedQuery(name="Publication.findAll", query="SELECT p from Publication p")
 public class Publication implements Serializable{
     
+	public static final int maxletter = 300;
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -40,7 +41,7 @@ public class Publication implements Serializable{
     @JoinColumn(name = "user_id")
     private User user;
     
-    @Size(min = 3, max = 1000000, message="Debe tener mas de 3 caracteres")
+    @Size(min = 3, max = 1000000)
     @NotEmpty(message="Debe de tener algo")
     private String publication;
     

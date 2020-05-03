@@ -57,7 +57,15 @@ public class PublicationDao {
     public List<Publication> findByUsers(List<User> users) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true ORDER BY dateOfSend DESC", Publication.class); 
         query.setParameter("users", users);
-        return query.getResultList();
+        return query.setMaxResults(50).getResultList();
+    }
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findByUsersNext(List<User> users, Long lastId) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id > :lastId and p.user in :users and view = true ORDER BY dateOfSend DESC", Publication.class); 
+        query.setParameter("users", users);
+        query.setParameter("lastId", lastId);
+        return query.setMaxResults(50).getResultList();
     }
     
     public List<Publication> findText(String text) {
