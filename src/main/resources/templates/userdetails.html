@@ -16,7 +16,7 @@ and open the template in the editor.
       <div id="content" class="p-4 p-md-5 pt-5">
                     <div class="row">
                         
-                        <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
+                        <div class="col-xl-7 ml-xl-auto">
                             
                             <div class="jumbotron mb-0">
                                 <div class="parent w-100 ">
@@ -34,6 +34,7 @@ and open the template in the editor.
 	                                </div>
 	                            </div>
                             </div>
+                            
                             <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
                             	<div class="col-3"></div>
                                 <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/userdetails/' + userc.id}">Ver Perfil</a>
@@ -44,27 +45,11 @@ and open the template in the editor.
                             
                             
                             <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
-                            <h3 class="text-danger">No tienes publicaciones</h3>
+                            	<h3 class="text-danger">No tienes publicaciones</h3>
                             </div>
                     
-                            <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="'post' + ${publi.id}">
-                                <div class="col-2">
-                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
-                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
-                                </div>
-                                <div class="col-10">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <p class="text-left"><span class="font-weight-bold" th:text="${userc.name}"></span> <span class="" th:text="'@' + ${userc.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                        </div>
-                                        <div class="col-2 col-lg-2" th:if="${user != null && user.id == userc.id}">
-                                            <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}">Borrar</button>
-                                        </div>
-                                    </div>
-                                    <p th:utext="${publi.publication}" class="text-left"></p>
-                                </div>
-                            </div>
                             
+                            <div th:replace="layout/layout :: coments-3"></div>
                             
                             
                         </div>
@@ -74,7 +59,10 @@ and open the template in the editor.
                     </div> 
                 </div>
             </div>
-        </div>
+            
+        
+        <div th:replace="layout/layout :: modal"></div>
+            
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

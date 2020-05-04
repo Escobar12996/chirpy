@@ -165,8 +165,8 @@
                                     
                                 </div>
                             </div>
-                        	
-                        	<div th:fragment="coments-3" class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+                            
+                            <div th:fragment="coments-3" class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
                                 <div class="row">
                                 
                                     <div class="col-3 col-xl-2">
@@ -177,12 +177,38 @@
                                     <div class="col-9 col-xl-10">
                                     
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-9">
                                                 <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                             </div>
+                                            <div class="col-3" th:if="${user != null && user.id == userc.id}">
+                                            <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
+                                        </div>
                                         </div>
                                         
                                         <p th:utext="${publi.publication}"></p>
+                                        
+                                        <div class="row" th:if="${publi.publi != null}">
+                                        	<div class="col cornsilk border p-3 m-3">
+	                                        	<a th:href="${'/viewpublication/' + publi.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}">
+                                    			</a>
+	                                        	
+	                                       		<div class="row">
+	                                       		
+													<div class="col-4 col-xl-2">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+				                                	</div>
+			                                		<div class="col-8 col-xl-10">
+				                                    	<div class="row">
+				                                        	<div class="col-12">
+				                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.dateOfSend}"></span></p>
+				                                        	</div>
+				                                    	</div>
+				                                    	<p th:utext="${publi.publi.publication}"></p>
+			                                    	</div>
+				                                </div>
+                                        	</div>
+                                        </div>
                                         
                                     	<div class="row">
                                     		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publi)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">

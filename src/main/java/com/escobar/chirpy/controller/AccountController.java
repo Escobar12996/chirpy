@@ -186,6 +186,8 @@ public class AccountController {
         }
     }
     
+    //TODO ver perfiles
+    
     @RequestMapping(value={"/userdetails/{id}"}, method = RequestMethod.GET)
     public String userdetalis(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("title", "Detalles del usuario");
@@ -194,6 +196,11 @@ public class AccountController {
         }
         model.addAttribute("userc", userDao.findById(id));
         model.addAttribute("publications", publicationDao.findByUser(userDao.findById(id)));
+        
+      //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
+        model.addAttribute("imageDao", imageDao);
+        model.addAttribute("publicationDao", publicationDao);
+        model.addAttribute("publication", new Publication());
         return "userdetails";
     }
     
@@ -205,6 +212,9 @@ public class AccountController {
         }
         model.addAttribute("userc", userDao.findById(id));
         model.addAttribute("images", imageDao.findByUser(userDao.findById(id)));
+        
+      
+        
         return "userimages";
     }
 
