@@ -66,7 +66,7 @@ public class PublicationController {
         model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri)));
         
         //mostramos las tendencias de la ultima hora
-        model.addAttribute("tendencias", hashtagDao.findUp());
+        model.addAttribute("trends", hashtagDao.findUp());
         
         //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
         model.addAttribute("imageDao", imageDao);
@@ -95,7 +95,7 @@ public class PublicationController {
             model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri)));
             
             //mostramos las tendencias de la ultima hora
-            model.addAttribute("tendencias", hashtagDao.findUp());
+            model.addAttribute("trends", hashtagDao.findUp());
             
             //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
             model.addAttribute("imageDao", imageDao);
@@ -114,7 +114,7 @@ public class PublicationController {
             model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri)));
             
             //mostramos las tendencias de la ultima hora
-            model.addAttribute("tendencias", hashtagDao.findUp());
+            model.addAttribute("trends", hashtagDao.findUp());
             
             //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
             model.addAttribute("imageDao", imageDao);

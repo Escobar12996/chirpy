@@ -12,9 +12,8 @@ and open the template in the editor.
 		<div class="wrapper d-flex align-items-stretch">
 			<nav th:replace="layout/layout :: navbar"></nav>
 
-       		<!-- Page Content  -->
       		<div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="row mt-5">
+                    <div class="row">
                         
                         <div class="col-xl-7 ml-xl-auto">
                             <div th:replace="layout/layout :: alerts"></div>
@@ -22,10 +21,10 @@ and open the template in the editor.
                                 <form class="" th:action="@{/explorer}" method="post">
                                 <div class="form-row">
                                     <div class="col-10">
-                                        <input type="text" name="find" class="form-control ligthyellow">
+                                        <input type="text" name="find" th:placeholder="#{text.explorer.find}" class="form-control ligthyellow border">
                                     </div>
                                     <div class="col-2">
-                                        <button class="btn" type="submit">Buscar</button>
+                                        <button class="btn btn-outline-primary" type="submit" th:text="#{text.explorer.find}"></button>
                                     </div>
                                 </div>
                             </form>
@@ -63,9 +62,8 @@ and open the template in the editor.
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 ml-xl-auto ml-5 mr-5" >
-                        	<div th:replace="layout/layout :: tendencee"></div>
-                        </div>
+                        
+                       	<div th:replace="layout/layout :: tendence-2"></div>
                     </div> 
                 </div>
         </div>

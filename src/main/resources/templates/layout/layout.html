@@ -155,35 +155,42 @@
                 	 
                 <div class="col-xl-4 d-none d-xl-block ml-xl-auto ml-5 mr-5" th:fragment="tendence-1">
 	                <div class="card bg-secondary">
-	                    <div class="card-header text-center text-white bg-secondary">
-	                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
-	                    </div>
-	                    <div class="">
-	                    	<div class="list-group list-group-flush">
-		                    	<a th:each="tendencia : ${tendencias}" th:href="${'/explorer/' + tendencia.hashtagname}" class="text-white p-2 mt-2 mb-2">
-		                    		<span th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0"></span><br/>
-		                    		<span class="m-0 p-0 pequeno" th:text="${tendencia.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
-		                    	</a>
-				            </div>
-	                    </div>
+	                    <div class="card bg-secondary">
+		                    <div class="card-header text-center text-white bg-secondary">
+		                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
+		                    </div>
+		                    <div class="">
+		                    	<div class="list-group list-group-flush">
+			                    	<a th:each="trend : ${trends}" th:href="${'/explorer/' + trend.hashtagname}" class="text-white p-2 mt-2 mb-2 ml-2">
+			                    		<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
+			                    		<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+			                    	</a>
+			                    	<p class="text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
+					            </div>
+		                    </div>
+		                </div>
 	                </div>
 	            </div>
 	            
-                <div class="card bg-secondary" th:if="${publications != null || publications != null}" th:fragment="tendence-2">
-                    <div class="card bg-secondary">
-	                    <div class="card-header text-center text-white bg-secondary">
-	                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
-	                    </div>
-	                    <div class="">
-	                    	<div class="list-group list-group-flush">
-		                    	<a th:each="tendencia : ${tendencias}" th:href="${'/explorer/' + tendencia.hashtagname}" class="text-white p-2 mt-2 mb-2">
-		                    		<span th:text="${'#'+tendencia.hashtagname}" class="m-0 p-0"></span><br/>
-		                    		<span class="m-0 p-0 pequeno" th:text="${tendencia.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
-		                    	</a>
-				            </div>
-	                    </div>
+	            <div class="col-xl-4 d-none d-xl-block ml-xl-auto ml-5 mr-5" th:fragment="tendence-2">
+	                <div class="card bg-secondary" th:if="${publications != null || users != null}">
+	                    <div class="card bg-secondary">
+		                    <div class="card-header text-center text-white bg-secondary">
+		                        <h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
+		                    </div>
+		                    <div class="">
+		                    	<div class="list-group list-group-flush">
+			                    	<a th:each="trend : ${trends}" th:href="${'/explorer/' + trend.hashtagname}" class="text-white p-2 mt-2 mb-2 ml-2">
+			                    		<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
+			                    		<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+			                    	</a>
+			                    	<p class="text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
+					            </div>
+		                    </div>
+		                </div>
 	                </div>
                 </div>
+                
             </div>
         </div>
     </div>

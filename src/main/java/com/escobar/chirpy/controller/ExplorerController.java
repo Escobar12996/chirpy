@@ -16,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -41,11 +43,14 @@ public class ExplorerController {
     @Autowired
     private HashtagDao hashtagDao;
     
+    @Autowired
+    private MessageSource messages;
+    
     @RequestMapping(value={"/", "/explorer"}, method = RequestMethod.GET)
     public String explorer(Model model, Principal principal) {
-    	model.addAttribute("title", "Explorador");
+    	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
         System.out.println(hashtagDao.findUp().size());
-        model.addAttribute("tendencias", hashtagDao.findUp());
+        model.addAttribute("trends", hashtagDao.findUp());
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
@@ -55,23 +60,23 @@ public class ExplorerController {
     @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
     public String explorersend(@RequestParam("find") String find, Model model, Principal principal) {
         
+    	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
+    	
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
         
         if(find.length() < 3){
             model.addAttribute("title", "Explorador");
-            model.addAttribute("error", "Debes de escribir mas de 3 caracteres");
+            model.addAttribute("error", messages.getMessage("text.explorer.find.error", null, LocaleContextHolder.getLocale()));
             return "explorer";
         } else if (find.contains("@")){
             find = find.replace("@", "");
-            model.addAttribute("title", "Explorador");
             model.addAttribute("users", userDao.findUsersOnlyUsername(find));
             return "explorer";
         } else {
-            model.addAttribute("title", "Explorador");
             model.addAttribute("users", userDao.findUsersNameUsername(find));
-            model.addAttribute("publications", publicationDao.findText(find));
+            model.addAttribute("trends", publicationDao.findText(find));
             return "explorer";
         }
     }
@@ -86,7 +91,7 @@ public class ExplorerController {
         }
     	
     	model.addAttribute("title", "Explorador");
-        model.addAttribute("publications", publicationDao.findText(hashtag));
+        model.addAttribute("trends", publicationDao.findText(hashtag));
         return "explorer";
     	
     }
