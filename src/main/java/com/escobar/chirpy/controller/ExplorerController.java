@@ -46,52 +46,73 @@ public class ExplorerController {
     @Autowired
     private MessageSource messages;
     
+    //TODO Explorer metodo get
     @RequestMapping(value={"/", "/explorer"}, method = RequestMethod.GET)
     public String explorer(Model model, Principal principal) {
+    	
+    	//introducimos el titulo y las tendencias
     	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
-        System.out.println(hashtagDao.findUp().size());
         model.addAttribute("trends", hashtagDao.findUp());
+        
+        //si hay algun usuario logeado, lo introducimos
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
+        
         return "explorer";
     }
     
+  //TODO Explorer metodo post
     @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
     public String explorersend(@RequestParam("find") String find, Model model, Principal principal) {
         
+    	//introducimos el titulo y las tendencias
     	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
+    	model.addAttribute("trends", hashtagDao.findUp());
     	
+    	//si existe usuario logeado, lo introducimos
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
         
+        //si no a buscado con mas de 3 letras, devuelve error
         if(find.length() < 3){
-            model.addAttribute("title", "Explorador");
             model.addAttribute("error", messages.getMessage("text.explorer.find.error", null, LocaleContextHolder.getLocale()));
             return "explorer";
+            
+        //si la busqueda contiene un @ busca solo usuarios
         } else if (find.contains("@")){
             find = find.replace("@", "");
             model.addAttribute("users", userDao.findUsersOnlyUsername(find));
             return "explorer";
+            
+        //sino lo busca todo
         } else {
             model.addAttribute("users", userDao.findUsersNameUsername(find));
-            model.addAttribute("trends", publicationDao.findText(find));
+            model.addAttribute("publications", publicationDao.findText(find));
             return "explorer";
         }
     }
     
     
-    
+    //este metodo, es para cuando se hace click en un hastag
     @RequestMapping(value={"/explorer/{hashtag}"}, method = RequestMethod.GET)
     public String hastags(@PathVariable String hashtag, Model model, Principal principal){
-    	System.out.println(hashtag);
-    	if (principal != null){
+
+    	//introducimos el titulo y las tendencias
+    	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
+    	model.addAttribute("trends", hashtagDao.findUp());
+    	
+    	//introducimos la busqueda
+    	model.addAttribute("publications", publicationDao.findText(hashtag));
+
+        
+        
+        //si existe el usuario logeado se carga
+        if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
     	
-    	model.addAttribute("title", "Explorador");
-        model.addAttribute("trends", publicationDao.findText(hashtag));
         return "explorer";
     	
     }

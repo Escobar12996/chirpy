@@ -118,10 +118,10 @@ $("#sendPublication").submit(function(event){
         return false;
 });
 
-/*$(".publication").click(function() {
+$(".div-buttom").click(function() {
 	  window.location = "/viewpublication/"+$(this).attr('id'); 
 	  return false;
-	});*/
+});
 
 (function($) {
 

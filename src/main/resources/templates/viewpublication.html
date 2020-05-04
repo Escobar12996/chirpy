@@ -14,36 +14,42 @@ and open the template in the editor.
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="row mt-5">
+                    <div class="row">
                         
                         <div class="col-xl-7 ml-xl-auto">
                             <div th:replace="layout/layout :: alerts"></div>
 
-							<div class="publication p-4 mt-2 bg-white card" th:id="${publicationview.id}">
-                                
+							<div class="publication p-4 bg-white card">
                                 <div class="row">
-                                    <div class="col-2">
-                                        <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
+                                
+                                    <div class="col-3 col-xl-2">
+                                    	<img class="img-fluid border" th:if="${publicationview.user.imageperf != null}" th:src="${'/image/user/' + publicationview.user.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${publicationview.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
                                     </div>
-                                    <div class="col-10">
+                                    
+                                    <div class="col-9 col-xl-10">
+                                    
                                         <div class="row">
                                             <div class="col-12">
                                                 <p><a th:href="${'/userdetails/' + publicationview.user.id}"><span class="font-weight-bold" th:text="${publicationview.user.name}"></span> <span class="" th:text="'@' + ${publicationview.user.username}"></span></a> - <span class="" th:text="${publicationview.dateOfSend}"></span></p>
                                             </div>
                                         </div>
+                                        
                                         <p th:utext="${publicationview.publication}"></p>
+                                        
                                         <div class="row" th:if="${publicationview.publi != null}">
                                         	<div class="col cornsilk border p-3 m-3">
-	                                        	<p class="font-weight-bold">En respuesta a:</p>
-	                                        	
+	                                        	<a th:href="${'/viewpublication/' + publicationview.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}">
+                                    			</a>
 	                                       		<div class="row">
 				                                    <div class="col-2">
-				                                    	<img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
+				                                    	<img class="img-fluid border" th:if="${publicationview.publi.user.imageperf != null}" th:src="${'/image/user/' + publicationview.publi.user.id}" alt="Card image cap" style="width: 100px">
+				                                    	<img class="img-fluid border" th:if="${publicationview.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
 				                                	</div>
 			                                		<div class="col-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/userdetails/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.dateOfSend}"></span></p>
+				                                            	<p><a th:href="${'/userdetails/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
 				                                    	<p th:utext="${publicationview.publi.publication}"></p>
@@ -51,98 +57,41 @@ and open the template in the editor.
 				                                </div>
                                         	</div>
                                         </div>
+                                        
                                     	<div class="row">
-                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publicationview.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publicationview.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publicationview.id}">
+                                    		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publicationview)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publicationview.id}">
 												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
 											</a>
                                     	</div>
+                                    	
                                     	<div class="row mt-2">
-                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publicationview.id}">
-                                    			Responder
-                                    		</button>
-                                    	</div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <div class="publication p-4 mt-1 ml-4 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
-                                
-                                <div class="row">
-                                <div class="col-12" th:if="${publi.publi != null}">
-                                        	<p>En respuesta a: <a th:href="${'/userdetails/' + publicationview.user.id}" th:text="'@' + ${publicationview.user.username}"></a></p>
-                                        </div>
-                                    <div class="col-2">
-                                        <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/500px-User_icon_2.svg.png">
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                            </div>
-                                        </div>
-                                        <p th:utext="${publi.publication}"></p>
-                                    	<div class="row">
-                                    		<a class="col" data-type="image" th:if="${vidmaDao.findByPublication(publi.id) != null}" th:each="vid : ${vidmaDao.findByPublication(publi.id)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
-												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
-											</a>
-                                    	</div>
-                                    	<div class="row mt-2">
-                                    		<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}">
-                                    			Responder
-                                    		</button>
-                                    		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
-                                    			 Respuestas <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
+                                    		<button sec:authorize="isAuthenticated()" type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publicationview.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
+                                    		<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment-1.buttonanswer}">
+                                    		</a> 
+                                    		<a th:href="${'/viewpublication/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:value="${publicationview.id}">
+                                    			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publicationview))}"></span>
                                     		</a>
-                                    		
                                     	</div>
+                                    	
                                     </div>
+                                    
                                 </div>
                             </div>
+							
+							<div class="ml-3">
+								<div th:replace="layout/layout :: coments-3"></div>
+							</div>
+							
+                            
                             
                         </div>
-                        <div th:replace="layout/layout :: tendence" ></div>
+                        <div th:replace="layout/layout :: tendence-1" ></div>
                     </div> 
                 </div>
             </div>
-        </div>
-		<div id="myModal" class="modal fade" role="dialog">
-	  		<div class="modal-dialog">
-		    	<div class="modal-content">
-		      		<div class="modal-header">
-			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-			        	<h4 class="modal-title">Respuesta</h4>
-			      	</div>
-			      	<div class="modal-body">
-			        	<form th:object="${publication}" id="sendPublication" enctype="multipart/form-data" class="row">
-	                        <div class="col-12 text-center">
-	                            <textarea th:field="*{publication}" placeholder="Publicacion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-	                            <span class="text-danger"></span>
-	                        </div>
-	                        <div class="col-9 mt-2">
-	                        	<div class="row">
-	                        		<div class="col-6">
-	                        			<input type="file" name="image[]" id="1" class="form-control">
-	                       			</div>
-	                        		<div class="col-6">
-	                        			<input type="file" name="image[]" id="2" class="form-control">
-	                        		</div>
-	                        	</div>
-	                            <p id="errorview"></p>
-	                        </div>
-	                        
-	                        <div class="col-3 text-center">
-	                            <button class="btn mt-2" type="submit">Publicar</button>
-	                        </div>
-                    	</form>
-			      	</div>
-			      	<div class="modal-footer">
-			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      	</div>
-		    	</div>
-		  	</div>
-		</div>
+      
+      <div th:replace="layout/layout :: modal"></div>
+      
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

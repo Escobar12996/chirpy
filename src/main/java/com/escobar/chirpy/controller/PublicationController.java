@@ -170,15 +170,29 @@ public class PublicationController {
     
     @RequestMapping(value={"/viewpublication/{id}"}, method = RequestMethod.GET)
     public String viewpublication(Model model, Principal principal, @PathVariable Long id) {
-        model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        model.addAttribute("title", "Ver Publicacion");
-        model.addAttribute("publicationview", publicationDao.findById(id));
+    	
+    	//si existe el usuario logeado se carga
+        if (principal != null){
+            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        }
+    	
+        //se carga el titulo y las tendencias
+        model.addAttribute("title", messages.getMessage("text.vpublication.tittle", null, LocaleContextHolder.getLocale()));
         model.addAttribute("tendencias", hashtagDao.findUp());
+        
+        //se muestra la publicacion
+        model.addAttribute("publicationview", publicationDao.findById(id));
+
+        //se introducen los daos necesarios
         model.addAttribute("imageDao", imageDao);
-        List<Publication> publi = publicationDao.findResponse(publicationDao.findById(id));
-        model.addAttribute("publications", publi);
         model.addAttribute("publicationDao", publicationDao);
+        
+    	//se introducen las respuestas
+        model.addAttribute("publications", publicationDao.findResponse(publicationDao.findById(id)));
+        
+        //se introduce la publicacion
         model.addAttribute("publication", new Publication());
+        
         return "viewpublication";
     }
 }

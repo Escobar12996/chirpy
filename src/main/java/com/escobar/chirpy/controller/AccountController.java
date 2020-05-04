@@ -7,6 +7,7 @@ package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.AuthorityDao;
 import com.escobar.chirpy.models.dao.FollowDao;
+import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
@@ -80,6 +81,9 @@ public class AccountController {
     
     @Autowired
     private MessageSource messages;
+    
+    @Autowired
+    private HashtagDao hashtagDao;
     
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
@@ -388,18 +392,26 @@ public class AccountController {
         return "redirect:/editperfil";
     }
     
-    
+    //TODO quotes
     @RequestMapping(value={"/quotes"}, method = RequestMethod.GET)
     public String principalzone(Model model, Principal principal) {
-        model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        model.addAttribute("title", "Quotes");
-        List<UserQuotePublication> uqps = userQuotePublicationDao.findByUser(userDao.findByUserName(principal.getName()));
+    	
+    	//usuario logeado
+    	User userprin = userDao.findByUserName(principal.getName());
+    	
+    	//introducimos el usuario, el titulo y las tendencias
+        model.addAttribute("user", userprin);
+        model.addAttribute("title", messages.getMessage("text.quotes.tittle", null, LocaleContextHolder.getLocale()));
+        model.addAttribute("trends", hashtagDao.findUp());
+        
+        //extraemos el listado de las publicaciones a partir de usequote y los introducimos
         List<Publication> pu = new ArrayList<Publication>();
-        for (UserQuotePublication uq : uqps){
+        for (UserQuotePublication uq : userQuotePublicationDao.findByUser(userprin)){
             pu.add(uq.getPublication());
         }
         model.addAttribute("publications", pu);
         
+        //le quitamos las menciones al usuario y devolvemos la pestaña
         User u = userDao.findByUserName(principal.getName());
         u.setQuotes(0);
         userDao.update(u);

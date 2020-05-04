@@ -113,8 +113,8 @@ public class ApyController {
         //buscamos el follow
         follow = followDao.findFollow(follow);
         
-        //si existe lo borramos
-        if (follow != null){
+        //si existe y no estas intentando dejar de seguirte a ti mismo
+        if (follow != null && follow.getFollowed().getId() != user.getId()){
             followDao.delete(follow);
             return "true";
         } else {
@@ -206,6 +206,8 @@ public class ApyController {
         	Cookie cookieresp = WebUtils.getCookie(request, "resp");
         	Long publiresp = Long.parseLong(cookieresp.getValue());
         	cookieresp.setMaxAge(-1);
+        	cookieresp.setPath("/");
+        	cookieresp.setComment("EXPIRING COOKIE at " + System.currentTimeMillis());
         	response.addCookie(cookieresp);
         	
         	//le introducimos a la publicacion el usuario y la publicacion a la cual se responde y lo formateamos

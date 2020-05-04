@@ -14,43 +14,19 @@ and open the template in the editor.
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="row mt-5">
+                    <div class="row">
                         
-                        <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
+                        <div class="col-xl-7 ml-xl-auto">
                             
-                            <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
-                            <h3 class="text-danger">No te han citado</h3>
+                            <div class="p-3 mt-3 jumbotron text-center" th:if="${#lists.isEmpty(publications)}">
+                            	<h3 class="text-danger text-center"  th:text="#{text.quotes.empty}"></h3>
                             </div>
                     
-                            <div class="p-3 mt-3 cornsilk row" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="'post' + ${publi.id}">
-                                <div class="col-2">
-                                    <img th:if="${publi.user.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
-                                    <img th:if="${publi.user.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + publi.user.id}">
-                                </div>
-                                <div class="col-10">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <p class="text-left"><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                        </div>
-                                    </div>
-                                    <p th:utext="${publi.publication}" class="text-left"></p>
-                                </div>
-                            </div>
-                            
-                            
-                            
+                            <div th:replace="layout/layout :: coments-2"></div>
+
                         </div>
                         
-                        <div class="col-xl-3 ml-xl-auto ml-5 mr-5">
-                            <div class="card">
-                                <div class="card-header text-center text-chirpy">
-                                    <h5 class="card-title">Tendencias</h5>
-                                </div>
-                                <div class="card-body pb-5">
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        <div th:replace="layout/layout :: tendence-1"></div>
                     </div> 
                 </div>
             </div>

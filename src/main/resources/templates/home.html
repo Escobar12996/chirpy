@@ -64,48 +64,8 @@ and open the template in the editor.
 			</div>
 		</div>
 	
-	
-	
-	
-		<div id="myModal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-				
-					<div class="modal-header">
-						<h4 class="modal-title" th:text="#{text.home.response}"></h4>
-					</div>
-					
-					<div class="modal-body">
-						<form th:object="${publication}" id="sendPublication" enctype="multipart/form-data" class="row">
-							
-							<div class="col-12 text-center">
-								<textarea th:field="*{publication}" th:placeholder="#{text.home.response}" class="border" id="exampleFormControlTextarea1" rows="3"></textarea>
-							</div>
-							
-							<div class="col-12 mt-2">
-								<div class="row">
-									<div class="col-6">
-										<input type="file" name="image[]" id="1" class="form-control border">
-									</div>
-									<div class="col-6">
-										<input type="file" name="image[]" id="2" class="form-control border">
-									</div>
-								</div>
-								<p id="errorview"></p>
-							</div>
-    
-							<div class="col-12 text-center">
-								<button class="btn btn-outline-success mt-2" type="submit" th:text="#{text.home.publish}"></button>
-							</div>
-						</form>
-					</div>
-					
-					<div class="modal-footer">
-						<button type="button" class="btn btn-outline-danger" data-dismiss="modal" th:text="#{text.home.close}"></button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div th:replace="layout/layout :: modal"></div>
+
 		<div th:replace="layout/layout :: footer"></div>
 	</body>
 </html>
