@@ -39,7 +39,7 @@ and open the template in the editor.
                                 	<div class="col-6 col-xl-7 d-flex align-content-center flex-wrap">
                                     	<p><a th:href="${'/userdetails/' + us.id}"><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></a></p>
                                 	</div>
-                                	<div class="col-3 col-xl-3" th:if="${us.username != #authentication.name}">
+                                	<div class="col-3 col-xl-3"  sec:authorize="isAuthenticated()" th:if="${us.username != #authentication.name}">
                                     	<button class="badge badge-primary followbutton" th:id="'followbutton' + ${us.id}" th:value="${us.id}" th:text="#{text.explorer.follow}"></button>
                                     	<button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${us.id}" th:value="${us.id}" style="display: none;" th:text="#{text.explorer.ufollow}"></button>
                                 	</div>

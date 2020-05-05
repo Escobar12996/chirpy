@@ -109,8 +109,7 @@ public class AccountController {
 		model.addAttribute("title", messages.getMessage("text.login.tittle", null, LocaleContextHolder.getLocale()));
 		return "login";
 	}
-    
-     
+
 	//TODO Metodo get de la ventana de registro
 	
 	@RequestMapping(value= {"/register"}, method = RequestMethod.GET)
@@ -215,6 +214,8 @@ public class AccountController {
         return "userdetails";
     }
     
+    //TODO ver imagenes del perfil
+    
     @RequestMapping(value={"/userimages/{id}"}, method = RequestMethod.GET)
     public String userimages(Model model, Principal principal, @PathVariable Long id) {
     	
@@ -234,22 +235,25 @@ public class AccountController {
         return "userimages";
     }
 
-    
-    
-    
+    //TODO metodo get de editar perfil
     
     @RequestMapping(value={"/editprofile"}, method = RequestMethod.GET)
-    public String editperfil(Model model, Principal principal) {
-        model.addAttribute("title", "Editar Perfil");
+    public String editeditImageProfile(Model model, Principal principal) {
+        model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
         model.addAttribute("user", userDao.findByUserName(principal.getName()));
         return "useredit";
     }
     
+    //todo editar perfil metodo post
+    
     @RequestMapping(value={"/editprofile"}, method = RequestMethod.POST)
-    public String editperfilPOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String editeditImageProfilePOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {
         
         //bandera para detectar si se a cambiado el nombre
         boolean chna = false;
+        
+        //introducimos el titulo
+        model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
         
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(principal.getName());
@@ -282,7 +286,7 @@ public class AccountController {
                     
                 //Si ya existe un usuario
                 } else if (userDao.findByUserName(user.getUsername()) != null){
-                    model.addAttribute("error", "El nombre de usuario ya existe");
+                    model.addAttribute("error", messages.getMessage("text.edituser.error.accountexists", null, LocaleContextHolder.getLocale()));
                 }
             }
                 
@@ -292,7 +296,7 @@ public class AccountController {
             
         //contraseña no valida
         } else {
-            model.addAttribute("error", "Contraseña no valida");
+            model.addAttribute("error", messages.getMessage("text.edituser.error.passwordinvalid", null, LocaleContextHolder.getLocale()));
         }
         
         //reenvio si se a cambiado el nombre, o simplemente muestro el template
@@ -304,10 +308,14 @@ public class AccountController {
         }
     }
     
+    //TODO Editar Contraseña metodo get
+    
     @RequestMapping(value={"/editpass"}, method = RequestMethod.GET)
     public String editpass() {
         return "redirect:/editperfil";
     }
+    
+    //TODO Editar Contraseña metodo get
     
     @RequestMapping(value={"/editpass"}, method = RequestMethod.POST)
     public String editpass(Model model, Principal principal, @RequestParam(value = "password", required = true) String password,
@@ -324,32 +332,39 @@ public class AccountController {
                 PasswordEncoder encode = paswordncoder();
                 userc.setPassword(encode.encode(password));
                 userDao.update(userc);
-                model.addAttribute("success", "Contraseña actualizada");
+                model.addAttribute("success",  messages.getMessage("text.edituser.passwordupdate", null, LocaleContextHolder.getLocale()));
             //si las contraseñas son menores de 7 letras
             } else if (password.equals(password1) && password.length() < 7) {
-                model.addAttribute("error", "La contraseña tiene que ser mayor de 8 letras");
-            //Si las contraseñas no son iguales
+                model.addAttribute("error", messages.getMessage("Size.user.password", null, LocaleContextHolder.getLocale()));
+            //Si las contraseñas no son iguales 
             } else {
-                model.addAttribute("error", "Las contraseñas no son identicas");
+                model.addAttribute("error",  messages.getMessage("text.edituser.passwordiferent", null, LocaleContextHolder.getLocale()));
             }
             
             //si la contraseña no es valida
         } else {
-            model.addAttribute("error", "Contraseña no valida");
+            model.addAttribute("error", messages.getMessage("text.edituser.error.passwordinvalid", null, LocaleContextHolder.getLocale()));
         }
         
         
-        model.addAttribute("title", "Editar Perfil");
+        //introducimos el titulo
+        model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
+        
         model.addAttribute("user", userc);
         return "useredit";
     }
     
+    //TODO Editar imagen metodo post
+    
     @RequestMapping(value={"/editImageprofile"}, method = RequestMethod.POST)
-    public String editImagePerfil(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
+    public String editImageProfile(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
         
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(principal.getName());
         
+        //introducimos el titulo
+        model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
+
         //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
         if (delete == null && file != null && !file.isEmpty()) {
 
@@ -363,9 +378,9 @@ public class AccountController {
 
             //si no es una imagen de esos tipos
             } else {
-                model.addAttribute("error", "No has subido una imagen valida");
-                model.addAttribute("title", "Editar Perfil");
-                model.addAttribute("user", userDao.findByUserName(principal.getName()));
+                model.addAttribute("error", messages.getMessage("text.edituser.error.imageerror", null, LocaleContextHolder.getLocale()));
+
+                model.addAttribute("user", userc);
                 return "useredit"; 
             }
         } else if ( delete != null && delete.contains("delete") ){
@@ -376,16 +391,23 @@ public class AccountController {
         return "redirect:/editprofile";
     }
     
+    //TODO Editar imagen metodo get
+    
     @RequestMapping(value={"/editImageprofile"}, method = RequestMethod.GET)
-    public String editImagePerfil() {
+    public String editImageProfile() {
         return "redirect:/editprofile";
     }
+    
+  //TODO Editar imagen metodo post
     
     @RequestMapping(value={"/imagesu"}, method = RequestMethod.POST)
     public String editImageSu(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
         
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(principal.getName());
+        
+      //introducimos el titulo
+        model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
         
         //si el fichero no es nulo y no esta vacio, cambiamos la imagen de perfil 
         if (delete == null && file != null && !file.isEmpty()) {
@@ -400,9 +422,8 @@ public class AccountController {
 
             //si no es una imagen de esos tipos
             } else {
-                model.addAttribute("error", "No has subido una imagen valida");
-                model.addAttribute("title", "Editar Perfil");
-                model.addAttribute("user", userDao.findByUserName(principal.getName()));
+            	model.addAttribute("error", messages.getMessage("text.edituser.error.imageerror", null, LocaleContextHolder.getLocale()));
+                model.addAttribute("user", userc);
                 return "useredit"; 
             }
         } else if ( delete != null && delete.contains("delete") ){
@@ -412,6 +433,8 @@ public class AccountController {
         
         return "redirect:/editprofile";
     }
+    
+    //TODO Editar imagen metodo get
     
     @RequestMapping(value={"/imagesu"}, method = RequestMethod.GET)
     public String editImageSu() {
@@ -444,11 +467,6 @@ public class AccountController {
         
         return "quotes";
     }
-    
-    
-    
-    
-    
     
     protected static boolean esEmailCorrecto(String email) {
        
