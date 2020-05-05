@@ -14,13 +14,13 @@ and open the template in the editor.
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="row mt-5 justify-content-xl-center">
+                    <div class="row justify-content-xl-center">
                         
                         <div class="col-xl-7">
                             <div  th:replace="layout/layout :: alerts"></div>
 
                     <div class="card">
-                        <div class="card-header">Editar Usuario</div>
+                        <div class="card-header" th:text="#{text.edituser.editImages}"></div>
                         <div class="card-body">
 
                             <div class="row">
@@ -35,11 +35,11 @@ and open the template in the editor.
                                                     
                                                 </div>
                                             </div>
-                                            <label for="image">Imagen de perfil</label>
+                                            <label for="image" th:text="#{}">Imagen de perfil</label>
                                             <input id="image" type="file" name="ima" class="form-control">
-                                            <button class="btn btn-outline-primary" type="submit">Crear
+                                            <button class="btn btn-outline-primary" type="submit"  th:text="#{}">Crear
                                                 Cuenta</button>
-                                            <button class="btn btn-outline-primary" name="delete" value="delete" type="submit">Crear
+                                            <button class="btn btn-outline-primary" name="delete" value="delete" type="submit"  th:text="#{}">Crear
                                                 Cuenta</button>
                                         </form>
                                     </div>
@@ -55,11 +55,11 @@ and open the template in the editor.
                                                     <div th:if="${user.imagesu == null}" style="height: 100px"></div>
                                                 </div>
                                             </div>
-                                            <label for="image">Imagen de perfil</label>
+                                            <label for="image"  th:text="#{}">Imagen de perfil</label>
                                             <input id="image" type="file" name="ima" class="form-control">
-                                            <button class="btn btn-outline-primary" type="submit">Crear
+                                            <button class="btn btn-outline-primary" type="submit"  th:text="#{}">Crear
                                                 Cuenta</button>
-                                            <button class="btn btn-outline-primary" name="delete" value="delete" type="submit">Crear
+                                            <button class="btn btn-outline-primary" name="delete"  th:text="#{}" value="delete" type="submit">Crear
                                                 Cuenta</button>
                                         </form>
                                     </div>
@@ -77,29 +77,29 @@ and open the template in the editor.
                     
                     
                     <div class="card mt-5">
-                        <div class="card-header">Editar Usuario</div>
+                        <div class="card-header"  th:text="#{}">Editar Usuario</div>
                         <div class="card-body">
                             <form class="form-signin" th:action="@{/editperfil}"
                                   th:object="${user}" method="post" enctype="multipart/form-data">
                                 <p>
-                                        <label for="username">Usuario</label> <input
+                                        <label for="username"  th:text="#{}">Usuario</label> <input
                                                 type="text" id="username" th:field="*{username}"
-                                                class="form-control" placeholder="Usuario" required autofocus
+                                                class="form-control" th:placeholder="#{}" required autofocus
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger" th:if="${#fields.hasErrors('username')}"
                                                 th:errors="*{username}"></span>
                                 </p>
                                 
                                 <p>
-                                        <label for="description">Descripcion</label>
-                                        <textarea id="description" th:field="*{description}" rows="4" class="form-control" placeholder="Usuario" autofocus th:errorclass="'form-control alert-danger'"></textarea>
+                                        <label for="description"  th:text="#{}">Descripcion</label>
+                                        <textarea id="description" th:field="*{description}" rows="4" class="form-control" th:placeholder="#{}" autofocus th:errorclass="'form-control alert-danger'"></textarea>
                                         <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
                                 </p>
                                 
                                 <p>
-                                        <label for="name">Nombre</label> <input type="text" id="namealasname"
+                                        <label for="name"  th:text="#{}">Nombre</label> <input type="text" id="namealasname"
                                                 th:field="*{name}" class="form-control"
-                                                placeholder="Nombre y Apellidos" required autofocus
+                                                th:placeholder="#{}" required autofocus
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger"
                                                 th:if="${#fields.hasErrors('name')}"
@@ -107,22 +107,22 @@ and open the template in the editor.
                                 </p>
 
                                 <p>
-                                        <label for="email" class="sr-only">Correo</label> 
-                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control" placeholder="Correo" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
+                                        <label for="email" class="sr-only"  th:text="#{}">Correo</label> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control" th:placeholder="#{}" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
                                         <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                 </p>
                                 
                                 <p>
-                                        <label for="password">Confirma Contraseña</label> <input
+                                        <label for="password"  th:text="#{}">Confirma Contraseña</label> <input
                                                 type="password" id="password" th:field="*{password}"
-                                                class="form-control" placeholder="Contraseña" required
+                                                class="form-control" th:placeholder="#{}" required
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger" th:if="${#fields.hasErrors('password')}"
                                                 th:errors="*{password}"></span>
                                 </p>
 
                                 <div class="text-center">
-                                        <button class="btn btn-outline-primary" type="submit">Crear
+                                        <button class="btn btn-outline-primary" type="submit"  th:text="#{}">Crear
                                                 Cuenta</button>
                                 </div>
                             </form>
@@ -134,22 +134,22 @@ and open the template in the editor.
                         <div class="card-body">
                             <form class="form-signin" th:action="@{/editpass}" method="post" enctype="multipart/form-data">
                                 <p>
-                                    <label for="password">Contraseña nueva</label> <input
+                                    <label for="password"  th:text="#{}">Contraseña nueva</label> <input
                                         type="password" id="password" name="password"
-                                        class="form-control" placeholder="Contraseña" required autofocus/>
+                                        class="form-control" th:placeholder="#{}" required autofocus/>
                                 </p>
                                 <p>
-                                    <label for="password1">Repite Contraseña nueva</label> <input
+                                    <label for="password1"  th:text="#{}">Repite Contraseña nueva</label> <input
                                         type="password" id="password1" name="password1"
-                                        class="form-control" placeholder="Repite Contraseña" required autofocus/>
+                                        class="form-control" th:placeholder="#{}" required autofocus/>
                                 </p>
                                 <p>
-                                    <label for="passwordold">Contraseña Antigua</label> <input
+                                    <label for="passwordold"  th:text="#{}">Contraseña Antigua</label> <input
                                         type="password" id="passwordold" name="passwordold"
-                                        class="form-control" placeholder="Contraseña Antigua" required autofocus/>
+                                        class="form-control" th:placeholder="#{}" required autofocus/>
                                 </p>
                                 <div class="text-center">
-                                        <button class="btn btn-outline-primary" type="submit">Crear
+                                        <button class="btn btn-outline-primary" type="submit"  th:text="#{}">Crear
                                                 Cuenta</button>
                                 </div>
                             </form>

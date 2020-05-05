@@ -76,7 +76,7 @@ public class PublicationController {
     }
     
     
-  //TODO Zona Principal metodo Post envio de publicacion
+    //TODO Zona Principal metodo Post envio de publicacion
     
     @RequestMapping(value={"/home"}, method = RequestMethod.POST)
     public String principalzonesendpublication(@Valid Publication publication, BindingResult result, Model model, Principal principal, @RequestParam(value = "image[]", required = false) MultipartFile file[]) {
@@ -145,7 +145,7 @@ public class PublicationController {
 	                        model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri)));
 	                        
 	                        //mostramos las tendencias de la ultima hora
-	                        model.addAttribute("tendencias", hashtagDao.findUp());
+	                        model.addAttribute("trends", hashtagDao.findUp());
 	                        
 	                        //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
 	                        model.addAttribute("imageDao", imageDao);
@@ -166,7 +166,7 @@ public class PublicationController {
     }
 
     
-    
+    //TODO Zona para mostrar las publicaciones
     
     @RequestMapping(value={"/viewpublication/{id}"}, method = RequestMethod.GET)
     public String viewpublication(Model model, Principal principal, @PathVariable Long id) {
@@ -178,7 +178,7 @@ public class PublicationController {
     	
         //se carga el titulo y las tendencias
         model.addAttribute("title", messages.getMessage("text.vpublication.tittle", null, LocaleContextHolder.getLocale()));
-        model.addAttribute("tendencias", hashtagDao.findUp());
+        model.addAttribute("trends", hashtagDao.findUp());
         
         //se muestra la publicacion
         model.addAttribute("publicationview", publicationDao.findById(id));
@@ -190,7 +190,7 @@ public class PublicationController {
     	//se introducen las respuestas
         model.addAttribute("publications", publicationDao.findResponse(publicationDao.findById(id)));
         
-        //se introduce la publicacion
+        //se introduce la publicacion, para responder
         model.addAttribute("publication", new Publication());
         
         return "viewpublication";

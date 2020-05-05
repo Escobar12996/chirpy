@@ -14,53 +14,62 @@ and open the template in the editor.
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
-                    <div class="row mt-5">
+                    <div class="row">
                         
-                        <div class="col-xl-7 ml-xl-auto text-center justify-content-center">
+                        <div class="col-xl-7 ml-xl-auto">
                             
                             <div class="jumbotron mb-0">
-                                <div class="parent w-100">
-                                	<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid">
+                                <div class="parent w-100 text-center justify-content-center">
+                                	<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid imageusersu">
                             	</div>
                             
-	                            <div class="row m-3 justify-content-center">
-	                                <div class="col-2">
-	                                    <img th:if="${userc.imageperf == null}" class="img-fluid border" th:src="@{/image/usuario.png}">
-	                                    <img th:if="${userc.imageperf != null}" class="img-fluid border" th:src="${'/image/user/' + userc.id}">
+	                            <div class="row m-3 border border border-warning p-4">
+	                                <div class="col-12 col-sm-3 mb-3 text-center text-lg-left">
+	                                    <img th:if="${userc.imageperf == null}" class="img-fluid border imageuser" th:src="@{/image/usuario.png}">
+	                                    <img th:if="${userc.imageperf != null}" class="img-fluid border w-100 imageuser" th:src="${'/image/user/' + userc.id}">
 	                                </div>
-	                                <div class="col-7 ">
+	                                <div class="col-12 col-sm-9 text-center text-lg-left">
 	                                    <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
-	                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}">No hay ninguna descripción</p>
+	                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
 	                                </div>
 	                            </div>
                             </div>
+                            
                             <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
                             	<div class="col-3"></div>
-                                <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/userdetails/' + userc.id}">Ver Perfil</a>
-                            	<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/userimages/' + userc.id}">Multimedia</a>
+                                <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/userdetails/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
+                            	<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/userimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
                             	<div class="col-3"></div>
                             </div>
                             
                             
-                            <div class="p-3 mt-3 black text-center" th:if="${#lists.isEmpty(publications)}">
-                            	<h3 class="text-danger">No tienes publicaciones</h3>
+                            <div class="p-3 mt-3 jumbotron text-center" th:if="${#lists.isEmpty(images)}">
+                            	<h3 class="text-danger" th:text="#{text.userimages.empty}"></h3>
                             </div>
                     
                    			<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}">
-                   				<div th:each="image : ${images}" class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 mt-2 mb-2">
-                   				
-                   					<a  data-type="image"  th:href="${'/image/image/' + image.id}" data-toggle="lightbox" data-gallery="gallery">
-										<img class="img-fluid" th:src="${'/image/image/' + image.id}" >
-									</a>
-                   				
+                   				<div th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2">
+                   					<div class="row">
+                   						<div class="col-12">
+	                   						<a  data-type="image"  th:href="${'/image/image/' + image.id}" data-toggle="lightbox" data-gallery="gallery">
+												<img class="img-fluid" th:src="${'/image/image/' + image.id}" >
+											</a>
+                   						</div>
+                   						
+                   						<div class="col-12 mt-2" th:if="${user != null && user.id == userc.id}">
+                                           	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.Images.delete}"></button>
+                                       	</div>
+                   						
+                   					</div>
+                   					
+                   					
                    				</div>
                    			</div>
               			</div>
-              			<div th:replace="layout/layout :: tendence" ></div>
+              			<div th:replace="layout/layout :: tendence-1" ></div>
                     </div> 
                 </div>
             </div>
-        </div>
         <div th:replace="layout/layout :: footer"></div>
     </body>
 </html>

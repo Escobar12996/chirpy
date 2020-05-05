@@ -41,7 +41,7 @@
 							<a  href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" th:text="#{text.layout.nav.profile}"></a>
                 			<ul class="collapse list-unstyled" id="pageSubmenu">
 			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
-	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editperfil}" th:text="#{text.layout.nav.editprofile}"></a></li>
+	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
 	                    		<li>
 	                    			<form class="ml-0"   sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
 		                            	<button type="submit" class="btn btn-link text-warning pl-0 text-center" th:text="#{text.layout.nav.logout}"></button>
@@ -181,8 +181,8 @@
                                                 <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                             </div>
                                             <div class="col-3" th:if="${user != null && user.id == userc.id}">
-                                            <button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
-                                        </div>
+                                            	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
+                                        	</div>
                                         </div>
                                         
                                         <p th:utext="${publi.publication}"></p>

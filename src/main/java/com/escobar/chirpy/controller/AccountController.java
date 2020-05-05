@@ -190,14 +190,25 @@ public class AccountController {
     
     @RequestMapping(value={"/userdetails/{id}"}, method = RequestMethod.GET)
     public String userdetalis(Model model, Principal principal, @PathVariable Long id) {
-        model.addAttribute("title", "Detalles del usuario");
+    	
+    	//cargamos el titulo
+        model.addAttribute("title", messages.getMessage("text.userdetails.tittle", null, LocaleContextHolder.getLocale()));
+        
+        //cargamos el usaurio registrado
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
-        model.addAttribute("userc", userDao.findById(id));
-        model.addAttribute("publications", publicationDao.findByUser(userDao.findById(id)));
         
-      //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
+        //cargamos el usuario buscado y las publicaciones del usuario
+        User userc = userDao.findById(id);
+        model.addAttribute("userc", userc);
+        model.addAttribute("publications", publicationDao.findByUser(userc));
+
+        //cargamos las tendencias
+        model.addAttribute("trends", hashtagDao.findUp());
+        
+        
+        //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
         model.addAttribute("imageDao", imageDao);
         model.addAttribute("publicationDao", publicationDao);
         model.addAttribute("publication", new Publication());
@@ -206,14 +217,19 @@ public class AccountController {
     
     @RequestMapping(value={"/userimages/{id}"}, method = RequestMethod.GET)
     public String userimages(Model model, Principal principal, @PathVariable Long id) {
-        model.addAttribute("title", "Detalles del usuario");
+    	
+    	//cargamos el titulo
+        model.addAttribute("title", messages.getMessage("text.userimages.tittle", null, LocaleContextHolder.getLocale()));
+        
         if (principal != null){
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
+        
         model.addAttribute("userc", userDao.findById(id));
         model.addAttribute("images", imageDao.findByUser(userDao.findById(id)));
         
-      
+        //cargamos las tendencias
+        model.addAttribute("trends", hashtagDao.findUp());
         
         return "userimages";
     }
@@ -222,14 +238,14 @@ public class AccountController {
     
     
     
-    @RequestMapping(value={"/editperfil"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/editprofile"}, method = RequestMethod.GET)
     public String editperfil(Model model, Principal principal) {
         model.addAttribute("title", "Editar Perfil");
         model.addAttribute("user", userDao.findByUserName(principal.getName()));
         return "useredit";
     }
     
-    @RequestMapping(value={"/editperfil"}, method = RequestMethod.POST)
+    @RequestMapping(value={"/editprofile"}, method = RequestMethod.POST)
     public String editperfilPOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {
         
         //bandera para detectar si se a cambiado el nombre
@@ -328,7 +344,7 @@ public class AccountController {
         return "useredit";
     }
     
-    @RequestMapping(value={"/editImagePerfil"}, method = RequestMethod.POST)
+    @RequestMapping(value={"/editImageprofile"}, method = RequestMethod.POST)
     public String editImagePerfil(@RequestParam(value = "delete", required = false) String delete, @RequestParam(value = "ima", required = false) MultipartFile file, Model model, Principal principal) {
         
         //cargamos usuario de la base de datos
@@ -357,12 +373,12 @@ public class AccountController {
             userDao.save(userc);
         }
         
-        return "redirect:/editperfil";
+        return "redirect:/editprofile";
     }
     
-    @RequestMapping(value={"/editImagePerfil"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/editImageprofile"}, method = RequestMethod.GET)
     public String editImagePerfil() {
-        return "redirect:/editperfil";
+        return "redirect:/editprofile";
     }
     
     @RequestMapping(value={"/imagesu"}, method = RequestMethod.POST)
@@ -394,12 +410,12 @@ public class AccountController {
             userDao.save(userc);
         }
         
-        return "redirect:/editperfil";
+        return "redirect:/editprofile";
     }
     
     @RequestMapping(value={"/imagesu"}, method = RequestMethod.GET)
     public String editImageSu() {
-        return "redirect:/editperfil";
+        return "redirect:/editprofile";
     }
     
     //TODO quotes

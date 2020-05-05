@@ -103,3 +103,7 @@ background-repeat: no-repeat;
 .imageusersu{
 	max-height: 400px
 }
+
+.imageuser{
+	max-height: 100px
+}
