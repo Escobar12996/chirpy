@@ -36,9 +36,9 @@ and open the template in the editor.
                                                 </div>
                                             </div>
                                             <label for="image" th:text="#{text.edituser.profileimage}"></label>
-                                            <input id="image" type="file" name="ima" class="form-control">
-                                            <button class="btn btn-outline-primary mb-3" type="submit"  th:text="#{text.edituser.changeImage}"></button>
-                                            <button class="btn btn btn-outline-warning mb-3" name="delete" value="delete" type="submit"  th:text="#{text.edituser.deleteimage}"></button>
+                                            <input id="image" type="file" name="ima" class="form-control border">
+                                            <button class="btn btn-outline-primary mb-3 mt-2" type="submit"  th:text="#{text.edituser.changeImage}"></button>
+                                            <button class="btn btn btn-outline-warning mb-3 mt-2" name="delete" value="delete" type="submit"  th:text="#{text.edituser.deleteimage}"></button>
                                         </form>
                                     </div>
                                 </div>
@@ -54,9 +54,9 @@ and open the template in the editor.
                                                 </div>
                                             </div>
                                             <label for="image"  th:text="#{text.edituser.image}"></label>
-                                            <input id="image" type="file" name="ima" class="form-control">
-                                            <button class="btn btn-outline-primary mb-3" type="submit"  th:text="#{text.edituser.changeImage}"></button>
-                                            <button class="btn btn-outline-warning mb-3" name="delete"  th:text="#{text.edituser.deleteimage}" value="delete" type="submit"></button>
+                                            <input id="image" type="file" name="ima" class="form-control border">
+                                            <button class="btn btn-outline-primary mb-3 mt-2" type="submit"  th:text="#{text.edituser.changeImage}"></button>
+                                            <button class="btn btn-outline-warning mb-3 mt-2" name="delete"  th:text="#{text.edituser.deleteimage}" value="delete" type="submit"></button>
                                         </form>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@ and open the template in the editor.
                                 <p>
                                         <label for="username"  th:text="#{text.edituser.user}"></label> <input
                                                 type="text" id="username" th:field="*{username}"
-                                                class="form-control" th:placeholder="#{text.edituser.user}" required autofocus
+                                                class="form-control border" th:placeholder="#{text.edituser.user}" required autofocus
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger" th:if="${#fields.hasErrors('username')}"
                                                 th:errors="*{username}"></span>
@@ -94,7 +94,7 @@ and open the template in the editor.
                                 
                                 <p>
                                         <label for="name"  th:text="#{text.edituser.name}"></label> <input type="text" id="namealasname"
-                                                th:field="*{name}" class="form-control"
+                                                th:field="*{name}" class="form-control border"
                                                 th:placeholder="#{text.edituser.name}" required autofocus
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger"
@@ -104,14 +104,14 @@ and open the template in the editor.
 
                                 <p>
                                         <label for="email" class="sr-only">Correo</label> 
-                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
                                         <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                 </p>
                                 
                                 <p>
                                         <label for="password"  th:text="#{text.edituser.confirmpassword}"></label> <input
                                                 type="password" id="password" th:field="*{password}"
-                                                class="form-control" th:placeholder="#{text.edituser.confirmpassword}" required
+                                                class="form-control border" th:placeholder="#{text.edituser.confirmpassword}" required
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger" th:if="${#fields.hasErrors('password')}"
                                                 th:errors="*{password}"></span>
@@ -131,17 +131,17 @@ and open the template in the editor.
                                 <p>
                                     <label for="password"  th:text="#{text.edituser.newpassword}"></label> <input
                                         type="password" id="password" name="password"
-                                        class="form-control" th:placeholder="#{text.edituser.newpassword}" required autofocus/>
+                                        class="form-control border" th:placeholder="#{text.edituser.newpassword}" required autofocus/>
                                 </p>
                                 <p>
                                     <label for="password1"  th:text="#{text.edituser.repeatpasword}"></label> <input
                                         type="password" id="password1" name="password1"
-                                        class="form-control" th:placeholder="#{text.edituser.repeatpasword}" required autofocus/>
+                                        class="form-control border" th:placeholder="#{text.edituser.repeatpasword}" required autofocus/>
                                 </p>
                                 <p>
                                     <label for="passwordold"  th:text="#{text.edituser.confirmpassword}"></label> <input
                                         type="password" id="passwordold" name="passwordold"
-                                        class="form-control" th:placeholder="#{text.edituser.confirmpassword}" required autofocus/>
+                                        class="form-control border" th:placeholder="#{text.edituser.confirmpassword}" required autofocus/>
                                 </p>
                                 <div class="text-center">
                                         <button class="btn btn-outline-primary" type="submit"  th:text="#{text.edituser.changepassword}"></button>
