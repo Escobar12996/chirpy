@@ -2,6 +2,9 @@ package com.escobar.chirpy.models.services;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -35,11 +38,12 @@ public class JpaUserDetailsService implements UserDetailsService{
     @Autowired
     private MessageSource messages;
 	
+    @Autowired
+    private HttpSession session;
 	
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		
 		User user = userDao.findByUserName(username);
 		
@@ -55,6 +59,7 @@ public class JpaUserDetailsService implements UserDetailsService{
 		
         for(UserAuthority userauth : userAuthDao.findByUser(user)){
             authorities.add(new SimpleGrantedAuthority(userauth.getAuthority().getAuthority()));
+            session.setAttribute("email", user.getEmail());
         }
                 //usuario //contraseña //activado //expirada //credenciales expiradas //bloqueado
 		return new org.springframework.security.core.userdetails.User(

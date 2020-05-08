@@ -65,8 +65,8 @@ public class User implements Serializable {
     private String description;
     
     private int quotes;
-    
-    public Long getId() {
+
+	public Long getId() {
         return id;
     }
 
@@ -153,7 +153,6 @@ public class User implements Serializable {
     public void setQuotes(int quotes) {
         this.quotes = quotes;
     }
-    
-    
+	
 }
 

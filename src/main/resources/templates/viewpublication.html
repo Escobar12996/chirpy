@@ -71,6 +71,7 @@ and open the template in the editor.
                                     		<a th:href="${'/viewpublication/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:value="${publicationview.id}">
                                     			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publicationview))}"></span>
                                     		</a>
+                                    		<a th:href="${'/sendban/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
                                     	</div>
                                     	
                                     </div>

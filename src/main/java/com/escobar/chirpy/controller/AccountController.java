@@ -12,6 +12,7 @@ import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
+import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
 import com.escobar.chirpy.models.entity.ConfirmationToken;
@@ -19,8 +20,10 @@ import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
+import com.escobar.chirpy.models.entity.UserBan;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.listener.OnRegistrationCompleteEvent;
+import com.escobar.chirpy.models.listener.UserBanEvent;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 import com.escobar.chirpy.models.services.JpaUserDetailsService;
 import java.io.IOException;
@@ -32,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -91,13 +95,13 @@ public class AccountController {
     private ConfirmationTokenDao confirmationTokenDao;
     
     @Autowired
-    private JpaUserDetailsService jpaUserDetailsService;
-    
-    @Autowired
     private MessageSource messages;
     
     @Autowired
     private HashtagDao hashtagDao;
+    
+    @Autowired
+    private UserBanDao userBanDao;
     
     @Bean
     public BCryptPasswordEncoder paswordncoder() {
@@ -107,7 +111,7 @@ public class AccountController {
     //TODO Login de la aplicacion
     
 	@RequestMapping(value={"/login"}, method = RequestMethod.GET)
-	public String loginPanel(Model model, Principal principal, @RequestParam(value = "register", required = false) String register, @RequestParam(value = "logout", required = false) String logout) {
+	public String loginPanel(Model model, Principal principal, @RequestParam(value = "register", required = false) String register, @RequestParam(value = "logout", required = false) String logout, @RequestParam(value = "resend", required = false) String resend) {
 	
 		//Si ya existe un usuario logeado, reenvia a home
 		if (principal != null){
@@ -121,7 +125,11 @@ public class AccountController {
 		}
 		
 		if(register != null) {
-			model.addAttribute("success", messages.getMessage("AbstractUserDetailsAuthenticationProvider.disabled", null, LocaleContextHolder.getLocale()));
+			model.addAttribute("success", messages.getMessage("text.accountdisabled.disabled", null, LocaleContextHolder.getLocale()));
+		}
+		
+		if(resend != null) {
+			model.addAttribute("success", messages.getMessage("text.accountdisabled.disabled", null, LocaleContextHolder.getLocale()));
 		}
 		
 		//titulo de la pagina
@@ -138,6 +146,19 @@ public class AccountController {
 		model.addAttribute("user", new User());
 		model.addAttribute("title", messages.getMessage("text.register.tittle", null, LocaleContextHolder.getLocale()));
 		return "register";
+	}
+	
+	//TODO Metodo get reenviar correo
+	
+	@RequestMapping(value= {"/resendemail"}, method = RequestMethod.GET)
+		public String resendemail(Model model, HttpSession session, HttpServletRequest request) {
+		
+		String correo = (String) session.getAttribute("email");
+		User user = userDao.findEmail(correo);
+		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
+        		LocaleContextHolder.getLocale(), request.getContextPath()));
+		session.removeAttribute("email");
+		return "redirect:/login?resend"; 
 	}
 	
 	//TODO Metodo Post de la ventana de registro
@@ -510,6 +531,26 @@ public class AccountController {
         
         return "quotes";
     }
+    
+  //TODO userban
+    @RequestMapping(value={"/sendban/{id}"}, method = RequestMethod.GET)
+    public String userban(Model model, Principal principal, @PathVariable Long id) {
+    	
+    	Publication pu = publicationDao.findById(id);
+    	User u = userDao.findByUserName(principal.getName());
+    	
+    	UserBan usb = new UserBan(u, pu.getUser(), pu);
+    	
+    	try {
+			userBanDao.save(usb);
+		} catch (Exception e) {}
+
+    	eventPublisher.publishEvent(new UserBanEvent(pu.getUser()));
+
+    	return "redirect:/home?bansend";
+    }
+    
+    
     
     protected static boolean esEmailCorrecto(String email) {
        

@@ -33,8 +33,13 @@ public class RegistrationListener implements
         User user = event.getUser();
         
         ConfirmationToken confirmation = new ConfirmationToken(user);
-        confirmationTokenDao.save(confirmation);
-         
+        
+        if (confirmationTokenDao.findConfirmationUser(user) != null) {
+        	confirmationTokenDao.update(confirmation);
+        } else {
+        	confirmationTokenDao.save(confirmation);
+        }
+        
         String recipientAddress = user.getEmail();
         String subject = "Chirpy Registration Confirmation";
         String confirmationUrl 
