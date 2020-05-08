@@ -6,6 +6,7 @@
 package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.AuthorityDao;
+import com.escobar.chirpy.models.dao.ConfirmationTokenDao;
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.ImageDao;
@@ -13,23 +14,27 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.ConfirmationToken;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
+import com.escobar.chirpy.models.listener.OnRegistrationCompleteEvent;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 import com.escobar.chirpy.models.services.JpaUserDetailsService;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -45,6 +50,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -55,8 +61,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class AccountController {
     
+	
+	
     @Autowired
     private PublicationDao publicationDao;
+    
+    @Autowired
+	ApplicationEventPublisher eventPublisher;
     
     @Autowired
     private UserDao userDao;
@@ -77,6 +88,9 @@ public class AccountController {
     private ImageDao imageDao;
     
     @Autowired
+    private ConfirmationTokenDao confirmationTokenDao;
+    
+    @Autowired
     private JpaUserDetailsService jpaUserDetailsService;
     
     @Autowired
@@ -93,16 +107,21 @@ public class AccountController {
     //TODO Login de la aplicacion
     
 	@RequestMapping(value={"/login"}, method = RequestMethod.GET)
-	public String loginPanel(Model model, Principal principal, @RequestParam(value = "logout", required = false) String logout) {
+	public String loginPanel(Model model, Principal principal, @RequestParam(value = "register", required = false) String register, @RequestParam(value = "logout", required = false) String logout) {
 	
 		//Si ya existe un usuario logeado, reenvia a home
 		if (principal != null){
 			return "redirect:/home";
 		}
 		
+		
 		//si has cerrado sesion añade sesion cerrada
 		if(logout != null) {
 			model.addAttribute("success", messages.getMessage("text.login.sesclo", null, LocaleContextHolder.getLocale()));
+		}
+		
+		if(register != null) {
+			model.addAttribute("success", messages.getMessage("AbstractUserDetailsAuthenticationProvider.disabled", null, LocaleContextHolder.getLocale()));
 		}
 		
 		//titulo de la pagina
@@ -124,7 +143,7 @@ public class AccountController {
 	//TODO Metodo Post de la ventana de registro
 	
     @RequestMapping(value={"/register"}, method = RequestMethod.POST)
-    public String chech(@Valid User user, BindingResult result, Model model) {
+    public String chech(@Valid User user, BindingResult result, Model model, HttpServletRequest request) {
 
     	//titulo de la ventana
     	model.addAttribute("title", messages.getMessage("text.register.tittle", null, LocaleContextHolder.getLocale()));
@@ -164,9 +183,12 @@ public class AccountController {
             user.setPassword(encode.encode(user.getPassword()));
             
             //activamos la cuenta y la guardamos
-            user.setEnabled(true);
+            user.setEnabled(false);
             user.setNotLocker(true);
             userDao.save(user);
+            
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
+            		LocaleContextHolder.getLocale(), request.getContextPath()));
             
             //hacemos que se siga a si mismo
             followDao.save(new Follow(user, user));
@@ -177,13 +199,34 @@ public class AccountController {
             au.setAuthority(authorityDao.findByName("user"));
             userAuthorityDao.save(au);
             
-            //hacemos autologin
-            jpaUserDetailsService.autoLogin(user.getUsername(), pass);
             
-            
-            return "redirect:/login"; 
+            return "redirect:/login?register"; 
         }
     }
+
+    @RequestMapping(value={"/regitrationConfirm"}, method = RequestMethod.GET)
+    public String confirmRegistration (WebRequest request, Model model, @RequestParam(value = "token", required = false) String token) {
+      
+        Locale locale = request.getLocale();
+        
+        if (token != null) {
+        	ConfirmationToken confirm = confirmationTokenDao.findConfirmationToken(token);
+            if (confirm == null) {
+                model.addAttribute("error", messages.getMessage("auth.message.invalidToken", null, locale));
+                return "login";
+            } else {
+            	User user = confirm.getUser();
+            	user.setEnabled(true);
+            	userDao.update(user);
+        		confirmationTokenDao.remove(confirm);
+            	model.addAttribute("success", messages.getMessage("auth.message.useractivated", null, locale));
+                return "login";
+            }
+        } else {
+        	return "redirect:/login?lang=" + locale.getLanguage();
+        }
+        
+    } 
     
     //TODO ver perfiles
     
