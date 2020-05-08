@@ -28,7 +28,7 @@ public class PublicationDao {
 
     @Transactional(readOnly=true)
     public Publication findById(Long id) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id = :id", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id = :id and view = true", Publication.class); 
         query.setParameter("id", id);
         
         try {
@@ -48,7 +48,7 @@ public class PublicationDao {
     
     @Transactional(readOnly=true)
     public List<Publication> findResponse(Publication id) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true", Publication.class); 
         query.setParameter("id", id);
         return query.getResultList();
     }

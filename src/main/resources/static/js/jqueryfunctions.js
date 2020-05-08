@@ -143,12 +143,20 @@ $(".div-buttom").click(function() {
 
 })(jQuery);
 
+$(".deleteimage").click(function(){
+    let value = $(this).val();
 
-
-
-
-
-
+    $.ajax({
+        type: "POST",
+        url: "/deleteimage/"+value,
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (response) {
+            $("#post"+value).hide();
+        }
+    });
+});
 
 
 

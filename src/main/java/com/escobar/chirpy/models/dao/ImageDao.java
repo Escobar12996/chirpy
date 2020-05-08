@@ -20,7 +20,7 @@ public class ImageDao {
 
 	@Transactional(readOnly=true)
     public Image findById(Long id) {
-        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.id = :id", Image.class); 
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.id = :id and view = true", Image.class); 
         query.setParameter("id", id);
         
         try {
@@ -34,14 +34,14 @@ public class ImageDao {
 	
 	@Transactional(readOnly=true)
     public List<Image> findByPubli(Publication publication) {
-        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.publi = :id", Image.class); 
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.publi = :id and view = true", Image.class); 
         query.setParameter("id", publication);
         return query.getResultList();
     }
 	
 	@Transactional(readOnly=true)
     public List<Image> findByUser(User user) {
-        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.user = :id", Image.class); 
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.user = :id and view = true", Image.class); 
         query.setParameter("id", user);
         return query.getResultList();
     }

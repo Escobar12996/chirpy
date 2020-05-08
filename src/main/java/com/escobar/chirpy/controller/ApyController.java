@@ -11,6 +11,7 @@ import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.entity.Follow;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.services.PublicationService;
@@ -58,6 +59,9 @@ public class ApyController {
 
     @Autowired
     private FollowDao followDao;
+    
+    @Autowired
+    private ImageDao imageDao;
     
     @Autowired
     private MessageSource messages;
@@ -164,12 +168,18 @@ public class ApyController {
         if (pu != null){
             pu.setView(false);
             publicationDao.update(pu);
+            
+            List<Image> images = imageDao.findByPubli(pu);
+            
+            for (Image image : images) {
+            	image.setView(false);
+            	imageDao.update(image);
+            }
+            
             return "true";
         } else {
             return "false";
         }
-        
-        
     }
     
     
@@ -217,5 +227,31 @@ public class ApyController {
             return "true";
         }
     }
+    
+  //TODO Borrar Posts
+    @ResponseBody
+    @RequestMapping(value={"/deleteimage/{id}"}, method = RequestMethod.POST)
+    public String deleteimage(Principal principal, @PathVariable("id") Long id) {
+    	
+    	//Cargamos el usuario registrado
+        User user = userDao.findByUserName(principal.getName());
+        
+        //Cargamos la imagen de la base de datos
+        Image image = imageDao.findById(id);
+        
+        //si es posible la borramos
+        if (image != null && image.getUser().getId() == user.getId()){
+            image.setView(false);
+            imageDao.update(image);
+            
+            return "true";
+        } else {
+            return "false";
+        }
+        
+        
+    }
+    
+    
     
 }

@@ -166,6 +166,7 @@ public class PublicationService {
             			Image v = new Image(file.getBytes());
                         v.setPubli(publi);
                         v.setUser(publi.getUser());
+                        v.setView(true);
                         imageDao.save(v);
                     } catch (IOException e) {}
             		

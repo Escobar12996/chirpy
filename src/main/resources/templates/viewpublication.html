@@ -37,7 +37,7 @@ and open the template in the editor.
                                         
                                         <p th:utext="${publicationview.publication}"></p>
                                         
-                                        <div class="row" th:if="${publicationview.publi != null}">
+                                        <div class="row" th:if="${publicationview.publi != null && publicationview.publi.view != false}">
                                         	<div class="col cornsilk border p-3 m-3">
 	                                        	<a th:href="${'/viewpublication/' + publicationview.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}">
                                     			</a>
@@ -57,6 +57,29 @@ and open the template in the editor.
 				                                </div>
                                         	</div>
                                         </div>
+                                        
+                                        <div class="row" th:if="${publicationview.publi != null && publicationview.publi.view == false}">
+                                        	<div class="col cornsilk border p-3 m-3">
+	                                        	<a th:href="${'/viewpublication/' + publicationview.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}">
+                                    			</a>
+	                                        	
+	                                       		<div class="row">
+	                                       		
+													<div class="col-4 col-xl-2">
+				                                    	<img class="img-fluid border" th:if="${publicationview.publi.user.imageperf != null}" th:src="${'/image/user/' + publicationview.publi.user.id}" alt="Card image cap" style="width: 100px">
+				                                    	<img class="img-fluid border" th:if="${publicationview.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+				                                	</div>
+			                                		<div class="col-8 col-xl-10">
+				                                    	<div class="row">
+				                                        	<div class="col-12">
+				                                            	<p><a th:href="${'/userdetails/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
+				                                        	</div>
+				                                    	</div>
+			                                    	</div>
+				                                </div>
+                                        	</div>
+                                        </div>
+                                        
                                         
                                     	<div class="row">
                                     		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publicationview)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publicationview.id}">

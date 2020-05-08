@@ -24,7 +24,7 @@ public class Image implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean block;
+    private boolean view;
     
 	@Lob
     private byte[] images;
@@ -53,12 +53,12 @@ public class Image implements Serializable{
 		this.id = id;
 	}
 
-	public boolean isBlock() {
-		return block;
+	public boolean isView() {
+		return view;
 	}
 
-	public void setBlock(boolean block) {
-		this.block = block;
+	public void setView(boolean view) {
+		this.view = view;
 	}
 
 	public byte[] getImages() {
