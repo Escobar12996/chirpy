@@ -203,9 +203,11 @@ public class AccountController {
             PasswordEncoder encode = paswordncoder();
             user.setPassword(encode.encode(user.getPassword()));
             
-            //activamos la cuenta y la guardamos
+            //configuramos la cuenta
             user.setEnabled(false);
             user.setNotLocker(true);
+            user.setSystenBan(false);
+            
             userDao.save(user);
             
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 

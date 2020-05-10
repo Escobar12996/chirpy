@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head th:fragment="head">
+		<meta charset="UTF-8" />
+		<meta name="_csrf" th:content="${_csrf.token}"/>
+		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+		<title th:text="'Chirpy - ' + ${title}"></title>
+		<link rel="stylesheet" th:href="@{/css/style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/mycss.css}" />
+		<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/ekko-lightbox.css}" />
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
+	</head>
+	
+	<body>
+    
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+		    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+		        <a class="navbar-brand" th:href="@{/home}" th:text="#{text.administration.nav.return}"></a>
+		    </div>
+		    <div class="mx-auto order-0">
+		        <ul class="navbar-nav mr-auto">
+		            <li class="nav-item active">
+		                <a class="nav-link" th:href="@{/administration}" th:text="#{text.administration.nav.main}"></a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" th:href="@{/administration/users}" th:text="#{text.administration.nav.user}"></a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" th:href="@{/administration}" th:text="#{text.administration.nav.publications}"></a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" th:href="@{/administration}" th:text="#{text.administration.nav.multimedia}"></a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" th:href="@{/administration}" th:text="#{text.administration.nav.emoticons}"></a>
+		            </li>
+		        </ul>
+		    </div>
+		    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+		        <ul class="navbar-nav ml-auto">
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">Right</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" href="#">Link</a>
+		            </li>
+		        </ul>
+		    </div>
+		</nav>
+	    
+    
+    
+	    <footer th:fragment="footer">
+			<script th:src="@{/js/jquery.js}"></script>
+			<script th:src="@{/js/jquery-ui.min.js}"></script>
+	        <script th:src="@{/js/popper.min.js}"></script>
+	        <script th:src="@{/js/bootstrap.min.js}"></script>
+	        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
+	        <script th:src="@{/js/jqueryfunctions.js}"></script>
+	    </footer>
+	</body>
+</html>

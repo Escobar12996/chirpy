@@ -53,6 +53,8 @@ public class User implements Serializable {
 
     private Boolean enabled;
     
+    private Boolean systenBan;
+    
     private Boolean notLocker;
     
     @Lob
@@ -114,7 +116,15 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
     
-    public Boolean getNotLocker() {
+    public Boolean getSystenBan() {
+		return systenBan;
+	}
+
+	public void setSystenBan(Boolean systenBan) {
+		this.systenBan = systenBan;
+	}
+
+	public Boolean getNotLocker() {
         return notLocker;
     }
 

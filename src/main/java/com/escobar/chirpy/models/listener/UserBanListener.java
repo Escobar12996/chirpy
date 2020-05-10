@@ -28,7 +28,9 @@ public class UserBanListener implements
         User user = event.getUser();
         
         if (userBanDao.findByUserBan(user).size() > 10) {
+        	
         	user.setNotLocker(false);
+        	user.setSystenBan(true);
         	userdao.update(user);
         }
         

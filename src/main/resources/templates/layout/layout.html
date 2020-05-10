@@ -37,6 +37,8 @@
 		          		<li><a th:href="@{/explorer}" th:text="#{text.layout.nav.explorer}"></a></li>
 						<li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{text.layout.nav.login}"></a></li>
 						<li><a sec:authorize="isAuthenticated()" th:href="${'/quotes'}"><span th:text="#{text.layout.nav.mention}"></span> <span th:text="${user.quotes}"></span></a></li>
+						<li><a class="text-warning" sec:authorize="hasAuthority('admin')" th:href="${'/administration'}" th:text="#{text.layout.nav.administration}"></a></li>
+						
 						<li sec:authorize="isAuthenticated()" >
 							<a  href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" th:text="#{text.layout.nav.profile}"></a>
                 			<ul class="collapse list-unstyled" id="pageSubmenu">
