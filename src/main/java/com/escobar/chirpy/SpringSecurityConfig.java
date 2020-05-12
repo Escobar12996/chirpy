@@ -37,7 +37,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
 
             http.authorizeRequests().antMatchers("/resendemail", "/regitrationConfirm", "/userimages", "/userdetails", "/explorer/{hashtag}", "/register", "/css/**", "/js/**", "/", "/explorer", "/image/{tipo}/{id}", "/viewpublication/{id}").permitAll()
                 .antMatchers("/home", "/deleteimage/{id}", "/home/response", "/quotes", "/follow/{id}", "/unfollow/{id}", "/editprofile", "/getfollows", "/deletepost/{id}", "/editprofile/{id}", "/editpass", "/imagesu", "/editImageprofile", "/sendban/{id}").hasAuthority("user")
-                .antMatchers("/administration").hasAuthority("admin")
+                .antMatchers("/administration", "/administration/users", "/administration/userimages/{id}").hasAuthority("admin")
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()

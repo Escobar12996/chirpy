@@ -46,6 +46,13 @@ public class ImageDao {
         return query.getResultList();
     }
 	
+	@Transactional(readOnly=true)
+    public List<Image> findByUserAdmin(User user) {
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.user = :id", Image.class); 
+        query.setParameter("id", user);
+        return query.getResultList();
+    }
+	
 	@Transactional
     public void save(Image image) {
         em.persist(image);	
@@ -55,5 +62,18 @@ public class ImageDao {
     public void update(Image image) {
         em.merge(image);
     }
+
+	public Image findByIdAdmin(Long id) {
+		TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.id = :id", Image.class); 
+        query.setParameter("id", id);
+        
+        try {
+            return query.getSingleResult();
+
+        } catch (Exception e) {
+			// TODO: handle exception
+        	return null;
+		}
+	}
 	
 }

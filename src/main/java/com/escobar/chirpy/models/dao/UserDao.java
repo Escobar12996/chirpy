@@ -60,7 +60,7 @@ public class UserDao {
             } catch (Exception e) {
                 return null;
             }
-	}
+        }
         
         public List<User> findUsersOnlyUsername(String username) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%')", User.class); 
@@ -75,6 +75,23 @@ public class UserDao {
             
             return query.getResultList();
 	}
+        
+    public int userCount() {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class); 
+		return query.getResultList().size();
+    }
+        
+    public List<User> findUsers(Long position, Long numbers){
+    	TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id > :idActual order by u.id", User.class); 
+	    query.setParameter("idActual", (position*numbers)-numbers);
+    	return query.setMaxResults(10).getResultList();
+    }
+        
+        
+        
+        
+        
+        
         
 	@Transactional
 	public void save(User user) {

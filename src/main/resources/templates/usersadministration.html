@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head th:replace="layout/administrationLayout :: head"></head>
+	
+	<body>
+		<nav th:replace="layout/administrationLayout :: navbar"></nav>
+	
+		<div class="container">
+		
+		<div class="row">
+			<div class="col-12">
+				<table class="table table-striped table-hover">
+			 		<thead>
+				    	<tr>
+				      		<th scope="col" th:text="#{text.administration.users.user}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.name}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.email}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.enable}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.block}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.sytemblock}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.images}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.publications}"></th>
+				      		<th scope="col" th:text="#{text.administration.users.edit}"></th>
+				    	</tr>
+				  	</thead>
+				  	<tbody>
+				    	<tr th:each="user : ${users}">
+				      		<td th:text="${user.username}"></td>
+				      		<td th:text="${user.name}"></td>
+				      		<td th:text="${user.email}"></td>
+				      		<td class="text-center"><a th:if="${user.enabled == true}" class="btn btn-success" href="" th:text="#{text.administration.users.activated}"></a><a th:if="${user.enabled != true}" class="btn btn-warning" href="" th:text="#{text.administration.users.disabled}"></a></td>
+				      		<td class="text-center"><a th:if="${user.notLocker == true}" class="btn btn-success" href="" th:text="#{text.administration.users.activated}"></a><a th:if="${user.notLocker != true}" class="btn btn-warning" href="" th:text="#{text.administration.users.blocked}"></a></td>
+				      		<td class="text-center"><p th:if="${user.systenBan != true}" class="btn btn-success m-0" th:text="#{text.administration.users.no}"></p><p th:if="${user.systenBan == true}" class="btn btn-warning m-0"  th:text="#{text.administration.users.yes}"></p></td>
+				      		<td><a class="btn btn-secondary text-white m-0" th:href="${'/administration/userimages/' + user.id }" th:text="#{text.administration.users.images}"></a></td>
+				      		<td><a class="btn btn-secondary text-white m-0" th:text="#{text.administration.users.publications}"></a></td>
+				      		<td><a class="btn btn-secondary text-white m-0" th:text="#{text.administration.users.edit}"></a></td>
+				    	</tr>
+			  		</tbody>
+				</table>
+			</div>
+		
+			<div class="col-12">
+				
+				<div class="row">
+					<div class="col"><a th:href="${'/administration/users?page=1'}">&lt;&lt;</a></div>
+					<div class="col"><a th:if="${pageprevious != null}" th:href="${'/administration/users?page=' + pageprevious}">&lt;</a></div>
+					<div class="col"><a th:if="${pagepreviousprevious != null}" th:href="${'/administration/users?page='+ pagepreviousprevious}" th:text="${pagepreviousprevious}"></a></div>
+					<div class="col"><a th:if="${pageprevious != null}" th:href="${'/administration/users?page='+ pageprevious}" th:text="${pageprevious}"></a></div>
+					<div class="col"><a th:href="${'/administration/users?page='+ page}" th:text="${page}"></a></div>
+					<div class="col"><a th:if="${pagenext != null}" th:href="${'/administration/users?page='+ pagenext}" th:text="${pagenext}"></a></div>
+					<div class="col"><a th:if="${pagenextnext != null}" th:href="${'/administration/users?page='+ pagenextnext}" th:text="${pagenextnext}"></a></div>
+					<div class="col"><a th:if="${pagenext != null}" th:href="${'/administration/users?page=' + pagenext}">&gt;</a></div>
+					<div class="col"><a th:href="${'/administration/users?page=' + numpag}">&gt;&gt;</a></div>
+				</div>
+				
+				
+			</div>
+		
+		
+		
+		</div>
+		
+		
+		
+		
+		
+		
+		</div>
+		<div th:replace="layout/administrationLayout :: footer"></div>
+	</body>
+</html>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

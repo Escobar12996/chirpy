@@ -6,14 +6,21 @@
 package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.ImageDao;
+import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserAuthority;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +39,11 @@ public class ImageController {
     @Autowired
     private ImageDao imageDao;
     
+    @Autowired
+    private UserAuthorityDao userAuthorityDao;
+    
     @RequestMapping(value={"/image/{tipo}/{id}"}, method = RequestMethod.GET)
-    public void showImage(@PathVariable String tipo, @PathVariable Long id, HttpServletResponse response) 
+    public void showImage(@PathVariable String tipo, @PathVariable Long id, HttpServletResponse response, Principal principal) 
 	          throws ServletException, IOException{
         
         if (tipo.equals("user")){
@@ -68,6 +78,32 @@ public class ImageController {
 		    } else {
 		    	response.getOutputStream().close();
 		    }
+        } else if(tipo.equals("admin")) {
+        	
+        	List<UserAuthority> ua = userAuthorityDao.findByUser(userDao.findByUserName(principal.getName()));
+        	boolean flag = false;
+        	
+        	for (UserAuthority au :ua) {
+        		if (au.getAuthority().getAuthority().equals("admin"))
+        			flag = true;
+        	}
+        	
+        	if (flag) {
+        		Image v = imageDao.findByIdAdmin(id);
+            	
+            	if (v != null && v.getImages() != null) {
+    		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+    			    response.getOutputStream().write(v.getImages());
+    			    response.getOutputStream().close();
+    		    } else {
+    		    	response.getOutputStream().close();
+    		    }
+        	}
+    		
+        	
+        	
+        	
+        	
         }
         
 	    
