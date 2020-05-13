@@ -169,13 +169,6 @@ public class ApyController {
             pu.setView(false);
             publicationDao.update(pu);
             
-            List<Image> images = imageDao.findByPubli(pu);
-            
-            for (Image image : images) {
-            	image.setView(false);
-            	imageDao.update(image);
-            }
-            
             return "true";
         } else {
             return "false";

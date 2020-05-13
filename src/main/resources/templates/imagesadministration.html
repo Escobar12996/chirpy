@@ -35,9 +35,9 @@
 					</div>
 					
 					<div class="col-12 mt-2">
-						<form>
-							<button class="btn btn-danger">Borrar</button>
-							<button class="btn btn-danger">Eliminar</button>
+						<form th:action="@{/administration/delete}" method="post">
+							<button name="deleteimage" class="btn btn-warning" th:value="${image.id}" th:text="#{text.administration.images.delete}"></button>
+							<button name="removeimage" class="btn btn-danger" th:value="${image.id}" th:text="#{text.administration.images.remove}"></button>
 						</form>
                    	</div>
 					

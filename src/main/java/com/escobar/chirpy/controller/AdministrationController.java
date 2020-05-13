@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.User;
 
 @Controller
@@ -105,6 +106,44 @@ public class AdministrationController {
     	return "imagesadministration";
     	
     }
+    
+  //TODO Explorer metodo get
+    @RequestMapping(value={"/administration/delete"}, method = RequestMethod.POST)
+    public String deleteorremove(Model model, Principal principal,
+    		@RequestParam(value = "deleteimage", required = false) Long deleteimage, @RequestParam(value = "removeimage", required = false) Long removeimage) {
+    	
+    	Image image = null;
+    	
+    	if (deleteimage != null) {
+    		image = imageDao.findByIdAdmin(deleteimage);
+    		
+    		if (image != null) {
+        		image.setView(false);
+        		imageDao.save(image);
+        		return "redirect:/administration/userimages/"+image.getUser().getId();
+        	}
+    	} else if (removeimage != null) {
+			image = imageDao.findByIdAdmin(removeimage);
+    		
+    		if (image != null) {
+        		image.setView(false);
+        		imageDao.remove(image);
+        		return "redirect:/administration/userimages/"+image.getUser().getId();
+        	}
+    	}
+    	
+    	
+    	
+    	return "redirect:/administration";
+    	
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
 }
