@@ -18,11 +18,9 @@ public class PublicationDao {
     private EntityManager em;
 	
 	
-	
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly=true)
     public List<Publication> findAll(){
-        Query query = em.createQuery("SELECT p FROM Publication p");
+    	TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p ORDER BY dateOfSend DESC", Publication.class);
         return query.getResultList();
     }
 
@@ -40,15 +38,42 @@ public class PublicationDao {
     }
     
     @Transactional(readOnly=true)
+    public Publication findByIdAdmin(Long id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id = :id", Publication.class); 
+        query.setParameter("id", id);
+        
+        try {
+        	return query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+        
+    }
+    
+    @Transactional(readOnly=true)
     public List<Publication> findByUser(User user) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and view = true ORDER BY dateOfSend DESC", Publication.class); 
         query.setParameter("user", user);
         return query.getResultList();
     }
+
+
+	public Object findByUserAdmin(User user) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user ORDER BY dateOfSend DESC", Publication.class); 
+        query.setParameter("user", user);
+        return query.getResultList();
+	}
     
     @Transactional(readOnly=true)
     public List<Publication> findResponse(Publication id) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true", Publication.class); 
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findResponseAdmin(Publication id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id", Publication.class); 
         query.setParameter("id", id);
         return query.getResultList();
     }
@@ -99,5 +124,10 @@ public class PublicationDao {
         em.merge(publication);
     }
 	
-
+    @Transactional
+    public void remove(Publication publication) {
+        em.remove(publication);
+    }
+    
+    
 }

@@ -40,9 +40,22 @@ public class ImageDao {
     }
 	
 	@Transactional(readOnly=true)
+    public List<Image> findByPubliAdmin(Publication publication) {
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.publi = :id", Image.class); 
+        query.setParameter("id", publication);
+        return query.getResultList();
+    }
+	
+	@Transactional(readOnly=true)
     public List<Image> findByUser(User user) {
         TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.user = :id and view = true", Image.class); 
         query.setParameter("id", user);
+        return query.getResultList();
+    }
+	
+	@Transactional(readOnly=true)
+    public List<Image> findAllAdmin() {
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i order by i.id desc", Image.class); 
         return query.getResultList();
     }
 	
