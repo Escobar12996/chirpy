@@ -291,6 +291,36 @@ public class AdministrationController {
     	
     }
     
+    //TODO Explorer metodo post
+    @RequestMapping(value={"/activatedisableuser"}, method = RequestMethod.POST)
+    public String activateuser(Model model, Principal principal,
+    		@RequestParam(value = "id") Long id) {
+    	
+    	User us = userDao.findById(id);
+    	
+    	if (us != null) {
+    		us.setEnabled(!us.getEnabled());
+    		userDao.update(us);
+    	}
+    	
+    	return "redirect:/administration/users";
+    }
+    
+    //TODO Explorer metodo post
+    @RequestMapping(value={"/blockunblockuser"}, method = RequestMethod.POST)
+    public String blockunblockuser(Model model, Principal principal,
+    		@RequestParam(value = "id") Long id) {
+    	
+    	User us = userDao.findById(id);
+    	
+    	if (us != null) {
+    		us.setNotLocker(!us.getNotLocker());
+    		userDao.update(us);
+    	}
+    	
+    	return "redirect:/administration/users";
+    }
+    
     private void deletepublication(List<Publication> publis) {
     	for (Publication pu : publis) {
     		List<Publication> publiscas = publicationDao.findResponseAdmin(pu);

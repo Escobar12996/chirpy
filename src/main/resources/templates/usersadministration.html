@@ -29,8 +29,22 @@
 				      		<td th:text="${user.username}"></td>
 				      		<td th:text="${user.name}"></td>
 				      		<td th:text="${user.email}"></td>
-				      		<td class="text-center"><a th:if="${user.enabled == true}" class="btn btn-success" href="" th:text="#{text.administration.users.activated}"></a><a th:if="${user.enabled != true}" class="btn btn-warning" href="" th:text="#{text.administration.users.disabled}"></a></td>
-				      		<td class="text-center"><a th:if="${user.notLocker == true}" class="btn btn-success" href="" th:text="#{text.administration.users.activated}"></a><a th:if="${user.notLocker != true}" class="btn btn-warning" href="" th:text="#{text.administration.users.blocked}"></a></td>
+				      		<td class="text-center">
+				      		
+				      			<form th:action="@{/activatedisableuser}" method="post">
+				      				<button th:if="${user.enabled == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+				      				<button th:if="${user.enabled != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
+				      			</form>
+				      		</td>
+				      		
+				      		<td class="text-center">
+				      		
+				      			<form th:action="@{/blockunblockuser}" method="post">
+				      				<button th:if="${user.notLocker == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+				      				<button th:if="${user.notLocker != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
+				      			</form>
+				      		</td>
+				      		
 				      		<td class="text-center"><p th:if="${user.systenBan != true}" class="btn btn-success m-0" th:text="#{text.administration.users.no}"></p><p th:if="${user.systenBan == true}" class="btn btn-warning m-0"  th:text="#{text.administration.users.yes}"></p></td>
 				      		<td><a class="btn btn-secondary text-white m-0" th:href="${'/administration/userimages/' + user.id }" th:text="#{text.administration.users.images}"></a></td>
 				      		<td><a class="btn btn-secondary text-white m-0" th:href="${'/administration/userpost/' + user.id }" th:text="#{text.administration.users.publications}"></a></td>
