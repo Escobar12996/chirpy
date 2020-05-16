@@ -7,7 +7,7 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head th:replace="layout/layout :: head"></head>
+	<head th:replace="aplication/layout/layout :: head"></head>
 
 	    <body class="bg-gradient-chirpy">
         <div class="container">
@@ -23,7 +23,7 @@ and open the template in the editor.
 									
 								</div>
 								<div class="card-body">
-								<div  th:replace="layout/layout :: alerts">
+								<div  th:replace="aplication/layout/layout :: alerts">
 								</div>
 									<a class="" th:href="@{/login}" th:text="#{text.register.login}"></a>
 									<form class="form-signin mt-2" th:action="@{/register}"
@@ -76,6 +76,6 @@ and open the template in the editor.
 				</div>
 			</div>
 		</div>
-		<div th:replace="layout/layout :: footer"></div>
+		<div th:replace="aplication/layout/layout :: footer"></div>
 	</body>
 </html>

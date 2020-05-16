@@ -41,9 +41,9 @@ public class RegistrationListener implements
         }
         
         String recipientAddress = user.getEmail();
-        String subject = "Chirpy Registration Confirmation";
+        String subject = messages.getMessage("text.message.confirmregister", null, event.getLocale());
         String confirmationUrl 
-          = event.getAppUrl() + "/regitrationConfirm?token=" + confirmation.getConfirmationToken();
+          = event.getAppUrl() + "/confirmaccount?token=" + confirmation.getConfirmationToken();
         String message = messages.getMessage("text.message.regSucc", null, event.getLocale());
          
         SimpleMailMessage email = new SimpleMailMessage();

@@ -43,9 +43,12 @@ public class ImageController {
     private UserAuthorityDao userAuthorityDao;
     
     @RequestMapping(value={"/image/{tipo}/{id}"}, method = RequestMethod.GET)
-    public void showImage(@PathVariable String tipo, @PathVariable Long id, HttpServletResponse response, Principal principal) 
-	          throws ServletException, IOException{
+    public void showImage(@PathVariable String tipo,
+    		@PathVariable Long id,
+    		HttpServletResponse response,
+    		Principal principal) throws ServletException, IOException{
         
+    	//si estas buscando imagenes de perfil
         if (tipo.equals("user")){
             User user = userDao.findById(id);
             
@@ -57,6 +60,7 @@ public class ImageController {
 		    	response.getOutputStream().close();
 		    }
             
+		  //si estas buscando imagenes "superiores"
         } else if (tipo.equals("imagesu")){
             User user = userDao.findById(id);
             
@@ -67,6 +71,8 @@ public class ImageController {
 		    } else {
 		    	response.getOutputStream().close();
 		    }
+		    
+	    //si estas buscando imagenes
         } else if (tipo.equals("image")) {
         	
         	Image v = imageDao.findById(id);
@@ -78,36 +84,33 @@ public class ImageController {
 		    } else {
 		    	response.getOutputStream().close();
 		    }
+        	
+        	//si estas buscando imagenes como administrador
         } else if(tipo.equals("admin")) {
         	
-        	List<UserAuthority> ua = userAuthorityDao.findByUser(userDao.findByUserName(principal.getName()));
-        	boolean flag = false;
+        	User user = userDao.findByUserName(principal.getName());
         	
-        	for (UserAuthority au :ua) {
-        		if (au.getAuthority().getAuthority().equals("admin"))
-        			flag = true;
-        	}
-        	
-        	if (flag) {
-        		Image v = imageDao.findByIdAdmin(id);
+        	if (user != null) {
+        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
+            	boolean flag = false;
             	
-            	if (v != null && v.getImages() != null) {
-    		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-    			    response.getOutputStream().write(v.getImages());
-    			    response.getOutputStream().close();
-    		    } else {
-    		    	response.getOutputStream().close();
-    		    }
+            	for (UserAuthority au :ua) {
+            		if (au.getAuthority().getAuthority().equals("admin"))
+            			flag = true;
+            	}
+            	
+            	if (flag) {
+            		Image v = imageDao.findByIdAdmin(id);
+                	
+                	if (v != null && v.getImages() != null) {
+        		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+        			    response.getOutputStream().write(v.getImages());
+        			    response.getOutputStream().close();
+        		    } else {
+        		    	response.getOutputStream().close();
+        		    }
+            	}
         	}
-    		
-        	
-        	
-        	
-        	
-        }
-        
-	    
-	    
+        } 
 	}
-    
 }

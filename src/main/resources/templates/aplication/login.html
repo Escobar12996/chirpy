@@ -6,17 +6,21 @@ and open the template in the editor.
 -->
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="layout/layout :: head"></head>
+    <head th:replace="aplication/layout/layout :: head"></head>
     <body class="bg-gradient-chirpy">
+    
+    	<!--/* Contenido de la pagina */-->
+    
         <div class="container">
-            
-
             <div class="row justify-content-center align-items-center minh-100">
                 <div class="col-12">
-                    
+                
+                	<!--/* Row con el contenido */-->
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="row">
+                            
+                            	<!--/* Izquierda */-->
                                 <div class="col-md-5">
                                     <div class="mt-3"><h1 class="text-chirpy text-center">
                                     <img class="card-img-top" th:src="@{/image/Chirpy.png}" alt="Card image cap" style="width: 100px"> Chirpy</h1></div>
@@ -29,15 +33,26 @@ and open the template in the editor.
 	           							<a class="text-info" href="?lang=en_US">En</a>
                                     </p>
                                 </div>
+                                
+                                <!--/* Fin Izquierda */-->
+                                
+                                <!--/* Derecha */-->
+                                
                                 <div class="col-md-7 card p-3">
                                 
-                                	<div th:replace="layout/layout :: alerts"></div>
-                                	
+                                	<!--/* Alertas */-->
+                                	<div th:replace="aplication/layout/layout :: alerts"></div>
                                 	<div class="alert alert-info" th:if="${param.error}" th:utext="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></div>
                                 
+                                	<!--/* Fin Alertas */-->
+                                
+						            <!--/* Titulo y contenido */-->
+						            
                                     <div class="text-center mt-3"><h1 th:text="#{text.login.tittle}"></h1></div>
                                     <div class="card-body">
 
+										<!--/* Formulario de acceso */-->
+										
                                         <form class="form-signin" method="post" th:action="@{/login}">
 
                                             <p>
@@ -50,14 +65,34 @@ and open the template in the editor.
                                             </p>
                                             <button class="btn btn-lg btn-outline-success btn-block" type="submit" th:text="#{text.login.tittle}"></button>
                                         </form>
+                                        
+                                        <!--/* Fin formulario de acceso */-->
+                                        
                                     </div>
+                                    
+                                    <!--/* Fin titulo y contenido */-->
+                                    
                                 </div>
+                                
+                                <!--/* Fin derecha */-->
+                                
                             </div>
                         </div>
                     </div>
+                    
+                    <!--/* Fin row con el contenido */-->
+                    
                 </div>
             </div>
         </div>
-        <footer th:replace="layout/layout :: footer"></footer>
+        
+        <!--/* Fin contenido de la pagina */-->
+        
+        <!--/* Footer */-->
+        
+        <footer th:replace="aplication/layout/layout :: footer"></footer>
+        
+        <!--/* Fin Footer */-->
+        
     </body>
 </html>

@@ -59,7 +59,8 @@ public class AdministrationController {
 	
     //TODO Explorer metodo get
     @RequestMapping(value={"/administration"}, method = RequestMethod.GET)
-    public String explorer(Model model, Principal principal) {
+    public String explorer(Model model,
+    		Principal principal) {
 
     	//introducimos el titulo
     	model.addAttribute("title", messages.getMessage("text.administration.main.tittle", null, LocaleContextHolder.getLocale()));
@@ -70,7 +71,9 @@ public class AdministrationController {
     
   //TODO Explorer metodo get
     @RequestMapping(value={"/administration/users"}, method = RequestMethod.GET)
-    public String users(Model model, Principal principal, @RequestParam(value = "page", required = false) String page) {
+    public String users(Model model,
+    		Principal principal,
+    		@RequestParam(value = "page", required = false) String page) {
 
     	//introducimos el titulo
     	model.addAttribute("title", messages.getMessage("text.administration.user.tittle", null, LocaleContextHolder.getLocale()));
@@ -123,7 +126,9 @@ public class AdministrationController {
     
     //TODO Explorer metodo get
     @RequestMapping(value={"/administration/userimages/{id}"}, method = RequestMethod.GET)
-    public String userimages(Model model, Principal principal, @PathVariable Long id) {
+    public String userimages(Model model,
+    		Principal principal,
+    		@PathVariable Long id) {
     	
     	User userc = userDao.findById(id);
     	
@@ -138,7 +143,9 @@ public class AdministrationController {
     
   //TODO Explorer metodo get
     @RequestMapping(value="/administration/userpost/{id}", method = RequestMethod.GET)
-    public String userpost(Model model, Principal principal, @PathVariable Long id) {
+    public String userpost(Model model,
+    		Principal principal,
+    		@PathVariable Long id) {
     	
     	User userc = userDao.findById(id);
     	
@@ -514,28 +521,6 @@ public class AdministrationController {
 			deletepublication(publiscas);
 			publicationDao.remove(pu);
 		}
-    }
-    
-    
-    private static boolean esEmailCorrecto(String email) {
-        
-        boolean valid = false;
-       
-        Pattern p = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-   
-        Matcher mE = p.matcher(email.toLowerCase());
-        if (mE.matches()){
-           valid = true; 
-        }
-        return valid;
-    }
-    
-    private boolean passwordValidate(String password, User user){
-        
-        //validacion contraseña
-        PasswordEncoder encode = paswordcoder();
-        return encode.matches(password, user.getPassword());
-        
     }
     
 }

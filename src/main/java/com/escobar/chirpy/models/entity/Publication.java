@@ -45,9 +45,6 @@ public class Publication implements Serializable{
     @Size(min = 3, max = maxletter)
     @NotEmpty()
     private String publication;
-
-    @Size(min = 3, max = 100000000)
-    private String publicationtransform;
     
     private boolean view;
     
@@ -80,14 +77,6 @@ public class Publication implements Serializable{
 
 	public void setPublication(String publication) {
 		this.publication = publication;
-	}
-	
-	public String getPublicationtransform() {
-		return publicationtransform;
-	}
-
-	public void setPublicationtransform(String publicationtransform) {
-		this.publicationtransform = publicationtransform;
 	}
 	
 	public boolean isView() {

@@ -60,7 +60,7 @@
 						<li sec:authorize="isAuthenticated()" >
 							<a  href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" th:text="#{text.layout.nav.profile}"></a>
                 			<ul class="collapse list-unstyled" id="pageSubmenu">
-			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
+			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/profile/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
 	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
 	                    		<li>
 	                    			<form class="ml-0"   sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">

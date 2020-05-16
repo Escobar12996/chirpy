@@ -37,9 +37,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
 
             http.authorizeRequests().antMatchers(
             		"/resendemail",
-            		"/regitrationConfirm",
-            		"/userimages",
-            		"/userdetails",
+            		"/confirmaccount",
+            		"/profileimages",
+            		"/profile/{id}",
             		"/explorer/{hashtag}",
             		"/register", "/css/**",
             		"/js/**",
@@ -62,8 +62,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/editprofile/{id}",
             		"/editpass",
             		"/imagesu",
-            		"/editImageprofile",
-            		"/sendban/{id}"
+            		"/editimageprofile",
+            		"/report/{id}"
             		).hasAuthority("user")
                 
                 .antMatchers(

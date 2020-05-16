@@ -89,7 +89,7 @@ public class PublicationService {
                     
                     if (userc != null){
                         userlist.add(userc);
-                        publication = publication.replace(matcheruserone.group(), "<a href=\"/userdetails/"+userc.getId()+"\">@"+userc.getUsername()+"</a>"); 
+                        publication = publication.replace(matcheruserone.group(), "<a href=\"/profile/"+userc.getId()+"\">@"+userc.getUsername()+"</a>"); 
                     }
                     
                 } else if (matcherusertwo.find()){
@@ -100,7 +100,7 @@ public class PublicationService {
                     
                     if (userc != null){
                         userlist.add(userc);
-                        publication = publication.replace(matcherusertwo.group(), "<a href=\"/userdetails/"+userc.getId()+"\">@"+userc.getUsername()+"</a> "); 
+                        publication = publication.replace(matcherusertwo.group(), "<a href=\"/profile/"+userc.getId()+"\">@"+userc.getUsername()+"</a> "); 
                     }
                     
                 } else if (matcherhastags.find()){
@@ -117,7 +117,7 @@ public class PublicationService {
             }
         }
         
-        publi.setPublicationtransform(publication);
+        publi.setPublication(publication);
         publicationDao.save(publi);
         
         for(User u: userlist){

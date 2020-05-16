@@ -45,23 +45,29 @@ public class JpaUserDetailsService implements UserDetailsService{
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
+		//busco el usuario por nombre
 		User user = userDao.findByUserName(username);
 		
+		//si no existe, lo busco por email
 		if (user == null) {
 			user = userDao.findEmail(username);
 		}
 		
+		//si hay algun error con el usuario, salta el error
 		if (user == null) {
 		   throw new UsernameNotFoundException(SpringSecurityMessageSource.getAccessor().getMessage("AbstractUserDetailsAuthenticationProvider.UserUnknown", null, messages.getMessage("AbstractUserDetailsAuthenticationProvider.UserUnknown", null, LocaleContextHolder.getLocale())));
 		}
 		
+		//cargo el rol/roles que tiene el usuario
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
         for(UserAuthority userauth : userAuthDao.findByUser(user)){
             authorities.add(new SimpleGrantedAuthority(userauth.getAuthority().getAuthority()));
             session.setAttribute("email", user.getEmail());
         }
-                //usuario //contraseña //activado //expirada //credenciales expiradas //bloqueado
+        
+        
+        //usuario //contraseña //activado //expirada //credenciales expiradas //bloqueado
 		return new org.springframework.security.core.userdetails.User(
 				user.getUsername(), user.getPassword(), user.getEnabled(), true, true, user.getNotLocker(), authorities);
                 

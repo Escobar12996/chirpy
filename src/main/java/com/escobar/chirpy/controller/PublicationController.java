@@ -9,11 +9,16 @@ import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.services.PublicationService;
 import java.security.Principal;
-import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,12 +55,26 @@ public class PublicationController {
     private MessageSource messages;
     
     //TODO Zona Principal metodo get
-    
     @RequestMapping(value={"/home"}, method = RequestMethod.GET)
-    public String home(Model model, Principal principal) {
+    public String home(Model model,
+    		Principal principal,
+    		HttpServletRequest request,
+    		HttpServletResponse response,
+    		@RequestParam(value = "report", required = false) String report) {
     	
     	//guardamos el usuario el cual esta almacenado en la sesion
     	User userpri = userDao.findByUserName(principal.getName());
+    	
+    	if (userpri == null) {
+    		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+            return "redirect:/login";
+    	}
+    	
+    	if (report != null) {
+    		model.addAttribute("success", messages.getMessage("text.home.reportsend", null, LocaleContextHolder.getLocale()));
+    	}
+    	
     	
     	//pasamos el titulo, el usuario actual y una publicacion para el formulario
     	model.addAttribute("title", messages.getMessage("text.home.tittle", null, LocaleContextHolder.getLocale()));
@@ -72,12 +91,11 @@ public class PublicationController {
         model.addAttribute("imageDao", imageDao);
         model.addAttribute("publicationDao", publicationDao);
         
-        return "home";
+        return "aplication/main";
     }
     
     
     //TODO Zona Principal metodo Post envio de publicacion
-    
     @RequestMapping(value={"/home"}, method = RequestMethod.POST)
     public String principalzonesendpublication(@Valid Publication publication, BindingResult result, Model model, Principal principal, @RequestParam(value = "image[]", required = false) MultipartFile file[]) {
         
@@ -101,7 +119,7 @@ public class PublicationController {
             model.addAttribute("imageDao", imageDao);
             model.addAttribute("publicationDao", publicationDao);
 
-            return "home";
+            return "aplication/main";
             
         //si ha escrito mas palabras de las necesarias en la publicacion, mostramos el error
         } else if (publication.getPublication().length() > Publication.maxletter) {
@@ -120,7 +138,7 @@ public class PublicationController {
             model.addAttribute("imageDao", imageDao);
             model.addAttribute("publicationDao", publicationDao);
             
-            return "home";
+            return "aplicacion/main";
             
         //si no hay ningun error
         }else {
@@ -151,7 +169,7 @@ public class PublicationController {
 	                        model.addAttribute("imageDao", imageDao);
 	                        model.addAttribute("publicationDao", publicationDao);
 	                        
-	                        return "home";
+	                        return "aplicacion/main";
 	                	}
 	            	}
 	            }
@@ -167,7 +185,6 @@ public class PublicationController {
 
     
     //TODO Zona para mostrar las publicaciones
-    
     @RequestMapping(value={"/viewpublication/{id}"}, method = RequestMethod.GET)
     public String viewpublication(Model model, Principal principal, @PathVariable Long id) {
     	
@@ -193,6 +210,6 @@ public class PublicationController {
         //se introduce la publicacion, para responder
         model.addAttribute("publication", new Publication());
         
-        return "viewpublication";
+        return "aplication/viewpublication";
     }
 }

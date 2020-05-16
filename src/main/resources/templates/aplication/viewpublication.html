@@ -6,18 +6,18 @@ and open the template in the editor.
 -->
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="layout/layout :: head"></head>
+<head th:replace="aplication/layout/layout :: head"></head>
 <body>
 	
 		<div class="wrapper d-flex align-items-stretch">
-		<nav th:replace="layout/layout :: navbar"></nav>
+		<nav th:replace="aplication/layout/layout :: navbar"></nav>
 
         <!-- Page Content  -->
       <div id="content" class="p-4 p-md-5 pt-5">
                     <div class="row">
                         
                         <div class="col-xl-7 ml-xl-auto">
-                            <div th:replace="layout/layout :: alerts"></div>
+                            <div th:replace="aplication/layout/layout :: alerts"></div>
 
 							<div class="publication p-4 bg-white card">
                                 <div class="row">
@@ -94,7 +94,7 @@ and open the template in the editor.
                                     		<a th:href="${'/viewpublication/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:value="${publicationview.id}">
                                     			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publicationview))}"></span>
                                     		</a>
-                                    		<a th:href="${'/sendban/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
+                                    		<a th:href="${'/report/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
                                     	</div>
                                     	
                                     </div>
@@ -169,13 +169,13 @@ and open the template in the editor.
                             
                             
                         </div>
-                        <div th:replace="layout/layout :: tendence-1" ></div>
+                        <div th:replace="aplication/layout/layout :: tendence-1" ></div>
                     </div> 
                 </div>
             </div>
       
-      <div th:replace="layout/layout :: modal"></div>
+      <div th:replace="aplication/layout/layout :: modal"></div>
       
-        <div th:replace="layout/layout :: footer"></div>
+        <div th:replace="aplication/layout/layout :: footer"></div>
     </body>
 </html>
