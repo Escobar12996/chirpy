@@ -48,7 +48,7 @@
 				      		<td class="text-center"><p th:if="${user.systenBan != true}" class="btn btn-success m-0" th:text="#{text.administration.users.no}"></p><p th:if="${user.systenBan == true}" class="btn btn-warning m-0"  th:text="#{text.administration.users.yes}"></p></td>
 				      		<td><a class="btn btn-secondary text-white m-0" th:href="${'/administration/userimages/' + user.id }" th:text="#{text.administration.users.images}"></a></td>
 				      		<td><a class="btn btn-secondary text-white m-0" th:href="${'/administration/userpost/' + user.id }" th:text="#{text.administration.users.publications}"></a></td>
-				      		<td><a class="btn btn-secondary text-white m-0" th:text="#{text.administration.users.edit}"></a></td>
+				      		<td><a class="btn btn-secondary text-white m-0" th:text="#{text.administration.users.edit}" th:href="${'/administration/edituser/' + user.id }"></a></td>
 				    	</tr>
 			  		</tbody>
 				</table>

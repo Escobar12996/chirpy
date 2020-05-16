@@ -117,8 +117,7 @@ public class PublicationService {
             }
         }
         
-        publi.setPublication(publication);
-        System.out.println(publi.getPublication());
+        publi.setPublicationtransform(publication);
         publicationDao.save(publi);
         
         for(User u: userlist){

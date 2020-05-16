@@ -310,7 +310,7 @@ public class AccountController {
         return "useredit";
     }
     
-    //todo editar perfil metodo post
+    //TODO editar perfil metodo post
     
     @RequestMapping(value={"/editprofile"}, method = RequestMethod.POST)
     public String editeditImageProfilePOST(@Valid User user, BindingResult result, Principal principal, Model model, HttpServletRequest request, HttpServletResponse response) {

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<!--/* Header usado en la zona de administracion */-->
+	
 	<head th:fragment="head">
 		<meta charset="UTF-8" />
 		<meta name="_csrf" th:content="${_csrf.token}"/>
@@ -15,7 +18,11 @@
 		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
 	</head>
 	
+		<!--/* Fin header zona administracion */-->
+	
 	<body>
+    
+    	<!--/* Navbar de la zona administracion */-->
     
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark" th:fragment="navbar">
 		    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
@@ -40,28 +47,12 @@
 		            </li>
 		        </ul>
 		    </div>
-		    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-		        <ul class="navbar-nav ml-auto">
-		            <li class="nav-item">
-		                <a class="nav-link" href="#">Right</a>
-		            </li>
-		            <li class="nav-item">
-		                <a class="nav-link" href="#">Link</a>
-		            </li>
-		        </ul>
-		    </div>
 		</nav>
 	    
-    	<div th:fragment="alerts">
-		   	<div class="alert alert-success" th:if="${success != null}"
-		    	th:text="${success}"></div>
-		   	<div class="alert alert-danger" th:if="${error != null}"
-		    	th:text="${error}"></div>
-		   	<div class="alert alert-warning" th:if="${warning != null}"
-		    	th:text="${warning}"></div>
-		   	<div class="alert alert-info" th:if="${info != null}"
-		    	th:text="${info}"></div>
-		</div>
+	    <!--/* Fin navbar de la zona administracion */-->
+
+    
+    	<!--/* Footer zonas administracion */-->
     
 	    <footer th:fragment="footer">
 			<script th:src="@{/js/jquery.js}"></script>
@@ -71,5 +62,7 @@
 	        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
 	        <script th:src="@{/js/jqueryfunctions.js}"></script>
 	    </footer>
+	    
+	    <!--/* Fin footer zonas administracion */-->
 	</body>
 </html>

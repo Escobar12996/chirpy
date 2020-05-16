@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<!--/* Header usado en la aplicacion */-->
+	
+	<head th:fragment="head">
+		<meta charset="UTF-8" />
+		<meta name="_csrf" th:content="${_csrf.token}"/>
+		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+		<title th:text="'Chirpy - ' + ${title}"></title>
+		<link rel="stylesheet" th:href="@{/css/style.css}"/>
+		<link rel="stylesheet" th:href="@{/css/mycss.css}" />
+		<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/ekko-lightbox.css}" />
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-font-face.min.css" media="all">
+		<link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
+	</head>
+	
+	<!--/* Fin header usado en la aplicacion */-->
+	
+	
+	<body>
+	
+		<!--/* Cuerpo de las paginas */-->
+		
+    	<div class="wrapper d-flex align-items-stretch">
+    	
+    	
+    		<!--/* Navbar usado en la aplicacion */-->
+    		
+			<nav id="sidebar" th:fragment="navbar">
+			
+				<div class="custom-menu">
+				
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+						<i class="fa fa-bars"></i>
+					</button>
+					
+				</div>
+				
+				<div class="p-4">
+				
+		  			<h1 class="text-center">
+		  				<a th:href="@{/home}" class="logo">
+		  					<img th:src="@{/image/Chirpy.png}" class="rounded-circle image-chirpy m-0">
+		  				</a>
+		  			</h1>
+		  			
+		  			<!--/* Listado de las direcciones de la aplicacion */-->
+		  			
+	        		<ul class="list-unstyled components mb-5">
+		          		<li><a th:href="@{/home}" th:text="#{text.layout.nav.main}"></a></li>
+		          		<li><a th:href="@{/explorer}" th:text="#{text.layout.nav.explorer}"></a></li>
+						<li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{text.layout.nav.login}"></a></li>
+						<li><a sec:authorize="isAuthenticated()" th:href="${'/quotes'}"><span th:text="#{text.layout.nav.mention}"></span> <span th:text="${user.quotes}"></span></a></li>
+						<li><a class="text-warning" sec:authorize="hasAuthority('admin')" th:href="${'/administration'}" th:text="#{text.layout.nav.administration}"></a></li>
+						
+						<li sec:authorize="isAuthenticated()" >
+							<a  href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" th:text="#{text.layout.nav.profile}"></a>
+                			<ul class="collapse list-unstyled" id="pageSubmenu">
+			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/userdetails/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
+	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
+	                    		<li>
+	                    			<form class="ml-0"   sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
+		                            	<button type="submit" class="btn btn-link text-warning pl-0 text-center" th:text="#{text.layout.nav.logout}"></button>
+		                        	</form>
+		                        </li>
+                			</ul>
+	           			</li>
+           			</ul>
+           			
+           			<!--/* Fin de las direcciones de la aplicacion */-->
+           			
+           			<!--/* Pequeño footer donde esta el cambio de lenguaje y el copy */-->
+           			
+	        		<div class="footer">
+	        		
+	        			<div class="row">
+	        			<div class="col text-center">
+	        			<p class="">
+	           				<a class="text-white" href="?lang=es_ES">Es</a> 
+	           				<a class="text-white" href="?lang=en_US">En</a>
+	           			</p>
+	        			</div>
+	        			
+	        			</div>
+		        		
+	        		
+	        			<p>
+							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Antonio Escobar Rueda
+						</p>
+	        		</div>
+	        		
+	        		<!--/* Fin del pequeño footer */-->
+	        		
+				</div>
+    		</nav>
+    		
+			<!--/* Fin del navbar */-->
+
+			<!--/* Zona con los contenidos de las paginas */-->
+			
+        	<div id="page-content-wrapper">
+				<div class="container-fluid">
+                	<div class="row mt-5">
+                	
+                		<!--/* Contenidos zona central */-->
+                		
+                    	<div class="col-12 col-xl-7 ml-xl-auto">
+                    	
+                    		<!--/* Alertas de toda la aplicacion */-->
+                    		
+                        	<div th:fragment="alerts">
+                            	<div class="alert alert-success" th:if="${success != null}"
+                                    th:text="${success}"></div>
+                            	<div class="alert alert-danger" th:if="${error != null}"
+                                    th:text="${error}"></div>
+                            	<div class="alert alert-warning" th:if="${warning != null}"
+                                    th:text="${warning}"></div>
+                            	<div class="alert alert-info" th:if="${info != null}"
+                                    th:text="${info}"></div>
+                        	</div>
+                        	
+                        	<!--/* Fin Alertas de toda la aplicacion */-->
+                        	
+                    	</div>
+                    	
+                    	<!--/* Fin zona central */-->
+                	
+                		<!--/* Contenidos zona lateral, TENDENCIAS */-->
+                		
+		                <div class="col-xl-4 d-none d-xl-block ml-xl-auto ml-5 mr-5" th:fragment="tendence-1">
+			                <div class="card bg-secondary">
+			                    <div class="card bg-secondary">
+				                    <div class="card-header text-center text-white bg-secondary">
+				                        <h5 class="card-title text-primary" th:text="#{text.layout.trend}"></h5>
+				                    </div>
+				                    <div class="">
+				                    	<div class="list-group list-group-flush">
+					                    	<a th:each="trend : ${trends}" th:href="${'/explorer/' + trend.hashtagname}" class="text-white p-2 mt-2 mb-2 ml-2">
+					                    		<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
+					                    		<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+					                    	</a>
+					                    	<p class="text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
+							            </div>
+				                    </div>
+				                </div>
+			                </div>
+			            </div>
+			            
+	            		<!--/* Fin contenidos zona lateral */-->
+	            
+                
+            		</div>
+        		</div>
+    		</div>
+    		
+    		<!--/* Fin zona con los contenidos de las paginas */-->
+    		
+    	</div>
+    
+    	<!--/* Fin cuerpo de las paginas */-->
+    
+    	<!--/* Modal usado para enviar respuestas */-->
+    	
+    	<div th:fragment="modal" id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					
+					<!--/* Cabecera */-->
+					
+					<div class="modal-header">
+						<h4 class="modal-title" th:text="#{text.home.response}"></h4>
+					</div>
+					
+					<!--/* Fin abecera */-->
+					
+					<!--/* Cuerpo Modal */-->
+					
+					<div class="modal-body">
+						<form th:object="${publication}" id="sendPublication" enctype="multipart/form-data" class="row">
+							
+							<div class="col-12 text-center">
+								<textarea th:field="*{publication}" th:placeholder="#{text.home.response}" class="border" id="exampleFormControlTextarea1" rows="3"></textarea>
+							</div>
+							
+							<div class="col-12 mt-2">
+								<div class="row">
+									<div class="col-6">
+										<input type="file" name="image[]" id="1" class="form-control border">
+									</div>
+									<div class="col-6">
+										<input type="file" name="image[]" id="2" class="form-control border">
+									</div>
+								</div>
+								<p id="errorview"></p>
+							</div>
+    
+							<div class="col-12 text-center">
+								<button class="btn btn-outline-success mt-2" type="submit" th:text="#{text.home.publish}"></button>
+							</div>
+						</form>
+					</div>
+					
+					<!--/* Fin cuerpo Modal */-->
+					
+					<!--/* Footer */-->
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-danger" data-dismiss="modal" th:text="#{text.home.close}"></button>
+					</div>
+					
+					<!--/* Fin Footer */-->
+					
+				</div>
+			</div>
+		</div>
+    
+    	<!--/* Fin modal usado para enviar respuestas */-->
+    
+    	<!--/* Footer de la pagina */-->
+    	
+	    <footer th:fragment="footer">
+			<script th:src="@{/js/jquery.js}"></script>
+			<script th:src="@{/js/jquery-ui.min.js}"></script>
+	        <script th:src="@{/js/popper.min.js}"></script>
+	        <script th:src="@{/js/bootstrap.min.js}"></script>
+	        <script th:src="@{/js/ekko-lightbox.min.js}"></script>
+	        <script th:src="@{/js/jqueryfunctions.js}"></script>
+	    </footer>
+	    
+	    <!--/* Fin footer de la pagina */-->
+	    
+	</body>
+</html>

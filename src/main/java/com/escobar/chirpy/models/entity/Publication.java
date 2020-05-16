@@ -29,8 +29,9 @@ import javax.validation.constraints.Size;
 @Table(name = "Publications")
 @NamedQuery(name="Publication.findAll", query="SELECT p from Publication p")
 public class Publication implements Serializable{
-    
+
 	public static final int maxletter = 300;
+	
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -41,9 +42,12 @@ public class Publication implements Serializable{
     @JoinColumn(name = "user_id")
     private User user;
     
-    @Size(min = 3, max = 1000000)
-    @NotEmpty(message="Debe de tener algo")
+    @Size(min = 3, max = maxletter)
+    @NotEmpty()
     private String publication;
+
+    @Size(min = 3, max = 100000000)
+    private String publicationtransform;
     
     private boolean view;
     
@@ -54,53 +58,63 @@ public class Publication implements Serializable{
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfSend;
 
-    public String getDateOfSend() {
+    public Long getId() {
+		return id;
+	}
+    
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public String getPublication() {
+		return publication;
+	}
+
+	public void setPublication(String publication) {
+		this.publication = publication;
+	}
+	
+	public String getPublicationtransform() {
+		return publicationtransform;
+	}
+
+	public void setPublicationtransform(String publicationtransform) {
+		this.publicationtransform = publicationtransform;
+	}
+	
+	public boolean isView() {
+		return view;
+	}
+
+	public void setView(boolean view) {
+		this.view = view;
+	}
+
+	public Publication getPubli() {
+		return publi;
+	}
+	
+	public void setPubli(Publication publi) {
+		this.publi = publi;
+	}
+
+	public void setDateOfSend(Date dateOfSend) {
+		this.dateOfSend = dateOfSend;
+	}
+
+	public String getDateOfSend() {
         SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
         String strDate = sm.format(dateOfSend);
         return strDate;
     }
 
-    public void setDateOfSend(Date dateOfSend) {
-        this.dateOfSend = dateOfSend;
-    }
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getPublication() {
-        return publication;
-    }
-
-    public void setPublication(String publication) {
-        this.publication = publication;
-    }
-
-    public boolean isView() {
-        return view;
-    }
-
-    public void setView(boolean view) {
-        this.view = view;
-    }
-
-	public Publication getPubli() {
-		return publi;
-	}
-
-	public void setPubli(Publication publi) {
-		this.publi = publi;
-	}
 }

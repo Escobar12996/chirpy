@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<!--/* Header usado en la aplicacion */-->
+	
+	<head th:replace="aplication/layout/applayout :: head"></head>
+
+	<!--/* fin header usado en la aplicacion */-->
+
+    <body>
+
+		<!--/* Cuerpo de la aplicacion */-->
+		<div class="wrapper d-flex align-items-stretch">
+		
+			<!--/* Navbar de la aplicacion */-->
+			
+			<nav th:replace="aplication/layout/applayout :: navbar"></nav>
+
+			<!--/* Fin navbar de la aplicacion */-->
+
+			<!--/* Contenido de la aplicacion */-->
+			
+      		<div id="content" class="p-4 p-md-5 pt-5">
+                    <div class="row">
+                        
+                        <!--/* Zona central */-->
+                        
+                        <div class="col-xl-7 ml-xl-auto">
+                        
+                        	<!--/* Alertas */-->
+                        
+                            <div th:replace="aplication/layout/applayout :: alerts"></div>
+                            
+                            <!--/* Fin Alertas */-->
+                            
+                            <!--/* Buscador */-->
+                            
+                            <div class="p-3 bg-white">
+                                <form class="" th:action="@{/explorer}" method="post">
+                                	<div class="form-row">
+                                    	<div class="col-10">
+                                        	<input type="text" name="find" th:placeholder="#{text.explorer.find}" class="form-control ligthyellow border">
+                                    	</div>
+                                    	<div class="col-2">
+                                        	<button class="btn btn-outline-primary" type="submit" th:text="#{text.explorer.find}"></button>
+                                    	</div>
+                                	</div>
+                            	</form>
+                            </div>
+                            
+                            <!--/* Fin Buscador */-->
+                            
+                            <!--/* Listado de usuarios encontrados */-->
+                            
+                            <div class="p-3 mt-3 bg-white card" th:if="${!#lists.isEmpty(users)}" th:each="us : ${users}">
+                                <div class="row">
+									<div class="col-3 col-xl-2">
+                                    	<img class="img-fluid border" th:if="${us.imageperf != null}" th:src="${'/image/user/' + us.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${us.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                    </div>                                
+                                	<div class="col-6 col-xl-7 d-flex align-content-center flex-wrap">
+                                    	<p><a th:href="${'/userdetails/' + us.id}"><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></a></p>
+                                	</div>
+                                	<div class="col-3 col-xl-3"  sec:authorize="isAuthenticated()" th:if="${us.username != #authentication.name}">
+                                    	<button class="badge badge-primary followbutton" th:id="'followbutton' + ${us.id}" th:value="${us.id}" th:text="#{text.explorer.follow}"></button>
+                                    	<button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${us.id}" th:value="${us.id}" style="display: none;" th:text="#{text.explorer.ufollow}"></button>
+                                	</div>
+                                </div>
+                            </div>
+                    
+                    		<!--/* Fin listado de usuarios encontrados */-->
+                    		
+                    		<!--/* Listado de publicaciones encontradas */-->
+                    
+                            <div class="p-3 mt-3 bg-white card div-buttom publication" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+                                <div class="row">
+                                    <div class="col-3 col-xl-2">
+                                    	<img class="img-fluid border" th:if="${publi.user.imageperf != null}" th:src="${'/image/user/' + publi.user.id}" alt="Card image cap" style="width: 100px">
+                                    	<img class="img-fluid border" th:if="${publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                	</div>
+                                	<div class="col-9 col-xl-10">
+                                    	<div class="row">
+                                        	<div class="col-12">
+                                            	<p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                        	</div>
+                                    	</div>
+                                    	<p th:utext="${publi.publication}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--/* Fin listado de publicaciones encontradas */-->
+                            
+                            <!--/* Si no se ha encontrado nada */-->
+                            
+                            <div class="jumbotron p-3 mt-3" th:if="${#lists.isEmpty(publications) && #lists.isEmpty(users) && publications != null && users != null}">
+		                    	<div class="text-center">
+		                        	<h5 class="card-title text-danger" th:text="#{text.explorer.empty}"></h5>
+		                    	</div>
+	                    	</div>
+                            
+                            <!--/* Fin si no se ha encontrado nada */-->
+                            
+                            <!--/* Si no se ha buscado nada, muestro tendencias en grande */-->
+                            
+                            <div class="jumbotron p-3 mt-3" th:if="${publications == null && users == null}">
+		                    	<div class="text-center">
+		                        	<h5 class="card-title secondary" th:text="#{text.layout.trend}"></h5>
+		                    	</div>
+		                    	
+		                    	<hr class="my-4">
+		                    	
+		                    	<div class="list-group list-group-flush">
+			                    	<a th:each="trend : ${trends}" th:href="${'/explorer/' + trend.hashtagname}" class="p-2 mt-2 mb-2 ml-2">
+			                    		<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
+			                    		<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+			                    	</a>
+			                    	<p class="p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.explorer.empty}"></p>
+					            </div>
+		                	</div>
+                            
+                            <!--/* Fin si no se ha buscado nada */-->
+                            
+                        </div>
+                        
+                        <!--/* Fin zona central */-->
+                        
+                        <!--/* Zona lateral, funciona solo si se ha buscado algo, o la ventana es grande */-->
+                       	
+						<div class="col-xl-4 d-none d-xl-block ml-xl-auto ml-5 mr-5">
+	                		<div class="card bg-secondary" th:if="${publications != null || users != null}">
+	                    		<div class="card bg-secondary">
+		                    		<div class="card-header text-center text-white bg-secondary">
+		                        		<h5 class="card-title text-primary" th:text="#{text.layout.trend}"></h5>
+		                    		</div>
+		                    		<div>
+		                    			<div class="list-group list-group-flush">
+			                    			<a th:each="trend : ${trends}" th:href="${'/explorer/' + trend.hashtagname}" class="text-white p-2 mt-2 mb-2 ml-2">
+		                    					<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
+			                    				<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
+			                    			</a>
+			                    			<p class="text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
+					            		</div>
+		                    		</div>
+		                		</div>
+	                		</div>
+                		</div>
+
+						<!--/* Fin zona lateral */-->
+
+
+
+
+                    </div> 
+                </div>
+                
+                <!--/* Fin contenido */-->
+                
+        	</div>
+        	
+        	<!--/* Fin cuerpo */-->
+        	
+       	<!--/* Footer */-->
+       	
+        <div th:replace="aplication/layout/applayout :: footer"></div>
+        
+        <!--/* Fin footer */-->
+        
+    </body>
+</html>

@@ -59,7 +59,7 @@ public class ExplorerController {
             model.addAttribute("user", userDao.findByUserName(principal.getName()));
         }
         
-        return "explorer";
+        return "aplication/explorer";
     }
     
   //TODO Explorer metodo post

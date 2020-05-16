@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head th:replace="layout/administrationLayout :: head"></head>
+	
+	<body>
+		<nav th:replace="layout/administrationLayout :: navbar"></nav>
+	
+		<div class="container">
+		
+		<div  th:replace="layout/administrationLayout :: alerts"></div>
+                    <div class="card">
+                        <div class="card-header" th:text="#{text.edituser.editImages}"></div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-6">
+                                	
+                                    <div class="card align-content-center text-center">
+                                        <form class="form-signin" th:action="@{/administration/editImageprofile}"
+                                              method="post" enctype="multipart/form-data">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:if="${user.imageperf != null}" th:src="${'/image/user/' + user.id}" alt="Card image cap" style="width: 100px">
+                                                    <img class="card-img-top" th:if="${user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                                    
+                                                </div>
+                                            </div>
+                                            <label for="image" th:text="#{text.edituser.profileimage}"></label>
+                                            <input id="image" type="file" name="ima" class="form-control border">
+                                            <button class="btn btn-outline-primary mb-3 mt-2" type="submit"  th:text="#{text.edituser.changeImage}"></button>
+                                            <button class="btn btn btn-outline-warning mb-3 mt-2" name="delete" value="delete" type="submit"  th:text="#{text.edituser.deleteimage}"></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-6">
+                                    <div class="card align-content-center text-center">
+                                        <form class="form-signin" th:action="@{/administration/imagesu}"
+                                              method="post" enctype="multipart/form-data">
+                                            <div class="row align-content-center">
+                                                <div class="col mt-2">
+                                                    <img class="card-img-top" th:if="${user.imagesu != null}" th:src="${'/image/imagesu/' + user.id}" alt="Card image cap" style="max-width: 300px; max-height: 100px">
+                                                    <div th:if="${user.imagesu == null}" style="height: 100px"></div>
+                                                </div>
+                                            </div>
+                                            <label for="image"  th:text="#{text.edituser.image}"></label>
+                                            <input id="image" type="file" name="ima" class="form-control border">
+                                            <button class="btn btn-outline-primary mb-3 mt-2" type="submit"  th:text="#{text.edituser.changeImage}"></button>
+                                            <button class="btn btn-outline-warning mb-3 mt-2" name="delete"  th:text="#{text.edituser.deleteimage}" value="delete" type="submit"></button>
+                                        </form>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>      
+                        </div>
+                    </div>
+                    
+                    
+                   
+                    
+                    
+                    
+                    
+                    <div class="card mt-5">
+                        <div class="card-header"  th:text="#{text.edituser.tittle}"></div>
+                        <div class="card-body">
+                            <form class="form-signin" th:action="@{/administration/edituser}"
+                                  th:object="${user}" method="post" enctype="multipart/form-data">
+                                <p>
+                                        <label for="username"  th:text="#{text.edituser.user}"></label> <input
+                                                type="text" id="username" th:field="*{username}"
+                                                class="form-control border" th:placeholder="#{text.edituser.user}" required autofocus
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger" th:if="${#fields.hasErrors('username')}"
+                                                th:errors="*{username}"></span>
+                                </p>
+                                
+                                <p>
+                                        <label for="description"  th:text="#{text.edituser.description}"></label>
+                                        <textarea th:errorclass="'form-control alert-danger'" rows="4" class="border" id="description" th:field="*{description}" th:placeholder="#{text.edituser.description}"></textarea>
+                                        <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                                </p>
+                                
+                                <p>
+                                        <label for="name"  th:text="#{text.edituser.name}"></label> <input type="text" id="namealasname"
+                                                th:field="*{name}" class="form-control border"
+                                                th:placeholder="#{text.edituser.name}" required autofocus
+                                                th:errorclass="'form-control alert-danger'" /> <span
+                                                class="text-danger"
+                                                th:if="${#fields.hasErrors('name')}"
+                                                th:errors="*{name}"></span>
+                                </p>
+
+                                <p>
+                                        <label for="email" th:text="#{text.edituser.email}"></label> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required autofocus th:errorclass="'form-control alert-danger'" /> 
+                                        <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                </p>
+
+                                <div class="text-center">
+                                        <button class="btn btn-outline-primary" type="submit"  th:text="#{text.edituser.tittle}"></button>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+                    
+                    <div class="card mt-5">
+                        <div class="card-header" th:text="#{text.edituser.editpassword}"></div>
+                        <div class="card-body">
+                            <form class="form-signin" th:action="@{/administration/editpass}" method="post" enctype="multipart/form-data">
+                                <p>
+                                    <label for="password"  th:text="#{text.edituser.newpassword}"></label> <input
+                                        type="password" id="password" name="password"
+                                        class="form-control border" th:placeholder="#{text.edituser.newpassword}" required autofocus/>
+                                </p>
+                                <div class="text-center">
+                                        <button class="btn btn-outline-primary" type="submit"  th:text="#{text.edituser.changepassword}"></button>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>
+                    
+                    <div class="m-5 p-3">
+                        
+                    </div>
+		</div>
+		<div th:replace="layout/administrationLayout :: footer"></div>
+	</body>
+</html>
