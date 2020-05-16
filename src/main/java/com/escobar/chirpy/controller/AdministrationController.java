@@ -65,7 +65,7 @@ public class AdministrationController {
     	//introducimos el titulo
     	model.addAttribute("title", messages.getMessage("text.administration.main.tittle", null, LocaleContextHolder.getLocale()));
     	
-        return "layout/administrationLayout";
+        return "administration/home";
     }
 	
     
@@ -121,7 +121,7 @@ public class AdministrationController {
     	}
     	
     	
-        return "usersadministration";
+        return "administration/usersadministration";
     }
     
     //TODO Explorer metodo get
