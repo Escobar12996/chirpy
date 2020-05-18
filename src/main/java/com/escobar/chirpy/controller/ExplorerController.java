@@ -50,7 +50,7 @@ public class ExplorerController {
     
     
   //TODO Explorer metodo post
-    @RequestMapping(value={"/explorer"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/explorer", "/"}, method = RequestMethod.GET)
     public String explorersend(@RequestParam(value = "find", required = false) String find,
     		Model model,
     		Principal principal,

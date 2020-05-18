@@ -5,6 +5,7 @@
  */
 package com.escobar.chirpy.models.services;
 
+import com.escobar.chirpy.models.dao.EmoticonDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.ImageDao;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.unbescape.html.HtmlEscape;
 
+import com.escobar.chirpy.models.entity.Emoticon;
 import com.escobar.chirpy.models.entity.Hashtag;
 import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Image;
@@ -55,12 +57,15 @@ public class PublicationService {
     private ImageDao imageDao;
     
     @Autowired
+    private EmoticonDao emoticonDao;
+    
+    @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
     
     private Pattern patternuserone = Pattern.compile("@&quot;[A-Za-z0-9\\s]+&quot;");
     private Pattern patternusertwo = Pattern.compile("@[A-Za-z0-9]+\\s?");
     private Pattern patternhastags = Pattern.compile("#[A-Za-z0-9_-]+\\s?");
-    
+    private Pattern patternemoticon = Pattern.compile(":[A-Za-z0-9\\s]+:");
     
     public void formatedAndSave(Publication publi, MultipartFile files[]) {
         
@@ -71,12 +76,13 @@ public class PublicationService {
 
         String publication = HtmlEscape.escapeHtml5(publi.getPublication());
         
-        //comprobamos si tiene alguna mencion
-        if (publication.contains("@") || publication.contains("#")){
+        //comprobamos si tiene alguna mencion, hastag o emoji
+        if (publication.contains("@") || publication.contains("#") || publication.contains(":")){
             
             Matcher matcheruserone = patternuserone.matcher(publication);
             Matcher matcherusertwo = patternusertwo.matcher(publication);
             Matcher matcherhastags = patternhastags.matcher(publication);
+            Matcher matcheremoticon = patternemoticon.matcher(publication);
             
             boolean bandera = false;
             
@@ -110,6 +116,17 @@ public class PublicationService {
                     hashtags.add(user);
                     
                     publication = publication.replace(matcherhastags.group(), "<a href=\"/explorer?find="+user+"\">"+matcherhastags.group()+"</a> "); 
+                    
+                } else if (matcheremoticon.find()){
+
+                    String user = matcheremoticon.group().replace(":", "");
+                    user = user.trim();
+                    
+                    Emoticon emoti = emoticonDao.findemoticon(user);
+                    
+                    if (emoti != null) {
+                        publication = publication.replace(matcheremoticon.group(), "<img src=\"/image/emoji/"+ emoti.getId() +"\" alt=\""+emoti.getComment()+"\">"); 
+                    }
                     
                 } else {
                     bandera = true;

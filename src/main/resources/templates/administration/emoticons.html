@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head th:replace="administration/layout/layout :: head"></head>
+	
+	<body>
+		<nav th:replace="administration/layout/layout :: navbar"></nav>
+	
+		<div class="container">
+			
+			<div class="row justify-content-center">
+				<div class="col-6">
+					<div class="card text-center">
+		             	<div class="card-header">Agregar</div>
+		           		<div class="card-body">
+			          		<form th:action="@{/administration/emoticons}" method="post" class="form-signin mt-2" th:object="${emoticon}" enctype="multipart/form-data">
+			          			<p>
+			                        <label for="comment" th:text="Comentario"></label> <input
+			                                type="text" id="comment" th:field="*{comment}"
+			                                class="form-control border" th:placeholder="comment" required
+			                                th:errorclass="'form-control alert-danger'" /> <span
+			                                class="text-danger" th:if="${#fields.hasErrors('comment')}"
+			                                th:errors="*{comment}"></span>
+		                    	</p>
+			          			<p>
+			                        <label for="command" th:text="command"></label> <input
+			                                type="text" id="command" th:field="*{command}"
+			                                class="form-control border" th:placeholder="command" required
+			                                th:errorclass="'form-control alert-danger'" /> <span
+			                                class="text-danger" th:if="${#fields.hasErrors('command')}"
+			                                th:errors="*{command}"></span>
+		                    	</p>
+		          				<input id="emoti" type="file" name="emoti" class="form-control border">
+			          			<button class="btn btn-outline-primary mb-3 mt-2" type="submit">subir emoji</button>
+							</form>
+		         		</div>
+		         	</div>
+				</div>
+			</div>
+		
+		
+		
+		
+		</div>
+		<div th:replace="administration/layout/layout :: footer"></div>
+	</body>
+</html>

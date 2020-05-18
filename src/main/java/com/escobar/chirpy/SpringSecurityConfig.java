@@ -81,7 +81,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/administration/editImageprofile",
             		"/administration/imagesu",
             		"/administration/edituser",
-            		"/administration/editpass"
+            		"/administration/editpass",
+            		"/administration/emoticons"
         		).hasAuthority("admin")
                 
                 .and()

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.escobar.chirpy.models.dao.EmoticonDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.ImageDao;
@@ -36,6 +37,7 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.Emoticon;
 import com.escobar.chirpy.models.entity.Hashtag;
 import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Image;
@@ -59,6 +61,9 @@ public class AdministrationController {
 	
 	@Autowired
 	private ImageDao imageDao;
+
+	@Autowired
+	private EmoticonDao emoticonDao;
 	
 	@Autowired
 	private UserBanDao userBan;
@@ -514,6 +519,47 @@ public class AdministrationController {
         return "redirect:/administration/edituser/"+userc.getId();
     }
     
+    @RequestMapping(value={"/administration/emoticons"}, method = RequestMethod.GET)
+    public String emoticons(Model model) {
+        
+    	model.addAttribute("emoticon", new Emoticon());
+        
+        
+        return "administration/emoticons";
+    }
+    
+    @RequestMapping(value={"/administration/emoticons"}, method = RequestMethod.POST)
+    public String emoticonsup(@Valid Emoticon emoticon, 
+    		BindingResult result, 
+    		Principal principal,
+    		Model model,
+    		@RequestParam(value = "emoti", required = true) MultipartFile file) {
+        
+    	if (result.hasErrors()){
+            return "administration/emoticons";
+        }  
+        
+    	//si no es nulo y no esta vacio, comprobamos que NO es una imagen valida para lanzar error
+    	if(file != null && !file.isEmpty()) {
+    		if (!file.getContentType().contains("image/png") && !file.getContentType().contains("image/jpeg") && !file.getContentType().contains("image/gif")) {
+    			
+    			model.addAttribute("emoticon", emoticon);
+    			return "administration/emoticons";
+    		}
+		}
+    	
+    	try {
+        	emoticon.setImage(file.getBytes());
+        	emoticonDao.save(emoticon);
+		} catch (Exception e) {
+			// TODO: handle exception
+			model.addAttribute("emoticon", emoticon);
+			return "administration/emoticons";
+		}
+        
+        return "redirect:/administration/emoticons";
+    }
+    
     //TODO Editar imagen metodo get
     
     @RequestMapping(value={"/administration/imagesu"}, method = RequestMethod.GET)
@@ -551,7 +597,7 @@ public class AdministrationController {
 
     }
     
-private void deleteonepublication(Publication publis) {
+    private void deleteonepublication(Publication publis) {
     	
 		List<Publication> publiscas = publicationDao.findResponseAdmin(publis);
 		
@@ -568,7 +614,7 @@ private void deleteonepublication(Publication publis) {
 		
 		for (Image ima : imageDao.findByPubliAdmin(publis)) {
 			ima.setPubli(null);
-			imageDao.update(ima);
+			imageDao.update(ima); 
 		}
 		
 		for (HashtagPublication ht : hashtagPublicationDao.findHastagsPublication(publis)) {

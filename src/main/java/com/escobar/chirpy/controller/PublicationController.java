@@ -156,7 +156,7 @@ public class PublicationController {
             model.addAttribute("imageDao", imageDao);
             model.addAttribute("publicationDao", publicationDao);
             
-            return "aplicacion/main";
+            return "aplication/main";
             
         //si no hay ningun error
         }else {

@@ -5,10 +5,12 @@
  */
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.EmoticonDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.entity.Authority;
+import com.escobar.chirpy.models.entity.Emoticon;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
@@ -40,6 +42,11 @@ public class ImageController {
     private ImageDao imageDao;
     
     @Autowired
+    private EmoticonDao emoticonDao;
+    
+    
+    
+    @Autowired
     private UserAuthorityDao userAuthorityDao;
     
     @RequestMapping(value={"/image/{tipo}/{id}"}, method = RequestMethod.GET)
@@ -67,6 +74,18 @@ public class ImageController {
 		    if (user != null && user.getImagesu() != null) {
 		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
 			    response.getOutputStream().write(user.getImagesu());
+			    response.getOutputStream().close();
+		    } else {
+		    	response.getOutputStream().close();
+		    }
+		    
+	    //si estas buscando imagenes
+        } else if (tipo.equals("emoji")){
+            Emoticon emo = emoticonDao.findemoticonId(id);
+            
+		    if (emo != null) {
+		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+			    response.getOutputStream().write(emo.getImage());
 			    response.getOutputStream().close();
 		    } else {
 		    	response.getOutputStream().close();

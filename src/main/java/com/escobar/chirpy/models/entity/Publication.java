@@ -42,7 +42,7 @@ public class Publication implements Serializable{
     @JoinColumn(name = "user_id")
     private User user;
     
-    @Size(min = 3, max = maxletter)
+    @Size(min = 3, max = 250000)
     @NotEmpty()
     private String publication;
     
