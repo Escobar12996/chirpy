@@ -70,7 +70,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/administration",
             		"/administration/users",
             		"/administration/userimages/{id}",
-            		"/administration/userpublications/{id}",
             		"/administration/userpost/{id}",
             		"/administration/deleteimage",
             		"/administration/deletepost",

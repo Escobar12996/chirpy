@@ -79,6 +79,12 @@ public class PublicationController {
     	//pasamos el titulo, el usuario actual y una publicacion para el formulario
     	model.addAttribute("title", messages.getMessage("text.home.tittle", null, LocaleContextHolder.getLocale()));
         model.addAttribute("user", userpri);
+        
+        if (!userpri.getNotLocker()) {
+        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        
         model.addAttribute("publication", new Publication());
         
         //mostramos las publicacion de la gente a la que sigue el usuario
@@ -97,13 +103,25 @@ public class PublicationController {
     
     //TODO Zona Principal metodo Post envio de publicacion
     @RequestMapping(value={"/home"}, method = RequestMethod.POST)
-    public String principalzonesendpublication(@Valid Publication publication, BindingResult result, Model model, Principal principal, @RequestParam(value = "image[]", required = false) MultipartFile file[]) {
+    public String principalzonesendpublication(@Valid Publication publication,
+    		BindingResult result,
+    		Model model,
+    		Principal principal,
+    		@RequestParam(value = "image[]", required = false) MultipartFile file[],
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
         
     	//guardamos el usuario el cual esta almacenado en la sesion
     	User userpri = userDao.findByUserName(principal.getName());
     	
     	//añadimos el usuario y el titulo al modelo
         model.addAttribute("user", userpri);
+        
+        if (!userpri.getNotLocker()) {
+        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        
         model.addAttribute("title", messages.getMessage("text.home.tittle", null, LocaleContextHolder.getLocale()));
         
         //si hay algun error, lo mostramos y cargamos la informacion de la pagina
@@ -186,30 +204,52 @@ public class PublicationController {
     
     //TODO Zona para mostrar las publicaciones
     @RequestMapping(value={"/viewpublication/{id}"}, method = RequestMethod.GET)
-    public String viewpublication(Model model, Principal principal, @PathVariable Long id) {
+    public String viewpublication(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
     	
-    	//si existe el usuario logeado se carga
-        if (principal != null){
-            model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        }
+    	Publication publication = publicationDao.findById(id);
     	
-        //se carga el titulo y las tendencias
-        model.addAttribute("title", messages.getMessage("text.vpublication.tittle", null, LocaleContextHolder.getLocale()));
-        model.addAttribute("trends", hashtagDao.findUp());
-        
-        //se muestra la publicacion
-        model.addAttribute("publicationview", publicationDao.findById(id));
+    	if (publication != null && publication.isView()) {
+    		//si existe el usuario logeado se carga
+            if (principal != null){
+            	
+            	User user = userDao.findByUserName(principal.getName());
+            	
+                model.addAttribute("user", user);
+                
+                if (!user.getNotLocker()) {
+                	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    new SecurityContextLogoutHandler().logout(request, response, auth);
+                }
+                
+                
+                
+            }
+        	
+            //se carga el titulo y las tendencias
+            model.addAttribute("title", messages.getMessage("text.vpublication.tittle", null, LocaleContextHolder.getLocale()));
+            model.addAttribute("trends", hashtagDao.findUp());
+            
+            //se muestra la publicacion
+            model.addAttribute("publicationview", publication);
 
-        //se introducen los daos necesarios
-        model.addAttribute("imageDao", imageDao);
-        model.addAttribute("publicationDao", publicationDao);
-        
-    	//se introducen las respuestas
-        model.addAttribute("publications", publicationDao.findResponse(publicationDao.findById(id)));
-        
-        //se introduce la publicacion, para responder
-        model.addAttribute("publication", new Publication());
-        
-        return "aplication/viewpublication";
+            //se introducen los daos necesarios
+            model.addAttribute("imageDao", imageDao);
+            model.addAttribute("publicationDao", publicationDao);
+            
+        	//se introducen las respuestas
+            model.addAttribute("publications", publicationDao.findResponse(publicationDao.findById(id)));
+            
+            //se introduce la publicacion, para responder
+            model.addAttribute("publication", new Publication());
+            
+            return "aplication/viewpublication";
+    	}
+    	
+    	return "redirect:/home";
+    	
     }
 }

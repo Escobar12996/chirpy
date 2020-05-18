@@ -14,16 +14,7 @@ public class HashtagDao {
 	
     @PersistenceContext
     private EntityManager em;
-    
-    @Transactional
-    public void save(Hashtag hashtag) {
-        em.persist(hashtag);	
-    }
-    
-    @Transactional
-    public void update(Hashtag hashtag) {
-        em.merge(hashtag);	
-    }
+
         
     public Hashtag findByHashtagName(String name) {
         TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h WHERE h.hashtagname = :hashtagname", Hashtag.class); 
@@ -48,6 +39,16 @@ public class HashtagDao {
         query.setParameter("hashtagname", name);
         return query.getResultList();
 
+    }
+    
+    @Transactional
+    public void save(Hashtag hashtag) {
+        em.persist(hashtag);	
+    }
+    
+    @Transactional
+    public void update(Hashtag hashtag) {
+        em.merge(hashtag);	
     }
         
 }

@@ -61,7 +61,7 @@ and open the template in the editor.
                                 
                                     <div class="row">
                                         <div class="col-9">
-                                            <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                            <p><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                         </div>
                                         <div class="col-3" th:if="${user != null && user.id == userc.id}">
                                         	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
@@ -104,7 +104,7 @@ and open the template in the editor.
                                					<div class="col-8 col-xl-10">
                                     				<div class="row">
                                         				<div class="col-12">
-                                            				<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+                                            				<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
                                         				</div>
                                     				</div>
                                    				</div>

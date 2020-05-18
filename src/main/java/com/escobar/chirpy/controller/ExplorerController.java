@@ -8,10 +8,19 @@ package com.escobar.chirpy.controller;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.entity.User;
+
 import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,28 +48,14 @@ public class ExplorerController {
     @Autowired
     private MessageSource messages;
     
-    //TODO Explorer metodo get
-    @RequestMapping(value={"/", "/explorer"}, method = RequestMethod.GET)
-    public String explorer(Model model,
-    		Principal principal) {
-    	
-    	//introducimos el titulo y las tendencias
-    	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
-        model.addAttribute("trends", hashtagDao.findUp());
-        
-        //si hay algun usuario logeado, lo introducimos
-        if (principal != null){
-            model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        }
-        
-        return "aplication/explorer";
-    }
     
   //TODO Explorer metodo post
-    @RequestMapping(value={"/explorer"}, method = RequestMethod.POST)
-    public String explorersend(@RequestParam("find") String find,
+    @RequestMapping(value={"/explorer"}, method = RequestMethod.GET)
+    public String explorersend(@RequestParam(value = "find", required = false) String find,
     		Model model,
-    		Principal principal) {
+    		Principal principal,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
         
     	//introducimos el titulo y las tendencias
     	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
@@ -68,47 +63,35 @@ public class ExplorerController {
     	
     	//si existe usuario logeado, lo introducimos
         if (principal != null){
-            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        	
+    		User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
         }
         
         //si no a buscado con mas de 3 letras, devuelve error
-        if(find.length() < 3){
-            model.addAttribute("error", messages.getMessage("text.explorer.find.error", null, LocaleContextHolder.getLocale()));
-            
-        //si la busqueda contiene un @ busca solo usuarios
-        } else if (find.contains("@")){
-            find = find.replace("@", "");
-            model.addAttribute("users", userDao.findUsersOnlyUsername(find));
-            
-        //sino lo busca todo
-        } else {
-            model.addAttribute("users", userDao.findUsersNameUsername(find));
-            model.addAttribute("publications", publicationDao.findText(find));
+        if (find != null) {
+        	if(find.length() < 3){
+                model.addAttribute("error", messages.getMessage("text.explorer.find.error", null, LocaleContextHolder.getLocale()));
+                
+            //si la busqueda contiene un @ busca solo usuarios
+            } else if (find.contains("@")){
+                find = find.replace("@", "");
+                model.addAttribute("users", userDao.findUsersOnlyUsername(find));
+                
+            //sino lo busca todo
+            } else {
+                model.addAttribute("users", userDao.findUsersNameUsername(find));
+                model.addAttribute("publications", publicationDao.findText(find));
+            }
         }
         
+        
         return "aplication/explorer";
-    }
-    
-    
-    //este metodo, es para cuando se hace click en un hastag
-    @RequestMapping(value={"/explorer/{hashtag}"}, method = RequestMethod.GET)
-    public String hastags(@PathVariable String hashtag,
-    		Model model,
-    		Principal principal){
-
-    	//introducimos el titulo y las tendencias
-    	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
-    	model.addAttribute("trends", hashtagDao.findUp());
-    	
-    	//introducimos la busqueda
-    	model.addAttribute("publications", publicationDao.findText(hashtag));
-
-        //si existe el usuario logeado se carga
-        if (principal != null){
-            model.addAttribute("user", userDao.findByUserName(principal.getName()));
-        }
-    	
-        return "aplication/explorer";
-    	
     }
 }

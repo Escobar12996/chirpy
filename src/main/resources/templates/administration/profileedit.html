@@ -1,15 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head th:replace="layout/administrationLayout :: head"></head>
+	<head th:replace="administration/layout/layout :: head"></head>
 	
 	<body>
-		<nav th:replace="layout/administrationLayout :: navbar"></nav>
+		<nav th:replace="administration/layout/layout :: navbar"></nav>
 	
 		<div class="container">
 		
-		<div  th:replace="layout/administrationLayout :: alerts"></div>
-                    <div class="card">
+		<div  th:replace="aplication/layout/layout :: alerts"></div>
+		
+					<div class="jumbotron mb-0">
+						<p><span th:text="#{text.administration.users.user}"></span>: <a th:href="${'/administration/edituser/' + user.id}" th:text="${user.username}"></a></p>
+				       	<p><span th:text="#{text.administration.users.name}"></span>: <a th:text="${user.name}"></a></p>
+			       </div>
+			       
+			       <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
+						<div class="col-1"></div>
+					    <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/administration/userpost/' + user.id}" th:text="#{text.administration.users.publications}"></a>
+						<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/administration/userimages/' + user.id}" th:text="#{text.administration.users.images}"></a>
+						<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/administration/edituser/' + user.id}" th:text="#{text.administration.users.edit}"></a>
+						<div class="col-1"></div>
+					</div>
+                    
+                    
+                    <div class="row ml-0 mr-0 mt-3">
+                    	<div class="col-6">
+	                    	<div class="card text-center">
+	                        	<div class="card-header" th:text="#{text.administration.edituser.enabled}"></div>
+	                       		<div class="card-body">
+		                    		<form th:action="@{/activatedisableuser}" method="post">
+					      				<button class="btn btn-success" th:if="${user.enabled == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+					      				<button class="btn btn-warning" th:if="${user.enabled != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
+					      			</form>
+	                    		</div>
+	                    	</div>
+                    	</div>
+                    	<div class="col-6 text-center">
+							<div class="card">
+	                        	<div class="card-header" th:text="#{text.administration.edituser.notLocker}"></div>
+	                       		<div class="card-body">
+		                    		<form th:action="@{/blockunblockuser}" method="post">
+					      				<button  class="btn btn-success" th:if="${user.notLocker == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+					      				<button class="btn btn-danger" th:if="${user.notLocker != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
+					      			</form>
+	                   			</div>
+							</div>
+                    	</div>
+					</div>
+					
+                    <div class="card mt-5">
                         <div class="card-header" th:text="#{text.edituser.editImages}"></div>
                         <div class="card-body">
 
@@ -57,12 +97,6 @@
                         </div>
                     </div>
                     
-                    
-                   
-                    
-                    
-                    
-                    
                     <div class="card mt-5">
                         <div class="card-header"  th:text="#{text.edituser.tittle}"></div>
                         <div class="card-body">
@@ -71,7 +105,7 @@
                                 <p>
                                         <label for="username"  th:text="#{text.edituser.user}"></label> <input
                                                 type="text" id="username" th:field="*{username}"
-                                                class="form-control border" th:placeholder="#{text.edituser.user}" required autofocus
+                                                class="form-control border" th:placeholder="#{text.edituser.user}" required
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger" th:if="${#fields.hasErrors('username')}"
                                                 th:errors="*{username}"></span>
@@ -86,7 +120,7 @@
                                 <p>
                                         <label for="name"  th:text="#{text.edituser.name}"></label> <input type="text" id="namealasname"
                                                 th:field="*{name}" class="form-control border"
-                                                th:placeholder="#{text.edituser.name}" required autofocus
+                                                th:placeholder="#{text.edituser.name}" required 
                                                 th:errorclass="'form-control alert-danger'" /> <span
                                                 class="text-danger"
                                                 th:if="${#fields.hasErrors('name')}"
@@ -95,7 +129,7 @@
 
                                 <p>
                                         <label for="email" th:text="#{text.edituser.email}"></label> 
-                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required autofocus th:errorclass="'form-control alert-danger'" /> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required  th:errorclass="'form-control alert-danger'" /> 
                                         <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                 </p>
 
@@ -113,7 +147,7 @@
                                 <p>
                                     <label for="password"  th:text="#{text.edituser.newpassword}"></label> <input
                                         type="password" id="password" name="password"
-                                        class="form-control border" th:placeholder="#{text.edituser.newpassword}" required autofocus/>
+                                        class="form-control border" th:placeholder="#{text.edituser.newpassword}" required />
                                 </p>
                                 <div class="text-center">
                                         <button class="btn btn-outline-primary" type="submit"  th:text="#{text.edituser.changepassword}"></button>
@@ -126,6 +160,6 @@
                         
                     </div>
 		</div>
-		<div th:replace="layout/administrationLayout :: footer"></div>
+		<div th:replace="administration/layout/layout :: footer"></div>
 	</body>
 </html>

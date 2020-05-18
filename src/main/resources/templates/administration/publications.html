@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head th:replace="layout/administrationLayout :: head"></head>
+	<head th:replace="administration/layout/layout :: head"></head>
 	
 	<body>
-		<nav th:replace="layout/administrationLayout :: navbar"></nav>
+		<nav th:replace="administration/layout/layout :: navbar"></nav>
 	
 		<div class="container">
 		
-<div class="p-4 mt-3 card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}"  th:classappend="${publi.view} ? publication : bg-warning">
+			<div class="p-4 mt-3 card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}"  th:classappend="${publi.view} ? publication : bg-warning">
 		        <div class="row">
 		        
 		            <div class="col-3 col-xl-2">
@@ -66,13 +66,9 @@
 											<button th:if="${image.view == false}" name="deleteimage" class="btn btn-success" th:value="${image.id}" th:text="#{text.administration.images.show}"></button>
 											<button name="removeimage" class="btn btn-danger" th:value="${image.id}" th:text="#{text.administration.images.remove}"></button>
 										</form>
-									
 									</div>
-								
 								</div>
-								
 		                   	</div>
-							
 	                   	</div>
 					</div>
 				</div>
@@ -84,15 +80,10 @@
 						<button th:if="${publi.view == false}" name="deletepost" class="btn btn-success" th:value="${publi.id}" th:text="#{text.administration.images.show}"></button>
 						<button name="removepost" class="btn btn-danger" th:value="${publi.id}" th:text="#{text.administration.images.remove}"></button>
 						<button name="removeallpost" class="btn btn-danger" th:value="${publi.id}" th:text="#{text.administration.images.removeall}"></button>
-						
 					</form>
 				</div>
 			</div>
-
-
-
-
 		</div>
-		<div th:replace="layout/administrationLayout :: footer"></div>
+		<div th:replace="administration/layout/layout :: footer"></div>
 	</body>
 </html>

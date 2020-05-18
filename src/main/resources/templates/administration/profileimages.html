@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head th:replace="layout/administrationLayout :: head"></head>
+	<head th:replace="administration/layout/layout :: head"></head>
 	
 	<body>
-		<nav th:replace="layout/administrationLayout :: navbar"></nav>
+		<nav th:replace="administration/layout/layout :: navbar"></nav>
 	
 		<div class="container">
 		
 		<div class="jumbotron mb-0">
-           <div class="parent w-100 text-center justify-content-center">
-           		<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid imageusersu">
-	       	</div>
-	       
-	        <div class="row m-3 border border border-warning p-4">
-	            <div class="col-12 col-sm-3 mb-3 text-center text-lg-left">
-	                <img th:if="${userc.imageperf == null}" class="img-fluid border imageuser" th:src="@{/image/usuario.png}">
-	                <img th:if="${userc.imageperf != null}" class="img-fluid border w-100 imageuser" th:src="${'/image/user/' + userc.id}">
-	            </div>
-	            <div class="col-12 col-sm-9 text-center text-lg-left">
-	                <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
-	                <p th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
-	            </div>
-	        </div>
+			<p><span th:text="#{text.administration.users.user}"></span>: <a th:href="${'/administration/edituser/' + userc.id}" th:text="${userc.username}"></a></p>
+	       	<p><span th:text="#{text.administration.users.name}"></span>: <a th:text="${userc.name}"></a></p>
        </div>
+       
+       <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
+			<div class="col-1"></div>
+		    <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/administration/userpost/' + userc.id}" th:text="#{text.administration.users.publications}"></a>
+			<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/administration/userimages/' + userc.id}" th:text="#{text.administration.users.images}"></a>
+			<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/administration/edituser/' + userc.id}" th:text="#{text.administration.users.edit}"></a>
+			<div class="col-1"></div>
+		</div>
 		
 		<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}">
 			<div th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2" th:classappend="${image.view} ? publication : bg-warning">
@@ -52,7 +48,7 @@
 		
 		
 		</div>
-		<div th:replace="layout/administrationLayout :: footer"></div>
+		<div th:replace="administration/layout/layout :: footer"></div>
 	</body>
 </html>
 

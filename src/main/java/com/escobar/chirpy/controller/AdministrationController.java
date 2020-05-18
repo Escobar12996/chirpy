@@ -29,12 +29,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.escobar.chirpy.models.dao.HashtagDao;
+import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
+import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.Hashtag;
+import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserBan;
+import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 
 @Controller
@@ -51,6 +59,15 @@ public class AdministrationController {
 	
 	@Autowired
 	private ImageDao imageDao;
+	
+	@Autowired
+	private UserBanDao userBan;
+
+	@Autowired
+	private HashtagPublicationDao hashtagPublicationDao;
+	
+	@Autowired
+	private UserQuotePublicationDao userQuotePublicationDao;
 	
 	@Bean
     public BCryptPasswordEncoder paswordcoder() {
@@ -81,6 +98,7 @@ public class AdministrationController {
     	int numuser = userDao.userCount();
     	int numpag = 1;
     	
+    	model.addAttribute("userBan", userBan);
     	
     	if (numuser > 10) {
     		numpag = numuser/10;
@@ -117,9 +135,9 @@ public class AdministrationController {
     		if (numpag  >= (Integer.parseInt(page) + 2))
     			model.addAttribute("pagenextnext", Integer.parseInt(page) + 2);
     		
+    		
     		model.addAttribute("numpag", numpag);
     	}
-    	
     	
         return "administration/usersadministration";
     }
@@ -131,12 +149,17 @@ public class AdministrationController {
     		@PathVariable Long id) {
     	
     	User userc = userDao.findById(id);
+    	model.addAttribute("title", messages.getMessage("text.administration.images.tittle", null, LocaleContextHolder.getLocale()));
     	
-    	model.addAttribute("images", imageDao.findByUserAdmin(userc));
-    	model.addAttribute("userc", userc);
+    	if (userc != null) {
+    		model.addAttribute("images", imageDao.findByUserAdmin(userc));
+        	model.addAttribute("userc", userc);
 
+        	
+        	return "administration/profileimages";
+    	}
     	
-    	return "imagesuseradministration";
+    	return "redirect:/administration";
     	
     }
   
@@ -148,13 +171,14 @@ public class AdministrationController {
     		@PathVariable Long id) {
     	
     	User userc = userDao.findById(id);
-    	
+    	model.addAttribute("title", messages.getMessage("text.administration.posts.tittle", null, LocaleContextHolder.getLocale()));
+
     	model.addAttribute("publications", publicationDao.findByUserAdmin(userc));
     	model.addAttribute("userc", userc);
     	model.addAttribute("imageDao", imageDao);
     	
     	
-    	return "publicationsuseradministration";
+    	return "administration/profilepublications";
     	
     }
     
@@ -164,11 +188,12 @@ public class AdministrationController {
     @RequestMapping(value="/administration/posts", method = RequestMethod.GET)
     public String adminpost(Model model, Principal principal) {
     	
+    	model.addAttribute("title", messages.getMessage("text.administration.posts.tittle", null, LocaleContextHolder.getLocale()));
     	model.addAttribute("publications", publicationDao.findAll());
     	model.addAttribute("imageDao", imageDao);
     	
     	
-    	return "publicationsadministration";
+    	return "administration/publications";
     	
     }
     
@@ -177,10 +202,11 @@ public class AdministrationController {
     @RequestMapping(value="/administration/images", method = RequestMethod.GET)
     public String adminimages(Model model, Principal principal) {
     	
+    	model.addAttribute("title", messages.getMessage("text.administration.images.tittle", null, LocaleContextHolder.getLocale()));
     	model.addAttribute("images", imageDao.findAllAdmin());
     	
     	
-    	return "imagesadministration";
+    	return "administration/allimages";
     	
     }
     
@@ -265,22 +291,7 @@ public class AdministrationController {
     		
     		if (publi != null) {
     			
-    			List<Image> images = imageDao.findByPubliAdmin(publi);
-    			
-    			for (Image image : images) {
-    				image.setPubli(null);
-    				imageDao.update(image);
-    			}
-    			
-				List<Publication> publis = publicationDao.findResponseAdmin(publi);
-    			
-    			for (Publication pu : publis) {
-    				pu.setPubli(null);
-    				publicationDao.update(pu);
-    			}
-    			
-    			
-    			publicationDao.remove(publi);
+    			deleteonepublication(publi);
     			
 
     			if (posts == null) {
@@ -294,18 +305,10 @@ public class AdministrationController {
     		
     		if (publi != null) {
     			
-    			List<Image> images = imageDao.findByPubliAdmin(publi);
     			
-    			for (Image image : images) {
-    				imageDao.remove(image);
-    			}
-    			
-    			deletepublication(publicationDao.findResponseAdmin(publi));
+    			deleteallpublication(publi);
     			
     			
-    			
-    			
-    			publicationDao.remove(publi);
 
 
     			if (posts != null) {
@@ -330,7 +333,7 @@ public class AdministrationController {
     	model.addAttribute("user", userc);
     	session.setAttribute("useredit", userc);
     	
-    	return "usereditadministration";
+    	return "administration/profileedit";
     }
     
     
@@ -344,6 +347,7 @@ public class AdministrationController {
     	if (us != null) {
     		us.setEnabled(!us.getEnabled());
     		userDao.update(us);
+    		return "redirect:/administration/edituser/"+us.getId();
     	}
     	
     	return "redirect:/administration/users";
@@ -365,7 +369,7 @@ public class AdministrationController {
         		result.hasFieldErrors("name") || 
         		result.hasFieldErrors("email")){
         	
-            return "usereditadministration";
+            return "administration/profileedit";
         }    
            
         //guardamos la descripcion y el nombre
@@ -393,7 +397,7 @@ public class AdministrationController {
         model.addAttribute("user", userc);
     	session.setAttribute("useredit", userc);
         
-        return "usereditadministration";
+        return "administration/profileedit";
         
     }
     
@@ -408,6 +412,7 @@ public class AdministrationController {
     	if (us != null) {
     		us.setNotLocker(!us.getNotLocker());
     		userDao.update(us);
+    		return "redirect:/administration/edituser/"+us.getId();
     	}
     	
     	return "redirect:/administration/users";
@@ -418,19 +423,20 @@ public class AdministrationController {
     public String editpass(Model model, Principal principal, @RequestParam(value = "password", required = true) String password, HttpSession session) {
         
         User userc = userDao.findByUserName(((User) session.getAttribute("useredit")).getUsername());
-
-        if (password.length() < 7) {
-            model.addAttribute("error", messages.getMessage("Size.user.password", null, LocaleContextHolder.getLocale()));
-        } else {
-            model.addAttribute("success",  messages.getMessage("text.edituser.passwordupdate", null, LocaleContextHolder.getLocale()));
-        	PasswordEncoder encode = paswordcoder();
-            userc.setPassword(encode.encode(password));
-            userDao.update(userc);
+        
+        if (userc != null) {
+        	if (password.length() < 7) {
+                model.addAttribute("error", messages.getMessage("Size.user.password", null, LocaleContextHolder.getLocale()));
+            } else {
+                model.addAttribute("success",  messages.getMessage("text.edituser.passwordupdate", null, LocaleContextHolder.getLocale()));
+            	PasswordEncoder encode = paswordcoder();
+                userc.setPassword(encode.encode(password));
+                userDao.update(userc);
+            }
         }
         
-        
         model.addAttribute("user", userc);
-        return "usereditadministration";
+        return "administration/profileedit";
     }
     
 //TODO Editar imagen metodo post
@@ -515,12 +521,65 @@ public class AdministrationController {
         return "redirect:/administration";
     }
     
-    private void deletepublication(List<Publication> publis) {
-    	for (Publication pu : publis) {
-    		List<Publication> publiscas = publicationDao.findResponseAdmin(pu);
-			deletepublication(publiscas);
-			publicationDao.remove(pu);
+    private void deleteallpublication(Publication publis) {
+    	
+		List<Publication> publiscas = publicationDao.findResponseAdmin(publis);
+		
+		if (publiscas.size() > 0) {
+			for (Publication pu : publiscas) {
+				deleteallpublication(pu);
+			}
 		}
+		
+		for (UserBan us : userBan.findByPublicationBan(publis)) {
+			userBan.remove(us);
+		}
+		
+		for (Image ima : imageDao.findByPubliAdmin(publis)) {
+			imageDao.remove(ima);
+		}
+		
+		for (HashtagPublication ht : hashtagPublicationDao.findHastagsPublication(publis)) {
+			hashtagPublicationDao.remove(ht);
+		}
+		
+		for (UserQuotePublication ht : userQuotePublicationDao.findbyPublication(publis)) {
+			userQuotePublicationDao.remove(ht);
+		}
+			
+		publicationDao.remove(publis);
+
     }
     
+private void deleteonepublication(Publication publis) {
+    	
+		List<Publication> publiscas = publicationDao.findResponseAdmin(publis);
+		
+		if (publiscas.size() > 0) {
+			for (Publication pu : publiscas) {
+				pu.setPubli(null);
+				publicationDao.update(pu);
+			}
+		}
+		
+		for (UserBan us : userBan.findByPublicationBan(publis)) {
+			userBan.remove(us);
+		}
+		
+		for (Image ima : imageDao.findByPubliAdmin(publis)) {
+			ima.setPubli(null);
+			imageDao.update(ima);
+		}
+		
+		for (HashtagPublication ht : hashtagPublicationDao.findHastagsPublication(publis)) {
+			hashtagPublicationDao.remove(ht);
+		}
+		
+		for (UserQuotePublication ht : userQuotePublicationDao.findbyPublication(publis)) {
+			userQuotePublicationDao.remove(ht);
+		}
+			
+		publicationDao.remove(publis);
+
+    }
 }

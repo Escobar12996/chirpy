@@ -72,7 +72,7 @@ $("#menu-toggle").click(function(e) {
 
 
 $(function() {
-    if (document.URL.split(window.location.host)[1] === "/explorer"){
+    if (document.URL.split(window.location.host)[1].includes("/explorer")){
         loadFollow();
     }
 });

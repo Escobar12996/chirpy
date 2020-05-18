@@ -109,7 +109,7 @@ public class PublicationService {
                     user = user.trim();
                     hashtags.add(user);
                     
-                    publication = publication.replace(matcherhastags.group(), "<a href=\"/explorer/"+user+"\">"+matcherhastags.group()+"</a> "); 
+                    publication = publication.replace(matcherhastags.group(), "<a href=\"/explorer?find="+user+"\">"+matcherhastags.group()+"</a> "); 
                     
                 } else {
                     bandera = true;

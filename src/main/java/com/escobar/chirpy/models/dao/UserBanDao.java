@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserBan;
 
@@ -26,10 +27,29 @@ public class UserBanDao {
         return query.getResultList();
 	}
 	
+	@Transactional(readOnly = true)
+	public int countByUsers(User user) {
+		TypedQuery<UserBan> query = em.createQuery("SELECT u FROM UserBan u WHERE u.userReceivedBan = :id", UserBan.class); 
+        query.setParameter("id", user);
+        
+        return query.getResultList().size();
+	}
 	
+	@Transactional(readOnly = true)
+	public List<UserBan> findByPublicationBan(Publication pu) {
+		TypedQuery<UserBan> query = em.createQuery("SELECT u FROM UserBan u WHERE u.publi = :id", UserBan.class); 
+        query.setParameter("id", pu);
+        
+        return query.getResultList();
+	}
 	
 	@Transactional
 	public void save(UserBan usb) {
 		em.persist(usb);	
+	}
+	
+	@Transactional
+	public void remove(UserBan usb) {
+		em.remove(usb);	
 	}
 }

@@ -78,7 +78,11 @@ public class ProfileController {
     
     //TODO Ver Perfil
     @RequestMapping(value={"/profile/{id}"}, method = RequestMethod.GET)
-    public String userdetalis(Model model, Principal principal, @PathVariable Long id) {
+    public String userdetalis(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
     	
     	if (id != null) {
     		
@@ -87,7 +91,16 @@ public class ProfileController {
             
             //cargamos el usaurio registrado
             if (principal != null){
-                model.addAttribute("user", userDao.findByUserName(principal.getName()));
+
+            	User user = userDao.findByUserName(principal.getName());
+            	
+                model.addAttribute("user", user);
+                
+                if (!user.getNotLocker()) {
+                	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    new SecurityContextLogoutHandler().logout(request, response, auth);
+                }
+            	
             }
             
             //cargamos el usuario buscado y las publicaciones del usuario
@@ -117,13 +130,24 @@ public class ProfileController {
     
     //TODO Ver imagenes del perfil
     @RequestMapping(value={"/profileimages/{id}"}, method = RequestMethod.GET)
-    public String userimages(Model model, Principal principal, @PathVariable Long id) {
+    public String userimages(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
     	
     	//cargamos el titulo
         model.addAttribute("title", messages.getMessage("text.userimages.tittle", null, LocaleContextHolder.getLocale()));
         
         if (principal != null){
-            model.addAttribute("user", userDao.findByUserName(principal.getName()));
+        	User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
         }
         
         if (id != null) {
@@ -151,9 +175,19 @@ public class ProfileController {
     
     //TODO Editar perfil
     @RequestMapping(value={"/editprofile"}, method = RequestMethod.GET)
-    public String editeditImageProfile(Model model, Principal principal) {
+    public String editeditImageProfile(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
-        model.addAttribute("user", userDao.findByUserName(principal.getName()));
+
+        User user = userDao.findByUserName(principal.getName());
+    	
+        model.addAttribute("user", user);
+        
+        if (!user.getNotLocker()) {
+        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        
+        
         return "aplication/profileedit";
     }
     
@@ -221,7 +255,7 @@ public class ProfileController {
             return "redirect:/login";
         } else {
             model.addAttribute("user", userc);
-            return "profileedit";
+            return "aplication/profileedit";
         }
     }
     
@@ -270,7 +304,7 @@ public class ProfileController {
         model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
         
         model.addAttribute("user", userc);
-        return "aplication/editprofile";
+        return "aplication/profileedit";
     }
     
     //TODO Editar imagen metodo post
@@ -302,7 +336,7 @@ public class ProfileController {
                 model.addAttribute("error", messages.getMessage("text.edituser.error.imageerror", null, LocaleContextHolder.getLocale()));
 
                 model.addAttribute("user", userc);
-                return "aplication/editprofile"; 
+                return "aplication/profileedit"; 
             }
         } else if ( delete != null && delete.contains("delete") ){
             userc.setImageperf(null);
@@ -313,7 +347,7 @@ public class ProfileController {
     }
     
     //TODO Editar imagen metodo get
-    @RequestMapping(value={"/editImageprofile"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/editimageprofile"}, method = RequestMethod.GET)
     public String editImageProfile() {
         return "redirect:/editprofile";
     }
@@ -327,6 +361,7 @@ public class ProfileController {
         
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(principal.getName());
+        model.addAttribute("user", userc);
         
       //introducimos el titulo
         model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
@@ -353,7 +388,7 @@ public class ProfileController {
             userDao.save(userc);
         }
         
-        return "redirect:/editprofile";
+        return "aplication/profileedit";
     }
     
     //TODO Editar imagen metodo get
@@ -366,20 +401,32 @@ public class ProfileController {
     //TODO quotes
     //··································································
     @RequestMapping(value={"/quotes"}, method = RequestMethod.GET)
-    public String principalzone(Model model, Principal principal) {
+    public String principalzone(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
     	
     	//usuario logeado
     	User userprin = userDao.findByUserName(principal.getName());
     	
-    	//introducimos el usuario, el titulo y las tendencias
+    	//introducimos el usuario, el titulo y las tendencias    	
         model.addAttribute("user", userprin);
+        
+        if (!userprin.getNotLocker()) {
+        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        
+        
+        
         model.addAttribute("title", messages.getMessage("text.quotes.tittle", null, LocaleContextHolder.getLocale()));
         model.addAttribute("trends", hashtagDao.findUp());
         
         //extraemos el listado de las publicaciones a partir de usequote y los introducimos
         List<Publication> pu = new ArrayList<Publication>();
         for (UserQuotePublication uq : userQuotePublicationDao.findByUser(userprin)){
-            pu.add(uq.getPublication());
+        	Publication pub = uq.getPublication();
+        	if (pub.isView()) {
+        		pu.add(pub);
+        	}
+            
         }
         model.addAttribute("publications", pu);
         
