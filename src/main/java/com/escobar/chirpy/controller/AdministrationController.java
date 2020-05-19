@@ -521,10 +521,9 @@ public class AdministrationController {
     
     @RequestMapping(value={"/administration/emoticons"}, method = RequestMethod.GET)
     public String emoticons(Model model) {
-        
+		model.addAttribute("title" , messages.getMessage("text.administration.emoticon.tittle", null, LocaleContextHolder.getLocale()));
     	model.addAttribute("emoticon", new Emoticon());
-        
-        
+    	model.addAttribute("emoticons", emoticonDao.findall());
         return "administration/emoticons";
     }
     
@@ -535,7 +534,13 @@ public class AdministrationController {
     		Model model,
     		@RequestParam(value = "emoti", required = true) MultipartFile file) {
         
+    	model.addAttribute("emoticons", emoticonDao.findall());
+		model.addAttribute("title" , messages.getMessage("text.administration.emoticon.tittle", null, LocaleContextHolder.getLocale()));
+
+    	
     	if (result.hasErrors()){
+    		
+			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.error", null, LocaleContextHolder.getLocale()));
             return "administration/emoticons";
         }  
         
@@ -543,9 +548,22 @@ public class AdministrationController {
     	if(file != null && !file.isEmpty()) {
     		if (!file.getContentType().contains("image/png") && !file.getContentType().contains("image/jpeg") && !file.getContentType().contains("image/gif")) {
     			
+    			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.imageerror", null, LocaleContextHolder.getLocale()));
     			model.addAttribute("emoticon", emoticon);
     			return "administration/emoticons";
     		}
+		}
+
+    	if (emoticonDao.findemoticon(emoticon.getCommand()) != null) {
+			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.commaddup", null, LocaleContextHolder.getLocale()));
+			model.addAttribute("emoticon", emoticon);
+			return "administration/emoticons";	
+		}
+    	
+    	if (file == null || file.getSize() == 0) {
+			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.imageerror", null, LocaleContextHolder.getLocale()));
+			model.addAttribute("emoticon", emoticon);
+			return "administration/emoticons";
 		}
     	
     	try {
@@ -557,7 +575,8 @@ public class AdministrationController {
 			return "administration/emoticons";
 		}
         
-        return "redirect:/administration/emoticons";
+		model.addAttribute("success" , messages.getMessage("text.administration.emoticon.success", null, LocaleContextHolder.getLocale()));
+        return "administration/emoticons";
     }
     
     //TODO Editar imagen metodo get

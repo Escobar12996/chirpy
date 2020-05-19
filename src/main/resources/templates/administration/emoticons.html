@@ -9,39 +9,83 @@
 		<div class="container">
 			
 			<div class="row justify-content-center">
-				<div class="col-6">
+				<div class="col-6 mb-5 text-center">
+					<div th:replace="aplication/layout/layout :: alerts"></div>
+					<button type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:text="#{text.administration.emoticon.new}"></button>
+				</div>
+			</div>
+		
+			<div class="row">
+				<div class="col-12">
+					<table class="table table-striped table-hover text-center">
+				 		<thead>
+					    	<tr>
+					    		<th scope="col" th:text="#{text.administration.emoticon.command}"></th>
+					      		<th scope="col" th:text="#{text.administration.emoticon.coment}"></th>
+					      		<th scope="col" th:text="#{text.administration.emoticon.image}"></th>
+					    	</tr>
+					  	</thead>
+					  	<tbody>
+					    	<tr th:each="emoticon : ${emoticons}">
+					      		<td th:text="${emoticon.command}"></td>
+					      		<td th:text="${emoticon.comment}"></td>
+					      		<td><img th:alt="${emoticon.comment}" th:src="${'/image/emoji/' + emoticon.id}"></td>
+					      	</tr>
+				  		</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div th:fragment="modal" id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					
+					<!--/* Cabecera */-->
 					<div class="card text-center">
-		             	<div class="card-header">Agregar</div>
+		             	<div class="card-header"  th:text="#{text.administration.emoticon.new}"></div>
 		           		<div class="card-body">
 			          		<form th:action="@{/administration/emoticons}" method="post" class="form-signin mt-2" th:object="${emoticon}" enctype="multipart/form-data">
 			          			<p>
-			                        <label for="comment" th:text="Comentario"></label> <input
+			                        <label for="comment" th:text="#{text.administration.emoticon.coment}"></label> <input
 			                                type="text" id="comment" th:field="*{comment}"
-			                                class="form-control border" th:placeholder="comment" required
+			                                class="form-control border" th:placeholder="#{text.administration.emoticon.coment}" required
 			                                th:errorclass="'form-control alert-danger'" /> <span
 			                                class="text-danger" th:if="${#fields.hasErrors('comment')}"
 			                                th:errors="*{comment}"></span>
 		                    	</p>
 			          			<p>
-			                        <label for="command" th:text="command"></label> <input
+			                        <label for="command" th:text="#{text.administration.emoticon.command}"></label> <input
 			                                type="text" id="command" th:field="*{command}"
-			                                class="form-control border" th:placeholder="command" required
+			                                class="form-control border" th:placeholder="#{text.administration.emoticon.command}" required
 			                                th:errorclass="'form-control alert-danger'" /> <span
 			                                class="text-danger" th:if="${#fields.hasErrors('command')}"
 			                                th:errors="*{command}"></span>
 		                    	</p>
 		          				<input id="emoti" type="file" name="emoti" class="form-control border">
-			          			<button class="btn btn-outline-primary mb-3 mt-2" type="submit">subir emoji</button>
+			          			<button class="btn btn-outline-primary mb-3 mt-2" type="submit" th:text="#{text.administration.emoticon.charge}"></button>
 							</form>
 		         		</div>
 		         	</div>
+					
+					
+					<!--/* Footer */-->
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-danger" data-dismiss="modal" th:text="#{text.home.close}"></button>
+					</div>
+					
+					<!--/* Fin Footer */-->
+					
 				</div>
 			</div>
-		
-		
-		
-		
 		</div>
+		
+		
+		
+		
+		
 		<div th:replace="administration/layout/layout :: footer"></div>
 	</body>
 </html>

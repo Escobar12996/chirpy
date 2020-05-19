@@ -1,5 +1,7 @@
 package com.escobar.chirpy.models.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -24,6 +26,12 @@ public class EmoticonDao {
         } catch (Exception e) {
             return null;
         }
+	}
+	
+	public List<Emoticon> findall() {
+        TypedQuery<Emoticon> query = em.createQuery("SELECT e FROM Emoticon e", Emoticon.class); 
+    	return query.getResultList();
+        
 	}
 	
 	public Emoticon findemoticonId(Long id) {

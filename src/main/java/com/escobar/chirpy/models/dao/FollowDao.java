@@ -48,7 +48,14 @@ public class FollowDao {
 	    query.setParameter("user", user);
 
             return query.getResultList();
-	}
+        }
+        
+        public List<User> getUserFollowers(User user) {
+            TypedQuery<User> query = em.createQuery("SELECT f.followed FROM Follow f WHERE f.followed = :user", User.class); 
+	    query.setParameter("user", user);
+
+            return query.getResultList();
+        }
         
 	@Transactional
         public void save(Follow publication) {
