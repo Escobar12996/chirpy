@@ -36,10 +36,10 @@ and open the template in the editor.
                         </div>
                         
                         <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
-                        	<div class="col-3"></div>
-						    <a class="col-3 bg-primary text-white mr-1 p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
-							<a class="col-3 bg-primary text-white ml-1 p-2" th:href="${'/profileimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
-							<div class="col-3"></div>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profileimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollower/' + userc.id}" th:text="#{text.userdetails.follower}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollowers/' + userc.id}" th:text="#{text.userdetails.followers}"></a>
                         </div>
                         
                         

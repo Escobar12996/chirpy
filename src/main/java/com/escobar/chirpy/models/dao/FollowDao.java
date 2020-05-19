@@ -51,7 +51,7 @@ public class FollowDao {
         }
         
         public List<User> getUserFollowers(User user) {
-            TypedQuery<User> query = em.createQuery("SELECT f.followed FROM Follow f WHERE f.followed = :user", User.class); 
+            TypedQuery<User> query = em.createQuery("SELECT f.user FROM Follow f WHERE f.followed = :user", User.class); 
 	    query.setParameter("user", user);
 
             return query.getResultList();

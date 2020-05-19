@@ -75,6 +75,9 @@ $(function() {
     if (document.URL.split(window.location.host)[1].includes("/explorer")){
         loadFollow();
     }
+    if (document.URL.split(window.location.host)[1].includes("/profilefollowers/")){
+        loadFollow();
+    }
 });
 
   

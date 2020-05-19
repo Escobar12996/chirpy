@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="aplication/layout/layout :: head"></head>
+    <body>
+	
+		<div class="wrapper d-flex align-items-stretch">
+		<nav th:replace="aplication/layout/layout :: navbar"></nav>
+
+        
+      		<div id="content" class="p-4 p-md-5">
+            	<div class="row">
+                        
+                	<div class="col-xl-7 ml-xl-auto">
+                            
+                    	<div class="jumbotron mb-0">
+                        	<div class="parent w-100 text-center justify-content-center">
+                            	<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid imageusersu">
+                            </div>
+                            
+                            <div class="row m-3 border border border-warning p-4">
+                                <div class="col-12 col-sm-3 mb-3 text-center text-lg-left">
+                                    <img th:if="${userc.imageperf == null}" class="img-fluid border imageuser" th:src="@{/image/usuario.png}">
+                                    <img th:if="${userc.imageperf != null}" class="img-fluid border w-100 imageuser" th:src="${'/image/user/' + userc.id}">
+                                </div>
+                                <div class="col-12 col-sm-9 text-center text-lg-left">
+                                    <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
+                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
+                                </div>
+                            </div>
+                 		</div>
+                            
+						<div class="row mt-0 ml-0 mt-2 text-center align-content-center">
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profileimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollower/' + userc.id}" th:text="#{text.userdetails.follower}"></a>
+							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollowers/' + userc.id}" th:text="#{text.userdetails.followers}"></a>
+						</div>
+
+                      <!--/* Listado de usuarios encontrados */-->
+                      
+                      <div class="p-3 mt-3 bg-white card" th:each="us : ${users}" th:if="${!(us.username == userc.username)}">
+                          <div class="row" >
+							<div class="col-3 col-xl-2">
+                              	<img class="img-fluid border" th:if="${us.imageperf != null}" th:src="${'/image/user/' + us.id}" alt="Card image cap" style="width: 100px">
+                                  <img class="img-fluid border" th:if="${us.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                              </div>                                
+                          	<div class="col-6 col-xl-7 d-flex align-content-center flex-wrap">
+                              	<p><a th:href="${'/profile/' + us.id}"><span class="font-weight-bold" th:text="${us.name}"></span> <span class="" th:text="'@' + ${us.username}"></span></a></p>
+                          	</div>
+                          	<div class="col-3 col-xl-3"  sec:authorize="isAuthenticated()" th:if="${userc.username == #authentication.name}">
+                              	<button class="badge badge-primary followbutton" th:id="'followbutton' + ${us.id}" th:value="${us.id}" th:text="#{text.explorer.follow}"></button>
+                              	<button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${us.id}" th:value="${us.id}" style="display: none;" th:text="#{text.explorer.ufollow}"></button>
+                          	</div>
+                          </div>
+                      </div>
+              
+              		<!--/* Fin listado de usuarios encontrados */-->
+                            
+                    <!--/* Si no se ha encontrado nada */-->
+                    
+                    <div class="jumbotron p-3 mt-3" th:if="${#lists.isEmpty(users) && users != null}">
+              			<div class="text-center">
+                  			<h5 class="card-title text-danger" th:text="#{text.explorer.empty}"></h5>
+              			</div>
+             		</div>
+                    
+                    <!--/* Fin si no se ha encontrado nada */-->
+                            
+                   </div>
+                   
+                   <!--/* Fin zona central */-->
+                   
+                   <!--/* Zona lateral, tendencias */-->
+                  	
+					<div th:replace="aplication/layout/layout :: tendence-1" ></div>
+				
+					<!--/* Fin zona lateral */-->
+
+
+
+
+                    </div> 
+                </div>
+                
+                <!--/* Fin contenido */-->
+                
+        	</div>
+        	
+        	<!--/* Fin cuerpo */-->
+        	
+       	<!--/* Footer */-->
+       	
+        <div th:replace="aplication/layout/layout :: footer"></div>
+        
+        <!--/* Fin footer */-->
+        
+    </body>
+</html>

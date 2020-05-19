@@ -27,7 +27,7 @@
 					  	</thead>
 					  	<tbody>
 					    	<tr th:each="emoticon : ${emoticons}">
-					      		<td th:text="${emoticon.command}"></td>
+					      		<td class="font-weight-bold" th:text="${':'+emoticon.command+':'}"></td>
 					      		<td th:text="${emoticon.comment}"></td>
 					      		<td><img th:alt="${emoticon.comment}" th:src="${'/image/emoji/' + emoticon.id}"></td>
 					      	</tr>
@@ -63,7 +63,12 @@
 			                                class="text-danger" th:if="${#fields.hasErrors('command')}"
 			                                th:errors="*{command}"></span>
 		                    	</p>
-		          				<input id="emoti" type="file" name="emoti" class="form-control border">
+		                    	
+		                    	<p><label for="file-upload" class="subir">
+								    <i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
+								</label>
+								<input id="file-upload" name="emoti" type="file" style='display: none;'/></p>
+
 			          			<button class="btn btn-outline-primary mb-3 mt-2" type="submit" th:text="#{text.administration.emoticon.charge}"></button>
 							</form>
 		         		</div>

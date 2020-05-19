@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
@@ -66,6 +68,9 @@ public class ProfileController {
     
     @Autowired
     private UserBanDao userBanDao;
+
+    @Autowired
+    private FollowDao followDao;
     
     @Bean
     public BCryptPasswordEncoder pasworcoder() {
@@ -168,6 +173,86 @@ public class ProfileController {
         return "redirect:/home";
     }
 
+  //TODO Ver seguidos del perfil
+    @RequestMapping(value={"/profilefollower/{id}"}, method = RequestMethod.GET)
+    public String profilefollower(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
+    	
+    	//cargamos el titulo
+        model.addAttribute("title", messages.getMessage("text.userdetails.follower", null, LocaleContextHolder.getLocale()));
+        
+        if (principal != null){
+        	User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
+        }
+        
+        if (id != null) {
+        	
+        	User userc = userDao.findById(id);
+        	
+        	if (userc != null) {
+        		model.addAttribute("userc", userc);
+                model.addAttribute("users", followDao.getUserFollow(userc));
+                //cargamos las tendencias
+                model.addAttribute("trends", hashtagDao.findUp());
+                
+                return "aplication/profilefollower";
+        	}
+        }
+        
+        return "redirect:/home";
+    }
+    
+    
+    //TODO Ver seguidos del perfil
+    @RequestMapping(value={"/profilefollowers/{id}"}, method = RequestMethod.GET)
+    public String profilefollowers(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
+    	
+    	//cargamos el titulo
+        model.addAttribute("title", messages.getMessage("text.userdetails.follower", null, LocaleContextHolder.getLocale()));
+        
+        if (principal != null){
+        	User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
+        }
+        
+        if (id != null) {
+        	
+        	User userc = userDao.findById(id);
+        	
+        	if (userc != null) {
+        		model.addAttribute("userc", userc);
+                model.addAttribute("users", followDao.getUserFollowers(userc));
+                
+                //cargamos las tendencias
+                model.addAttribute("trends", hashtagDao.findUp());
+                
+                return "aplication/profilefollowers";
+        	}
+        }
+        
+        return "redirect:/home";
+    }
+    
     //··································································
     //TODO Editar perfil
     //··································································

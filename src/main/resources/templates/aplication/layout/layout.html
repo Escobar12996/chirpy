@@ -188,12 +188,21 @@
 							
 							<div class="col-12 mt-2">
 								<div class="row">
-									<div class="col-6">
-										<input type="file" name="image[]" id="1" class="form-control border">
-									</div>
-									<div class="col-6">
-										<input type="file" name="image[]" id="2" class="form-control border">
-									</div>
+									<div class="col-6 text-center">
+											<p><label for="file-upload" class="subir">
+								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
+												</label>
+												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+											</p>
+										</div>
+										
+										<div class="col-6 text-center">
+											<p><label for="file-upload" class="subir">
+								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
+												</label>
+												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+											</p>
+										</div>
 								</div>
 								<p id="errorview"></p>
 							</div>

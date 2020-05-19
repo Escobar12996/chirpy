@@ -35,12 +35,20 @@ and open the template in the editor.
 								<div class="col-9 mt-2">
 									<div class="row">
 									
-										<div class="col-6">
-											<input type="file" name="image[]" id="1" class="form-control border">
+										<div class="col-6 text-center">
+											<p><label for="file-upload" class="subir">
+								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
+												</label>
+												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+											</p>
 										</div>
 										
-										<div class="col-6">
-											<input type="file" name="image[]" id="2" class="form-control border">
+										<div class="col-6 text-center">
+											<p><label for="file-upload" class="subir">
+								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
+												</label>
+												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+											</p>
 										</div>
 										
 									</div>
@@ -66,7 +74,7 @@ and open the template in the editor.
                                     
                                         <div class="row">
                                             <div class="col-12">
-                                                <p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                                <p><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                             </div>
                                         </div>
                                         
@@ -86,7 +94,7 @@ and open the template in the editor.
 			                                		<div class="col-8 col-xl-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+				                                            	<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
 				                                    	<p th:utext="${publi.publi.publication}"></p>
@@ -109,7 +117,7 @@ and open the template in the editor.
 			                                		<div class="col-8 col-xl-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+				                                            	<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
 			                                    	</div>

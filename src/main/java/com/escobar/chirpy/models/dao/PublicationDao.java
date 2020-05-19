@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,10 +78,11 @@ public class PublicationDao {
     }
     
     @Transactional(readOnly=true)
-    public List<Publication> findByUsers(List<User> users) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true ORDER BY dateOfSend DESC", Publication.class); 
+    public List<Publication> findByUsers(List<User> users, Long position, Long numbers) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and p.id > :idActual and p.view = true ORDER BY p.dateOfSend DESC", Publication.class); 
         query.setParameter("users", users);
-        return query.setMaxResults(50).getResultList();
+        query.setParameter("idActual", (position*numbers)-numbers);
+        return query.setMaxResults(10).getResultList();
     }
     
     @Transactional(readOnly=true)

@@ -38,8 +38,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             http.authorizeRequests().antMatchers(
             		"/resendemail",
             		"/confirmaccount",
-            		"/profileimages",
+            		"/profileimages/{id}",
             		"/profile/{id}",
+            		"/profilefollower/{id}",
+            		"/profilefollowers/{id}",
             		"/explorer/{hashtag}",
             		"/register", "/css/**",
             		"/js/**",
