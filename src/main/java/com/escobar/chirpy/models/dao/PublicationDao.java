@@ -65,9 +65,24 @@ public class PublicationDao {
     
     @Transactional(readOnly=true)
     public List<Publication> findResponse(Publication id) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true order by p.id desc", Publication.class); 
         query.setParameter("id", id);
         return query.getResultList();
+    }
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findResponseLimit(Publication id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true order by p.id desc", Publication.class); 
+        query.setParameter("id", id);
+        return query.setMaxResults(10).getResultList();
+    }
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findResponseNext(Publication id, Long lastId) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id < :lastId and p.publi = :id and view = true order by p.id desc", Publication.class); 
+        query.setParameter("id", id);
+        query.setParameter("lastId", lastId);
+        return query.setMaxResults(10).getResultList();
     }
     
     @Transactional(readOnly=true)
@@ -78,19 +93,18 @@ public class PublicationDao {
     }
     
     @Transactional(readOnly=true)
-    public List<Publication> findByUsers(List<User> users, Long position, Long numbers) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and p.id > :idActual and p.view = true ORDER BY p.dateOfSend DESC", Publication.class); 
+    public List<Publication> findByUsersNext(List<User> users, Long lastId) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id < :lastId and p.user in :users and view = true order by p.id desc", Publication.class); 
         query.setParameter("users", users);
-        query.setParameter("idActual", (position*numbers)-numbers);
+        query.setParameter("lastId", lastId);
         return query.setMaxResults(10).getResultList();
     }
     
     @Transactional(readOnly=true)
-    public List<Publication> findByUsersNext(List<User> users, Long lastId) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id > :lastId and p.user in :users and view = true ORDER BY dateOfSend DESC", Publication.class); 
+    public List<Publication> findByUsersLast(List<User> users) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true order by p.id desc", Publication.class); 
         query.setParameter("users", users);
-        query.setParameter("lastId", lastId);
-        return query.setMaxResults(50).getResultList();
+        return query.setMaxResults(10).getResultList();
     }
     
     public List<Publication> findText(String text) {

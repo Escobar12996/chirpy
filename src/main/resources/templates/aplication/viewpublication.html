@@ -19,7 +19,7 @@ and open the template in the editor.
                         <div class="col-xl-7 ml-xl-auto">
                             <div th:replace="aplication/layout/layout :: alerts"></div>
 
-							<div class="publication p-4 bg-white card">
+							<div class="publication p-4 bg-white card prin" th:id="${publicationview.id}">
                                 <div class="row">
                                 
                                     <div class="col-3 col-xl-2">
@@ -31,11 +31,11 @@ and open the template in the editor.
                                     
                                         <div class="row">
                                             <div class="col-12">
-                                                <p><a th:href="${'/profile/' + publicationview.user.id}"><span class="font-weight-bold" th:text="${publicationview.user.name}"></span> <span class="" th:text="'@' + ${publicationview.user.username}"></span></a> - <span class="" th:text="${publicationview.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/profile/' + publicationview.user.id}"><span class="font-weight-bold" th:text="${publicationview.user.name}"></span> <span class="" th:text="'@' + ${publicationview.user.username}"></span></a> - <span class="" th:text="${publicationview.dateOfSend}"></span></p>
                                             </div>
                                         </div>
                                         
-                                        <p th:utext="${publicationview.publication}"></p>
+                                        <p class="text-break" th:utext="${publicationview.publication}"></p>
                                         
                                         <div class="row" th:if="${publicationview.publi != null && publicationview.publi.view != false}">
                                         	<div class="col cornsilk border p-3 m-3">
@@ -49,10 +49,10 @@ and open the template in the editor.
 			                                		<div class="col-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/profile/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
+				                                            	<p class="text-break"><a th:href="${'/profile/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
-				                                    	<p th:utext="${publicationview.publi.publication}"></p>
+				                                    	<p class="text-break" th:utext="${publicationview.publi.publication}"></p>
 			                                    	</div>
 				                                </div>
                                         	</div>
@@ -72,7 +72,7 @@ and open the template in the editor.
 			                                		<div class="col-8 col-xl-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/profile/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
+				                                            	<p class="text-break"><a th:href="${'/profile/' + publicationview.publi.user.id}"><span class="font-weight-bold" th:text="${publicationview.publi.user.name}"></span> <span class="" th:text="'@' + ${publicationview.publi.user.username}"></span></a> - <span th:text="${publicationview.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
 			                                    	</div>
@@ -102,8 +102,8 @@ and open the template in the editor.
                                 </div>
                             </div>
 							
-							<div class="ml-3">
-								<div th:fragment="coments-1" class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+							<div class="ml-3" id="all-publications">
+								<div th:fragment="coments-1" class="publication p-4 mt-3 bg-white card sec" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
 	                                <div class="row">
 	                                
 	                                    <div class="col-3 col-xl-2">
@@ -115,11 +115,11 @@ and open the template in the editor.
 	                                    
 	                                        <div class="row">
 	                                            <div class="col-12">
-	                                                <p><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+	                                                <p class="text-break"><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
 	                                            </div>
 	                                        </div>
 	                                        
-	                                        <p th:utext="${publi.publication}"></p>
+	                                        <p class="text-break" th:utext="${publi.publication}"></p>
 	                                        
 	                                        
 	                                        <div class="row" th:if="${publi.publi != null && publi.publi.view == false}">
@@ -136,7 +136,7 @@ and open the template in the editor.
 				                                		<div class="col-8 col-xl-10">
 					                                    	<div class="row">
 					                                        	<div class="col-12">
-					                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+					                                            	<p class="text-break"><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 					                                        	</div>
 					                                    	</div>
 				                                    	</div>

@@ -88,7 +88,7 @@ public class PublicationController {
         model.addAttribute("publication", new Publication());
         
         //mostramos las publicacion de la gente a la que sigue el usuario
-        model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri), Long.parseLong("0"), Long.parseLong("10")));
+        model.addAttribute("publications", publicationDao.findByUsersLast(followDao.getUserFollow(userpri)));
         
         //mostramos las tendencias de la ultima hora
         model.addAttribute("trends", hashtagDao.findUp());
@@ -128,8 +128,8 @@ public class PublicationController {
         if (result.hasErrors()){
             
         	//mostramos las publicacion de la gente a la que sigue el usuario
-        	model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri), Long.parseLong("0"), Long.parseLong("10")));
-            
+        	model.addAttribute("publications", publicationDao.findByUsersLast(followDao.getUserFollow(userpri)));
+        	
             //mostramos las tendencias de la ultima hora
             model.addAttribute("trends", hashtagDao.findUp());
             
@@ -147,7 +147,7 @@ public class PublicationController {
             model.addAttribute("errorpublication", messages.getMessage("text.home.error.maxletterpubli", null, LocaleContextHolder.getLocale()) + " " + Publication.maxletter);
 
             //mostramos las publicacion de la gente a la que sigue el usuario
-            model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri), Long.parseLong("0"), Long.parseLong("10")));
+            model.addAttribute("publications", publicationDao.findByUsersLast(followDao.getUserFollow(userpri)));
             
             //mostramos las tendencias de la ultima hora
             model.addAttribute("trends", hashtagDao.findUp());
@@ -178,8 +178,7 @@ public class PublicationController {
 	                        model.addAttribute("errorimage", messages.getMessage("text.home.error.imageerror", null, LocaleContextHolder.getLocale()));
 	                        
 	                        //mostramos las publicacion de la gente a la que sigue el usuario
-	                        model.addAttribute("publications", publicationDao.findByUsers(followDao.getUserFollow(userpri), Long.parseLong("0"), Long.parseLong("10")));
-	                        
+	                        model.addAttribute("publications", publicationDao.findByUsersLast(followDao.getUserFollow(userpri)));
 	                        //mostramos las tendencias de la ultima hora
 	                        model.addAttribute("trends", hashtagDao.findUp());
 	                        
@@ -241,7 +240,7 @@ public class PublicationController {
             model.addAttribute("publicationDao", publicationDao);
             
         	//se introducen las respuestas
-            model.addAttribute("publications", publicationDao.findResponse(publicationDao.findById(id)));
+            model.addAttribute("publications", publicationDao.findResponseLimit(publication));
             
             //se introduce la publicacion, para responder
             model.addAttribute("publication", new Publication());

@@ -36,18 +36,18 @@ and open the template in the editor.
 									<div class="row">
 									
 										<div class="col-6 text-center">
-											<p><label for="file-upload" class="subir">
+											<p class="text-break"><label for="1" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
-												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+												<input id="1" name="image[]" type="file" style='display: none;'/>
 											</p>
 										</div>
 										
 										<div class="col-6 text-center">
-											<p><label for="file-upload" class="subir">
+											<p class="text-break"><label for="2" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
-												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
+												<input id="2" name="image[]" type="file" style='display: none;'/>
 											</p>
 										</div>
 										
@@ -62,7 +62,9 @@ and open the template in the editor.
 							</form>
 						</div>
 	
-						<div class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+						
+                        <div id="all-publications">
+                        	<div class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
                                 <div class="row">
                                 
                                     <div class="col-3 col-xl-2">
@@ -74,11 +76,11 @@ and open the template in the editor.
                                     
                                         <div class="row">
                                             <div class="col-12">
-                                                <p><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                             </div>
                                         </div>
                                         
-                                        <p th:utext="${publi.publication}"></p>
+                                        <p class="text-break" th:utext="${publi.publication}"></p>
                                         
                                         <div class="row" th:if="${publi.publi != null && publi.publi.view != false}">
                                         	<div class="col cornsilk border p-3 m-3">
@@ -94,10 +96,10 @@ and open the template in the editor.
 			                                		<div class="col-8 col-xl-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+				                                            	<p class="text-break"><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
-				                                    	<p th:utext="${publi.publi.publication}"></p>
+				                                    	<p class="text-break" th:utext="${publi.publi.publication}"></p>
 			                                    	</div>
 				                                </div>
                                         	</div>
@@ -117,7 +119,7 @@ and open the template in the editor.
 			                                		<div class="col-8 col-xl-10">
 				                                    	<div class="row">
 				                                        	<div class="col-12">
-				                                            	<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+				                                            	<p class="text-break"><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 				                                        	</div>
 				                                    	</div>
 			                                    	</div>
@@ -143,11 +145,12 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
-						</div>
-						<div th:replace="aplication/layout/layout :: tendence-1"></div>
-					</div> 
-				</div>
+                        </div>
+					</div>
+					<div th:replace="aplication/layout/layout :: tendence-1"></div>
+				</div> 
 			</div>
+		</div>
 		<div th:replace="aplication/layout/layout :: modal"></div>
 		<div th:replace="aplication/layout/layout :: footer"></div>
 	</body>

@@ -1,6 +1,8 @@
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
-
+    var finish = false;
+    var bottomOffset = 200; // the distance (in px) from the page bottom when you want to load more posts
+    
 $(".followbutton").click(function(){
     let value = $(this).val();
     
@@ -126,26 +128,6 @@ $(".div-buttom").click(function() {
 	  return false;
 });
 
-(function($) {
-
-	"use strict";
-
-	var fullHeight = function() {
-
-		$('.js-fullheight').css('height', $(window).height());
-		$(window).resize(function(){
-			$('.js-fullheight').css('height', $(window).height());
-		});
-
-	};
-	fullHeight();
-
-	$('#sidebarCollapse').on('click', function () {
-      $('#sidebar').toggleClass('active');
-  });
-
-})(jQuery);
-
 $(".deleteimage").click(function(){
     let value = $(this).val();
 
@@ -164,9 +146,65 @@ $(".deleteimage").click(function(){
 
 
 
+jQuery(function($){
 
+	var fullHeight = function() {
 
+		$('.js-fullheight').css('height', $(window).height());
+		$(window).resize(function(){
+			$('.js-fullheight').css('height', $(window).height());
+		});
 
+	};
+	fullHeight();
 
-
-
+	$('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+	});
+ 
+	$(window).scroll(function() {
+		
+		if(document.URL.split(window.location.host)[1].includes("/home") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+			let value = $('.publication').last().attr('id');
+			$.ajax({
+				type: "POST",
+		        url: "/refill",
+		        data : { last : value },
+		        beforeSend: function(xhr) {
+		            xhr.setRequestHeader(header, token);
+		        },
+				success:function(data){
+					
+					if (data){
+						$("#all-publications").append(data);
+					} else {
+						finish = true;
+					}
+					
+					
+				}
+			});
+		} else if(document.URL.split(window.location.host)[1].includes("/viewpublication") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+			let findval = $('.prin').attr('id');
+			let value = $('.sec').last().attr('id');
+			$.ajax({
+				type: "GET",
+		        url: "/refillview",
+		        data : { find: findval , last : value},
+		        beforeSend: function(xhr) {
+		            xhr.setRequestHeader(header, token);
+		        },
+				success:function(data){
+					
+					if (data){
+						$("#all-publications").append(data);
+					} else {
+						finish = true;
+					}
+					
+					
+				}
+			});
+		}
+	});
+});

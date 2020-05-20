@@ -31,10 +31,10 @@ and open the template in the editor.
                                 	<div class="col-9 col-xl-10">
                                     	<div class="row">
                                         	<div class="col-12">
-                                            	<p><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                            	<p class="text-break"><a th:href="${'/userdetails/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                         	</div>
                                     	</div>
-                                    	<p th:utext="${publi.publication}"></p>
+                                    	<p class="text-break" th:utext="${publi.publication}"></p>
                                     </div>
                                 </div>
                             </div>

@@ -5,9 +5,11 @@
  */
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.EmoticonDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.entity.Emoticon;
 import com.escobar.chirpy.models.entity.User;
 
 import java.security.Principal;
@@ -48,6 +50,8 @@ public class ExplorerController {
     @Autowired
     private MessageSource messages;
     
+    @Autowired
+    private EmoticonDao emoticonDao;
     
   //TODO Explorer metodo post
     @RequestMapping(value={"/explorer", "/"}, method = RequestMethod.GET)
@@ -94,4 +98,20 @@ public class ExplorerController {
         
         return "aplication/explorer";
     }
+    
+    
+    
+    @RequestMapping(value={"/viewemoticons"}, method = RequestMethod.GET)
+    public String emoticons(Model model, Principal principal) {
+		model.addAttribute("title" , messages.getMessage("text.administration.emoticon.tittle", null, LocaleContextHolder.getLocale()));
+    	model.addAttribute("emoticons", emoticonDao.findall());
+    	
+		if (principal != null){
+        	
+			model.addAttribute("user", userDao.findByUserName(principal.getName()));
+		}
+    	
+        return "aplication/emoticons";
+    }
+    
 }

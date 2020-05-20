@@ -29,8 +29,8 @@ and open the template in the editor.
                                     <img th:if="${userc.imageperf != null}" class="img-fluid border w-100 imageuser" th:src="${'/image/user/' + userc.id}">
                                 </div>
                                 <div class="col-12 col-sm-9 text-center text-lg-left">
-                                    <p th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
-                                    <p th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
+                                    <p class="text-break"  th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
+                                    <p class="text-break"  th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
                                 </div>
                             </div>
                  		</div>
@@ -61,14 +61,14 @@ and open the template in the editor.
                                 
                                     <div class="row">
                                         <div class="col-9">
-                                            <p><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+                                            <p class="text-break" ><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
                                         </div>
                                         <div class="col-3" th:if="${user != null && user.id == userc.id}">
                                         	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
                                     	</div>
                                     </div>
                                     
-                                    <p th:utext="${publi.publication}"></p>
+                                    <p class="text-break"  th:utext="${publi.publication}"></p>
                                     
                                     <div class="row" th:if="${publi.publi != null && publi.publi.view != false}">
                                     	<div class="col cornsilk border p-3 m-3">
@@ -83,10 +83,10 @@ and open the template in the editor.
 			                               		<div class="col-8 col-xl-10">
 			                                    	<div class="row">
 			                                        	<div class="col-12">
-			                                            	<p><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+			                                            	<p class="text-break" ><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
 			                                        	</div>
 			                                    	</div>
-			                                    	<p th:utext="${publi.publi.publication}"></p>
+			                                    	<p class="text-break"  th:utext="${publi.publi.publication}"></p>
 			                                   	</div>
 	                                		</div>
                                     	</div>
@@ -104,7 +104,7 @@ and open the template in the editor.
                                					<div class="col-8 col-xl-10">
                                     				<div class="row">
                                         				<div class="col-12">
-                                            				<p><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+                                            				<p class="text-break" ><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
                                         				</div>
                                     				</div>
                                    				</div>

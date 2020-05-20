@@ -30,19 +30,13 @@
 				      		<td th:text="${user.name}"></td>
 				      		<td th:text="${userBan.countByUsers(user)}"></td>
 				      		<td class="text-center">
-				      		
-				      			<form th:action="@{/activatedisableuser}" method="post">
-				      				<button class="btn btn-success" th:if="${user.enabled == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
-				      				<button class="btn btn-warning" th:if="${user.enabled != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
-				      			</form>
+			      				<button class="btn btn-success" th:if="${user.enabled == true}" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+			      				<button class="btn btn-warning" th:if="${user.enabled != true}" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
 				      		</td>
 				      		
 				      		<td class="text-center">
-				      		
-				      			<form th:action="@{/blockunblockuser}" method="post">
-				      				<button  class="btn btn-success" th:if="${user.notLocker == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
-				      				<button class="btn btn-danger" th:if="${user.notLocker != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
-				      			</form>
+			      				<button  class="btn btn-success" th:if="${user.notLocker == true}" name="id" th:value="${user.id}" th:text="#{text.administration.users.activated}"></button>
+			      				<button class="btn btn-danger" th:if="${user.notLocker != true}" name="id" th:value="${user.id}" th:text="#{text.administration.users.disabled}"></button>
 				      		</td>
 				      		
 				      		<td class="text-center"><p th:if="${user.systenBan != true}" class="btn btn-success m-0" th:text="#{text.administration.users.no}"></p><p th:if="${user.systenBan == true}" class="btn btn-warning m-0"  th:text="#{text.administration.users.yes}"></p></td>

@@ -262,7 +262,7 @@ public class ApyController {
     	return "false";
     }
     
-  //TODO Borrar Posts
+    //TODO Borrar Posts
     @ResponseBody
     @RequestMapping(value={"/deleteimage/{id}"}, method = RequestMethod.POST)
     public String deleteimage(Principal principal,
@@ -293,6 +293,49 @@ public class ApyController {
         
     }
     
+  //TODO Recargar main
+    @RequestMapping(value={"/refill"}, method = RequestMethod.POST)
+    public String refill(Principal principal, Model model,
+    		@RequestParam(value = "last", required = true) Long last) {
+    	
+    	//Cargamos el usuario registrado
+        User user = userDao.findByUserName(principal.getName());
+        
+        //si el usuario no es nulo
+        if (user != null) {
+        	
+        	System.out.println(last);
+        	model.addAttribute("publications", publicationDao.findByUsersNext(followDao.getUserFollow(user), last));
+        	model.addAttribute("imageDao", imageDao);
+        	model.addAttribute("publicationDao", publicationDao);
+        	
+        	return "aplication/apy/refill";
+        }
+        
+        return null;
+    }
     
+  //TODO Recargar main
+    @RequestMapping(value={"/refillview"}, method = RequestMethod.GET)
+    public String refillview(Principal principal, Model model,
+    		@RequestParam(value = "find", required = true) Long find,
+    		@RequestParam(value = "last", required = true) Long last) {
+    	
+    	//Cargamos la publicacion buscada
+        Publication pu = publicationDao.findById(find);
+        
+        //si el usuario no es nulo
+        if (pu != null) {
+        	System.out.println(last);
+        	model.addAttribute("publications", publicationDao.findResponseNext(pu, last));
+        	System.out.println(publicationDao.findResponseNext(pu, last).size());
+        	model.addAttribute("imageDao", imageDao);
+        	model.addAttribute("publicationDao", publicationDao);
+        	
+        	return "aplication/apy/refillview";
+        }
+        
+        return null;
+    }
     
 }

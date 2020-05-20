@@ -62,6 +62,7 @@
                 			<ul class="collapse list-unstyled" id="pageSubmenu">
 			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/profile/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
 	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
+	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/viewemoticons}" th:text="#{text.administration.emoticon.tittle}"></a></li>
 	                    		<li>
 	                    			<form class="ml-0"   sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
 		                            	<button type="submit" class="btn btn-link text-warning pl-0 text-center" th:text="#{text.layout.nav.logout}"></button>
@@ -79,7 +80,7 @@
 	        		
 	        			<div class="row">
 	        			<div class="col text-center">
-	        			<p class="">
+	        			<p class="text-break">
 	           				<a class="text-white" href="?lang=es_ES">Es</a> 
 	           				<a class="text-white" href="?lang=en_US">En</a>
 	           			</p>
@@ -88,7 +89,7 @@
 	        			</div>
 		        		
 	        		
-	        			<p>
+	        			<p class="text-break">
 							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Antonio Escobar Rueda
 						</p>
 	        		</div>
@@ -143,7 +144,7 @@
 					                    		<span th:text="${'#'+trend.hashtagname}" class="m-0 p-0"></span><br/>
 					                    		<span class="m-0 p-0 pequeno" th:text="${trend.usos}"></span> <span class="m-0 p-0 pequeno" th:text="#{text.layout.trend.publications}"></span>
 					                    	</a>
-					                    	<p class="text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
+					                    	<p class="text-break text-white p-2 mt-2 mb-2 ml-2" th:if="${#lists.isEmpty(trends)}" th:text="#{text.layout.trend.empty}"></p>
 							            </div>
 				                    </div>
 				                </div>
@@ -189,7 +190,7 @@
 							<div class="col-12 mt-2">
 								<div class="row">
 									<div class="col-6 text-center">
-											<p><label for="file-upload" class="subir">
+											<p class="text-break"><label for="file-upload" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
 												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
@@ -197,14 +198,14 @@
 										</div>
 										
 										<div class="col-6 text-center">
-											<p><label for="file-upload" class="subir">
+											<p class="text-break"><label for="file-upload" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
 												<input id="file-upload" name="image[]" type="file" style='display: none;'/>
 											</p>
 										</div>
 								</div>
-								<p id="errorview"></p>
+								<p class="text-break" id="errorview"></p>
 							</div>
     
 							<div class="col-12 text-center">

@@ -24,10 +24,10 @@ and open the template in the editor.
                                 <div class="col-md-5">
                                     <div class="mt-3"><h1 class="text-chirpy text-center">
                                     <img class="card-img-top" th:src="@{/image/Chirpy.png}" alt="Card image cap" style="width: 100px"> Chirpy</h1></div>
-                                    <p class="text-center text-white">
+                                    <p class="text-break text-center text-white">
                                         <span th:text="#{text.login.text}"></span> <a class="text-info font-weight-bold" th:href="@{/register}" th:text="#{text.login.text.href}"></a>
                                     </p>
-                                    <p class="text-center text-white">
+                                    <p class="text-break text-center text-white">
                                         <span th:text="#{text.login.translate}"></span>
                                         <a class="text-info" href="?lang=es_ES">Es</a> 
 	           							<a class="text-info" href="?lang=en_US">En</a>
@@ -55,11 +55,11 @@ and open the template in the editor.
 										
                                         <form class="form-signin" method="post" th:action="@{/login}">
 
-                                            <p>
+                                            <p class="text-break">
                                                 <label for="username" class="sr-only" th:text="#{text.login.user}"></label>
                                                 <input type="text" id="username" name="username" class="form-control border" th:placeholder="#{text.login.user}" required autofocus>
                                             </p>
-                                            <p>
+                                            <p class="text-break">
                                                 <label for="password" class="sr-only"  th:text="#{text.login.password}"></label>
                                                 <input type="password" id="password" name="password" class="form-control border" th:placeholder="#{text.login.password}" required>
                                             </p>
