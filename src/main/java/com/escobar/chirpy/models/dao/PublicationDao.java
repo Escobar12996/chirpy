@@ -51,11 +51,18 @@ public class PublicationDao {
     
     @Transactional(readOnly=true)
     public List<Publication> findByUser(User user) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and view = true ORDER BY dateOfSend DESC", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user and view = true ORDER BY p.id desc", Publication.class); 
         query.setParameter("user", user);
-        return query.getResultList();
+        return query.setMaxResults(10).getResultList();
     }
 
+    @Transactional(readOnly=true)
+    public List<Publication> findByUserNext(User user, Long id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id < :id and p.user = :user and view = true ORDER BY p.id desc", Publication.class); 
+        query.setParameter("user", user);
+        query.setParameter("id", id);
+        return query.setMaxResults(10).getResultList();
+    }
 
 	public Object findByUserAdmin(User user) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user ORDER BY dateOfSend DESC", Publication.class); 

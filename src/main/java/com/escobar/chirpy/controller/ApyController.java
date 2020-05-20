@@ -294,48 +294,57 @@ public class ApyController {
     }
     
   //TODO Recargar main
-    @RequestMapping(value={"/refill"}, method = RequestMethod.POST)
+    @RequestMapping(value={"/refill/{page}"}, method = RequestMethod.POST)
     public String refill(Principal principal, Model model,
-    		@RequestParam(value = "last", required = true) Long last) {
-    	
-    	//Cargamos el usuario registrado
-        User user = userDao.findByUserName(principal.getName());
-        
-        //si el usuario no es nulo
-        if (user != null) {
-        	
-        	System.out.println(last);
-        	model.addAttribute("publications", publicationDao.findByUsersNext(followDao.getUserFollow(user), last));
-        	model.addAttribute("imageDao", imageDao);
-        	model.addAttribute("publicationDao", publicationDao);
-        	
-        	return "aplication/apy/refill";
-        }
-        
-        return null;
-    }
-    
-  //TODO Recargar main
-    @RequestMapping(value={"/refillview"}, method = RequestMethod.GET)
-    public String refillview(Principal principal, Model model,
     		@RequestParam(value = "find", required = true) Long find,
-    		@RequestParam(value = "last", required = true) Long last) {
+    		@RequestParam(value = "last", required = true) Long last,
+    		@PathVariable("page") String page) {
     	
-    	//Cargamos la publicacion buscada
-        Publication pu = publicationDao.findById(find);
-        
-        //si el usuario no es nulo
-        if (pu != null) {
-        	System.out.println(last);
-        	model.addAttribute("publications", publicationDao.findResponseNext(pu, last));
-        	System.out.println(publicationDao.findResponseNext(pu, last).size());
-        	model.addAttribute("imageDao", imageDao);
-        	model.addAttribute("publicationDao", publicationDao);
-        	
-        	return "aplication/apy/refillview";
-        }
+    	if (page.contains("main")) {
+    		//Cargamos el usuario registrado
+            User user = userDao.findByUserName(principal.getName());
+            
+            //si el usuario no es nulo
+            if (user != null) {
+            	model.addAttribute("publications", publicationDao.findByUsersNext(followDao.getUserFollow(user), last));
+            	model.addAttribute("imageDao", imageDao);
+            	model.addAttribute("publicationDao", publicationDao);
+            	
+            	return "aplication/apy/refill";
+            }
+    	} else if (page.contains("view")) {
+    		//Cargamos la publicacion buscada
+            Publication pu = publicationDao.findById(find);
+            
+            //si el usuario no es nulo
+            if (pu != null) {
+            	System.out.println(last);
+            	model.addAttribute("publications", publicationDao.findResponseNext(pu, last));
+            	System.out.println(publicationDao.findResponseNext(pu, last).size());
+            	model.addAttribute("imageDao", imageDao);
+            	model.addAttribute("publicationDao", publicationDao);
+            	
+            	return "aplication/apy/refillview";
+            }
+            
+    	} else if (page.contains("profile")) {
+
+    		//Cargamos la publicacion buscada
+            User pu = userDao.findById(find);
+            
+            //si el usuario no es nulo
+            if (pu != null) {
+            	model.addAttribute("publications", publicationDao.findByUserNext(pu, last));
+            	model.addAttribute("imageDao", imageDao);
+            	model.addAttribute("publicationDao", publicationDao);
+            	
+            	return "aplication/apy/refillview";
+            }
+    		
+    	}
+    	
+    	
         
         return null;
     }
-    
 }

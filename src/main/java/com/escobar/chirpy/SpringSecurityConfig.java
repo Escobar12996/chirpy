@@ -49,8 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/explorer",
             		"/image/{tipo}/{id}",
             		"/viewpublication/{id}",
-            		"/refill",
-            		"/refillview",
+            		"/refill/{page}",
             		"/viewemoticons"
             		).permitAll()
             

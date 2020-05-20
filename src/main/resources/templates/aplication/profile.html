@@ -18,7 +18,7 @@ and open the template in the editor.
                         
                 	<div class="col-xl-7 ml-xl-auto">
                             
-                    	<div class="jumbotron mb-0">
+                    	<div class="jumbotron mb-0 prin" th:id="${userc.id}">
                         	<div class="parent w-100 text-center justify-content-center">
                             	<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid imageusersu">
                             </div>
@@ -48,86 +48,88 @@ and open the template in the editor.
 							<h3 class="text-danger" th:text="#{text.userdetails.pu.empty}"></h3>
 						</div>
                     
-                            
-                        <div class="publication p-4 mt-3 bg-white card" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
-                            <div class="row">
-                            
-                                <div class="col-3 col-xl-2">
-                                	<img class="img-fluid border" th:if="${publi.user.imageperf != null}" th:src="${'/image/user/' + publi.user.id}" alt="Card image cap" style="width: 100px">
-                                    <img class="img-fluid border" th:if="${publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
-                                </div>
-                                
-                                <div class="col-9 col-xl-10">
-                                
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <p class="text-break" ><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
-                                        </div>
-                                        <div class="col-3" th:if="${user != null && user.id == userc.id}">
-                                        	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
-                                    	</div>
-                                    </div>
-                                    
-                                    <p class="text-break"  th:utext="${publi.publication}"></p>
-                                    
-                                    <div class="row" th:if="${publi.publi != null && publi.publi.view != false}">
-                                    	<div class="col cornsilk border p-3 m-3">
-	                                     	<a th:href="${'/viewpublication/' + publi.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}"></a>
+                        <div id="all-publications">
+                        	<div class="publication p-4 mt-3 bg-white card sec" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+	                            <div class="row">
+	                            
+	                                <div class="col-3 col-xl-2">
+	                                	<img class="img-fluid border" th:if="${publi.user.imageperf != null}" th:src="${'/image/user/' + publi.user.id}" alt="Card image cap" style="width: 100px">
+	                                    <img class="img-fluid border" th:if="${publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+	                                </div>
+	                                
+	                                <div class="col-9 col-xl-10">
+	                                
+	                                    <div class="row">
+	                                        <div class="col-9">
+	                                            <p class="text-break" ><a th:href="${'/profile/' + publi.user.id}"><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span></a> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+	                                        </div>
+	                                        <div class="col-3" th:if="${user != null && user.id == userc.id}">
+	                                        	<button class="badge badge-primary deletebutton" th:id="'deletebutton' + ${publi.id}" th:value="${publi.id}" th:text="#{text.layout.coment.delete}"></button>
+	                                    	</div>
+	                                    </div>
+	                                    
+	                                    <p class="text-break"  th:utext="${publi.publication}"></p>
+	                                    
+	                                    <div class="row" th:if="${publi.publi != null && publi.publi.view != false}">
+	                                    	<div class="col cornsilk border p-3 m-3">
+		                                     	<a th:href="${'/viewpublication/' + publi.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}"></a>
+		                                     	
+		                                   		<div class="row">
+		                                    		
+													<div class="col-4 col-xl-2">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+				                                	</div>
+				                               		<div class="col-8 col-xl-10">
+				                                    	<div class="row">
+				                                        	<div class="col-12">
+				                                            	<p class="text-break" ><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+				                                        	</div>
+				                                    	</div>
+				                                    	<p class="text-break"  th:utext="${publi.publi.publication}"></p>
+				                                   	</div>
+		                                		</div>
+	                                    	</div>
+	                                    </div>
+	                                    
+	                                    <div class="row" th:if="${publi.publi != null && publi.publi.view == false}">
+	                                    	<div class="col cornsilk border p-3 m-3">
+	                                     		<a th:href="${'/viewpublication/' + publi.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}"></a>
 	                                     	
-	                                   		<div class="row">
-	                                    		
-												<div class="col-4 col-xl-2">
-			                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
-			                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
-			                                	</div>
-			                               		<div class="col-8 col-xl-10">
-			                                    	<div class="row">
-			                                        	<div class="col-12">
-			                                            	<p class="text-break" ><a th:href="${'/userdetails/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
-			                                        	</div>
-			                                    	</div>
-			                                    	<p class="text-break"  th:utext="${publi.publi.publication}"></p>
-			                                   	</div>
-	                                		</div>
-                                    	</div>
-                                    </div>
-                                    
-                                    <div class="row" th:if="${publi.publi != null && publi.publi.view == false}">
-                                    	<div class="col cornsilk border p-3 m-3">
-                                     		<a th:href="${'/viewpublication/' + publi.publi.id}" class="font-weight-bold"  th:text="#{text.layout.coment-1.inresponse}"></a>
-                                     	
-                                    		<div class="row">
-	                                    		<div class="col-4 col-xl-2">
-			                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
-			                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
-                                				</div>
-                               					<div class="col-8 col-xl-10">
-                                    				<div class="row">
-                                        				<div class="col-12">
-                                            				<p class="text-break" ><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
-                                        				</div>
-                                    				</div>
-                                   				</div>
-                                			</div>
-                                    	</div>
-                                    </div>
-                                    
-                                	<div class="row">
-                                		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publi)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
-											<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
-										</a>
-                                	</div>
-                                	
-                                	<div class="row mt-2">
-                                		<button type="button" sec:authorize="isAuthenticated()" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
-										<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment-1.buttonanswer}"></a>                                    		
-                                		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
-                                			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
-                                		</a>
-                                	</div>
-                                </div>
-                            </div>
-                        </div>
+	                                    		<div class="row">
+		                                    		<div class="col-4 col-xl-2">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
+				                                    	<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+	                                				</div>
+	                               					<div class="col-8 col-xl-10">
+	                                    				<div class="row">
+	                                        				<div class="col-12">
+	                                            				<p class="text-break" ><a th:href="${'/profile/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+	                                        				</div>
+	                                    				</div>
+	                                   				</div>
+	                                			</div>
+	                                    	</div>
+	                                    </div>
+	                                    
+	                                	<div class="row">
+	                                		<a class="col" data-type="image" th:each="vid : ${imageDao.findByPubli(publi)}" th:href="${'/image/image/' + vid.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
+												<img class="img-fluid" th:src="${'/image/image/' + vid.id}" >
+											</a>
+	                                	</div>
+	                                	
+	                                	<div class="row mt-2">
+	                                		<button type="button" sec:authorize="isAuthenticated()" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
+											<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment-1.buttonanswer}"></a>                                    		
+	                                		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
+	                                			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
+	                                		</a>
+	                                	</div>
+	                                </div>
+	                            </div>
+	                        </div>
+                        </div>  
+                        
 					</div>
                         
                     <div th:replace="aplication/layout/layout :: tendence-1"></div>

@@ -168,8 +168,8 @@ jQuery(function($){
 			let value = $('.publication').last().attr('id');
 			$.ajax({
 				type: "POST",
-		        url: "/refill",
-		        data : { last : value },
+		        url: "/refill/main",
+		        data : { find: 0 , last : value },
 		        beforeSend: function(xhr) {
 		            xhr.setRequestHeader(header, token);
 		        },
@@ -188,8 +188,29 @@ jQuery(function($){
 			let findval = $('.prin').attr('id');
 			let value = $('.sec').last().attr('id');
 			$.ajax({
-				type: "GET",
-		        url: "/refillview",
+				type: "POST",
+		        url: "/refill/view",
+		        data : { find: findval , last : value},
+		        beforeSend: function(xhr) {
+		            xhr.setRequestHeader(header, token);
+		        },
+				success:function(data){
+					
+					if (data){
+						$("#all-publications").append(data);
+					} else {
+						finish = true;
+					}
+					
+					
+				}
+			});
+		} else if(document.URL.split(window.location.host)[1].includes("/profile") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+			let findval = $('.prin').attr('id');
+			let value = $('.sec').last().attr('id');
+			$.ajax({
+				type: "POST",
+		        url: "/refill/profile",
 		        data : { find: findval , last : value},
 		        beforeSend: function(xhr) {
 		            xhr.setRequestHeader(header, token);
