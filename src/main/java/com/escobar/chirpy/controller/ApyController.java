@@ -341,6 +341,18 @@ public class ApyController {
             	return "aplication/apy/refillview";
             }
     		
+    	} else if (page.contains("quotes")) {
+
+    		//Cargamos el usuario
+            User pu = userDao.findByUserName(principal.getName());
+            
+            //si el usuario no es nulo
+            if (pu != null) {
+            	
+            	
+            	return "aplication/apy/refillview";
+            }
+    		
     	}
     	
     	

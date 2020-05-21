@@ -21,10 +21,18 @@ public class UserQuotePublicationDao {
         
     @Transactional
     public List<UserQuotePublication> findByUser(User user) {
-        TypedQuery<UserQuotePublication> query = em.createQuery("SELECT u FROM UserQuotePublication u WHERE u.user = :user", UserQuotePublication.class); 
+        TypedQuery<UserQuotePublication> query = em.createQuery("SELECT u FROM UserQuotePublication u WHERE u.user = :user order by u.id", UserQuotePublication.class); 
         query.setParameter("user", user);
         
-        return query.getResultList();
+        return query.setMaxResults(10).getResultList();
+    }
+    
+    @Transactional
+    public List<UserQuotePublication> findByUserNext(User user, Long last) {
+        TypedQuery<UserQuotePublication> query = em.createQuery("SELECT u FROM UserQuotePublication u WHERE u.id < :last u.user = :user order by u.id", UserQuotePublication.class); 
+        query.setParameter("user", user);
+        query.setParameter("last", last);
+        return query.setMaxResults(10).getResultList();
     }
     
     @Transactional
