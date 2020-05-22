@@ -36,6 +36,8 @@ public class UserQuotePublicationDao {
         return query.setMaxResults(10).getResultList();
     }
     
+    
+    
     @Transactional
     public UserQuotePublication findPublication(UserQuotePublication userQuotePublication) {
         TypedQuery<UserQuotePublication> query = em.createQuery("SELECT u FROM UserQuotePublication u WHERE u.user = :user and u.publication = :publication", UserQuotePublication.class); 
