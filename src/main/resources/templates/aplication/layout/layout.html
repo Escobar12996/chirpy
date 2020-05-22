@@ -214,11 +214,15 @@
 						</form>
 					</div>
 					
+					<div class="text-center">
+						<a sec:authorize="isAuthenticated()" th:href="@{/viewemoticons}" th:text="#{text.administration.emoticon.tittle}"></a>
+					</div>
 					<!--/* Fin cuerpo Modal */-->
 					
 					<!--/* Footer */-->
 					
 					<div class="modal-footer">
+					
 						<button type="button" class="btn btn-outline-danger" data-dismiss="modal" th:text="#{text.home.close}"></button>
 					</div>
 					

@@ -8,12 +8,14 @@ package com.escobar.chirpy.controller;
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
+import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserAuthority;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.services.PublicationService;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,6 +62,9 @@ public class ApyController {
     
     @Autowired
     private ImageDao imageDao;
+    
+    @Autowired
+    private UserAuthorityDao userAuthorityDao;
     
     @Autowired
     private UserQuotePublicationDao userQuotePublicationDao;
@@ -334,12 +339,12 @@ public class ApyController {
             
     	} else if (page.contains("profile")) {
 
-    		//Cargamos la publicacion buscada
-            User pu = userDao.findById(find);
+    		//Cargamos el usuario buscado
+            User user = userDao.findById(find);
             
             //si el usuario no es nulo
-            if (pu != null) {
-            	model.addAttribute("publications", publicationDao.findByUserNext(pu, last));
+            if (user != null) {
+            	model.addAttribute("publications", publicationDao.findByUserNext(user, last));
             	model.addAttribute("imageDao", imageDao);
             	model.addAttribute("publicationDao", publicationDao);
             	
@@ -349,15 +354,65 @@ public class ApyController {
     	} else if (page.contains("quotes")) {
 
     		//Cargamos el usuario
-            User u = userDao.findByUserName(principal.getName());
+            User user = userDao.findByUserName(principal.getName());
             
             //si el usuario no es nulo
-            if (u != null) {
+            if (user != null) {
 
-                model.addAttribute("quotepublications", userQuotePublicationDao.findByUserNext(u, last));
+                model.addAttribute("quotepublications", userQuotePublicationDao.findByUserNext(user, last));
             	
             	return "aplication/apy/refillquotes";
             }
+    		
+    	} else if (page.contains("adminprof")) {
+
+    		//Cargamos el usuario buscado
+			User user = userDao.findByUserName(principal.getName());
+        	
+        	if (user != null) {
+        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
+            	boolean flag = false;
+            	
+            	for (UserAuthority au :ua) {
+            		if (au.getAuthority().getAuthority().equals("admin"))
+            			flag = true;
+            	}
+            
+            	User u = userDao.findById(find);
+	            //si el usuario es admin
+	            if (flag) {
+	            	System.out.println(last);
+	            	model.addAttribute("publications", publicationDao.findByUserAdminNext(u, last));
+	            	model.addAttribute("imageDao", imageDao);
+	            	model.addAttribute("publicationDao", publicationDao);
+	            	
+	            	return "administration/apy/refillprofile";
+	            }
+        	}
+    		
+    	} else if (page.contains("allpublicationsadmin")) {
+
+    		//Cargamos el usuario buscado
+			User user = userDao.findByUserName(principal.getName());
+        	
+        	if (user != null) {
+        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
+            	boolean flag = false;
+            	
+            	for (UserAuthority au :ua) {
+            		if (au.getAuthority().getAuthority().equals("admin"))
+            			flag = true;
+            	}
+            
+	            //si el usuario es admin
+	            if (flag) {
+            	model.addAttribute("publications", publicationDao.findAdminNext(last));
+            	model.addAttribute("imageDao", imageDao);
+            	model.addAttribute("publicationDao", publicationDao);
+            	
+            	return "administration/apy/refillpublications";
+	            }
+        	}
     		
     	}
     	

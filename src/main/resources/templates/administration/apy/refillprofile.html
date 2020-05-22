@@ -1,0 +1,79 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" class="p-4 mt-3 card last" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}"  th:classappend="${publi.view} ? publication : bg-warning" th:id="${publi.id}">
+		        <div class="row">
+		        
+		            <div class="col-3 col-xl-2">
+		            	<img class="img-fluid border" th:if="${publi.user.imageperf != null}" th:src="${'/image/user/' + publi.user.id}" alt="Card image cap" style="width: 100px">
+		                <img class="img-fluid border" th:if="${publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+	           		</div>
+		                       
+		            <div class="col-9 col-xl-10">
+		                       
+		            	<div class="row">
+		                	<div class="col-12">
+		                    	<p><span class="font-weight-bold" th:text="${publi.user.name}"></span> <span class="" th:text="'@' + ${publi.user.username}"></span> - <span class="" th:text="${publi.dateOfSend}"></span></p>
+	                    	</div>
+	                	</div>
+		                           
+		                <p th:utext="${publi.publication}"></p>
+		                           
+		                <div class="row" th:if="${publi.publi != null}">
+		                	<div class="col cornsilk border p-3 m-3">
+		                    	<p th:text="#{text.layout.coment-1.inresponse}"></p>
+		                    	
+								<div class="row">
+									<div class="col-4 col-xl-2">
+		                           		<img class="img-fluid border" th:if="${publi.publi.user.imageperf != null}" th:src="${'/image/user/' + publi.publi.user.id}" alt="Card image cap" style="width: 100px">
+		                				<img class="img-fluid border" th:if="${publi.publi.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+		                       		</div>
+		                       		
+		                      		<div class="col-8 col-xl-10">
+		                           		<div class="row">
+		                               		<div class="col-12">
+		                                   		<p><a th:href="${'/administration/userpost/' + publi.publi.user.id}"><span class="font-weight-bold" th:text="${publi.publi.user.name}"></span> <span class="" th:text="'@' + ${publi.publi.user.username}"></span></a> - <span th:text="${publi.publi.dateOfSend}"></span></p>
+		                               		</div>
+		                           		</div>
+		                           		<p th:utext="${publi.publi.publication}"></p>
+		                          	</div>
+		                       </div>
+	                  		</div>
+	           			</div>
+		                           
+		                <div class="row">
+		                	
+							<div class="col text-center" th:each="image : ${imageDao.findByPubliAdmin(publi)}">
+								<div class="row" >
+									<div class="col-12">
+										<a data-type="image" th:href="${'/image/admin/' + image.id}" data-toggle="lightbox" th:data-gallery="${publi.id}">
+											<img class="img-fluid" th:src="${'/image/admin/' + image.id}" >
+										</a>
+									
+									</div>
+								
+									<div class="col-12 text-center mt-2">
+										<form th:action="@{/administration/deleteimage}" method="post">
+											<input name="post" value="1" type="hidden">
+											<button th:if="${image.view == true}" name="deleteimage" class="btn btn-warning" th:value="${image.id}" th:text="#{text.administration.images.delete}"></button>
+											<button th:if="${image.view == false}" name="deleteimage" class="btn btn-success" th:value="${image.id}" th:text="#{text.administration.images.show}"></button>
+											<button name="removeimage" class="btn btn-danger" th:value="${image.id}" th:text="#{text.administration.images.remove}"></button>
+										</form>
+									
+									</div>
+								
+								</div>
+								
+		                   	</div>
+							
+	                   	</div>
+					</div>
+				</div>
+				
+				<div class="text-right mt-2">
+					<form th:action="@{/administration/deletepost}" method="post">
+						<button th:if="${publi.view == true}" name="deletepost" class="btn btn-warning" th:value="${publi.id}" th:text="#{text.administration.images.delete}"></button>
+						<button th:if="${publi.view == false}" name="deletepost" class="btn btn-success" th:value="${publi.id}" th:text="#{text.administration.images.show}"></button>
+						<button name="removepost" class="btn btn-danger" th:value="${publi.id}" th:text="#{text.administration.images.remove}"></button>
+						<button name="removeallpost" class="btn btn-danger" th:value="${publi.id}" th:text="#{text.administration.images.removeall}"></button>
+						
+					</form>
+				</div>
+			</div>

@@ -194,7 +194,7 @@ public class AdministrationController {
     public String adminpost(Model model, Principal principal) {
     	
     	model.addAttribute("title", messages.getMessage("text.administration.posts.tittle", null, LocaleContextHolder.getLocale()));
-    	model.addAttribute("publications", publicationDao.findAll());
+    	model.addAttribute("publications", publicationDao.findAdmin());
     	model.addAttribute("imageDao", imageDao);
     	
     	
@@ -534,12 +534,12 @@ public class AdministrationController {
     		Model model,
     		@RequestParam(value = "emoti", required = true) MultipartFile file) {
         
-    	model.addAttribute("emoticons", emoticonDao.findall());
+    	
 		model.addAttribute("title" , messages.getMessage("text.administration.emoticon.tittle", null, LocaleContextHolder.getLocale()));
 
     	
     	if (result.hasErrors()){
-    		
+    		model.addAttribute("emoticons", emoticonDao.findall());
 			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.error", null, LocaleContextHolder.getLocale()));
             return "administration/emoticons";
         }  
@@ -547,7 +547,7 @@ public class AdministrationController {
     	//si no es nulo y no esta vacio, comprobamos que NO es una imagen valida para lanzar error
     	if(file != null && !file.isEmpty()) {
     		if (!file.getContentType().contains("image/png") && !file.getContentType().contains("image/jpeg") && !file.getContentType().contains("image/gif")) {
-    			
+    			model.addAttribute("emoticons", emoticonDao.findall());
     			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.imageerror", null, LocaleContextHolder.getLocale()));
     			model.addAttribute("emoticon", emoticon);
     			return "administration/emoticons";
@@ -557,12 +557,14 @@ public class AdministrationController {
     	if (emoticonDao.findemoticon(emoticon.getCommand()) != null) {
 			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.commaddup", null, LocaleContextHolder.getLocale()));
 			model.addAttribute("emoticon", emoticon);
+			model.addAttribute("emoticons", emoticonDao.findall());
 			return "administration/emoticons";	
 		}
     	
     	if (file == null || file.getSize() == 0) {
 			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.imageerror", null, LocaleContextHolder.getLocale()));
 			model.addAttribute("emoticon", emoticon);
+			model.addAttribute("emoticons", emoticonDao.findall());
 			return "administration/emoticons";
 		}
     	
@@ -571,12 +573,16 @@ public class AdministrationController {
         	emoticonDao.save(emoticon);
 		} catch (Exception e) {
 			// TODO: handle exception
+			model.addAttribute("error" , messages.getMessage("text.administration.emoticon.imageerror", null, LocaleContextHolder.getLocale()));
 			model.addAttribute("emoticon", emoticon);
+			model.addAttribute("emoticons", emoticonDao.findall());
 			return "administration/emoticons";
 		}
-        
+    	
+    	model.addAttribute("emoticon", new Emoticon());
+    	model.addAttribute("emoticons", emoticonDao.findall());
 		model.addAttribute("success" , messages.getMessage("text.administration.emoticon.success", null, LocaleContextHolder.getLocale()));
-        return "administration/emoticons";
+		return "administration/emoticons";
     }
     
     //TODO Editar imagen metodo get

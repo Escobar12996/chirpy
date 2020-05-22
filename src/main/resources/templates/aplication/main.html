@@ -60,6 +60,11 @@ and open the template in the editor.
 								</div>
 								
 							</form>
+							<div  class="text-right" >
+								<a sec:authorize="isAuthenticated()" th:href="@{/viewemoticons}" th:text="#{text.administration.emoticon.tittle}"></a>
+								
+							</div>
+							
 						</div>
 	
 						

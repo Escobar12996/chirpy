@@ -22,7 +22,21 @@ public class PublicationDao {
     	TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p ORDER BY dateOfSend DESC", Publication.class);
         return query.getResultList();
     }
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findAdmin(){
+    	TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p ORDER BY p.id DESC", Publication.class);
+        return query.setMaxResults(10).getResultList();
+    }
 
+    @Transactional(readOnly=true)
+    public List<Publication> findAdminNext(Long last){
+    	TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p where p.id < :id  ORDER BY p.id DESC", Publication.class);
+    	query.setParameter("id", last);
+    	
+    	return query.setMaxResults(10).getResultList();
+    }
+    
     @Transactional(readOnly=true)
     public Publication findById(Long id) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id = :id and view = true", Publication.class); 
@@ -65,17 +79,28 @@ public class PublicationDao {
     }
 
 	public Object findByUserAdmin(User user) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user ORDER BY dateOfSend DESC", Publication.class); 
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user = :user ORDER BY p.id DESC", Publication.class); 
         query.setParameter("user", user);
-        return query.getResultList();
+        return query.setMaxResults(10).getResultList();
 	}
     
+	@Transactional(readOnly=true)
+    public List<Publication> findByUserAdminNext(User user, Long id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id < :id and p.user = :user ORDER BY p.id desc", Publication.class); 
+        query.setParameter("user", user);
+        query.setParameter("id", id);
+        return query.setMaxResults(10).getResultList();
+    }
+	
+	
     @Transactional(readOnly=true)
     public List<Publication> findResponse(Publication id) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id and view = true order by p.id desc", Publication.class); 
         query.setParameter("id", id);
         return query.getResultList();
     }
+    
+    
     
     @Transactional(readOnly=true)
     public List<Publication> findResponseLimit(Publication id) {
@@ -92,11 +117,25 @@ public class PublicationDao {
         return query.setMaxResults(10).getResultList();
     }
     
+    
+    
     @Transactional(readOnly=true)
     public List<Publication> findResponseAdmin(Publication id) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publi = :id", Publication.class); 
         query.setParameter("id", id);
         return query.getResultList();
+    }
+    
+    
+    
+    
+    
+    
+    @Transactional(readOnly=true)
+    public List<Publication> findByUsersLast(List<User> users) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true order by p.id desc", Publication.class); 
+        query.setParameter("users", users);
+        return query.setMaxResults(10).getResultList();
     }
     
     @Transactional(readOnly=true)
@@ -107,12 +146,9 @@ public class PublicationDao {
         return query.setMaxResults(10).getResultList();
     }
     
-    @Transactional(readOnly=true)
-    public List<Publication> findByUsersLast(List<User> users) {
-        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.user in :users and view = true order by p.id desc", Publication.class); 
-        query.setParameter("users", users);
-        return query.setMaxResults(10).getResultList();
-    }
+    
+    
+    
     
     public List<Publication> findText(String text) {
             TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%') and view = true", Publication.class); 
