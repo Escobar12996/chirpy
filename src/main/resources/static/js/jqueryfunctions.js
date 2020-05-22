@@ -226,6 +226,26 @@ jQuery(function($){
 					
 				}
 			});
+		} else if(document.URL.split(window.location.host)[1].includes("/quotes") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+			let value = $('.sec').last().attr('id');
+			$.ajax({
+				type: "POST",
+		        url: "/refill/quotes",
+		        data : { find: 0 , last : value},
+		        beforeSend: function(xhr) {
+		            xhr.setRequestHeader(header, token);
+		        },
+				success:function(data){
+					
+					if (data){
+						$("#all-publications").append(data);
+					} else {
+						finish = true;
+					}
+					
+					
+				}
+			});
 		}
 	});
 });

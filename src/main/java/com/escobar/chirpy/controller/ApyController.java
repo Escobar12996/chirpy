@@ -9,10 +9,12 @@ import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserDao;
+import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.services.PublicationService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.security.Principal;
@@ -58,6 +60,9 @@ public class ApyController {
     
     @Autowired
     private ImageDao imageDao;
+    
+    @Autowired
+    private UserQuotePublicationDao userQuotePublicationDao;
     
     @Autowired
     private MessageSource messages;
@@ -344,13 +349,14 @@ public class ApyController {
     	} else if (page.contains("quotes")) {
 
     		//Cargamos el usuario
-            User pu = userDao.findByUserName(principal.getName());
+            User u = userDao.findByUserName(principal.getName());
             
             //si el usuario no es nulo
-            if (pu != null) {
+            if (u != null) {
+
+                model.addAttribute("quotepublications", userQuotePublicationDao.findByUserNext(u, last));
             	
-            	
-            	return "aplication/apy/refillview";
+            	return "aplication/apy/refillquotes";
             }
     		
     	}

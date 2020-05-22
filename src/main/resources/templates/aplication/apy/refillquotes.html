@@ -1,0 +1,16 @@
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" class="p-3 mt-3 bg-white card div-buttom publication sec" th:if="${!#lists.isEmpty(quotepublications)}" th:each="quotepublication : ${quotepublications}" th:id="${quotepublication.id}">
+    <div class="row">
+        <div class="col-3 col-xl-2">
+        	<img class="img-fluid border" th:if="${quotepublication.publication.user.imageperf != null}" th:src="${'/image/user/' + quotepublication.publication.user.id}" alt="Card image cap" style="width: 100px">
+        	<img class="img-fluid border" th:if="${quotepublication.publication.user.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+    	</div>
+    	<div class="col-9 col-xl-10">
+        	<div class="row">
+            	<div class="col-12">
+                	<p class="text-break"><a th:href="${'/userdetails/' + quotepublication.publication.user.id}"><span class="font-weight-bold" th:text="${quotepublication.publication.user.name}"></span> <span class="" th:text="'@' + ${quotepublication.publication.user.username}"></span></a> - <span class="" th:text="${quotepublication.publication.dateOfSend}"></span></p>
+            	</div>
+        	</div>
+        	<p class="text-break" th:utext="${quotepublication.publication.publication}"></p>
+        </div>
+    </div>
+</div>

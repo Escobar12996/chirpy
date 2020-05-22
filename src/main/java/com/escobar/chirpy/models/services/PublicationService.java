@@ -145,7 +145,7 @@ public class PublicationService {
                 userQuotePublicationDao.save(uqp);
                 u.setQuotes(u.getQuotes()+1);
                 userDao.update(u);
-            } catch (Exception e) {}
+            } catch (Exception e) {e.printStackTrace();}
         }
         
         for(String h: hashtags){

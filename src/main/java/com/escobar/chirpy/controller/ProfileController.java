@@ -503,17 +503,7 @@ public class ProfileController {
         
         model.addAttribute("title", messages.getMessage("text.quotes.tittle", null, LocaleContextHolder.getLocale()));
         model.addAttribute("trends", hashtagDao.findUp());
-        
-        //extraemos el listado de las publicaciones a partir de usequote y los introducimos
-        List<Publication> pu = new ArrayList<Publication>();
-        for (UserQuotePublication uq : userQuotePublicationDao.findByUser(userprin)){
-        	Publication pub = uq.getPublication();
-        	if (pub.isView()) {
-        		pu.add(pub);
-        	}
-            
-        }
-        model.addAttribute("publications", pu);
+        model.addAttribute("quotepublications", userQuotePublicationDao.findByUser(userprin));
         
         //le quitamos las menciones al usuario y devolvemos la pestaña
         User u = userDao.findByUserName(principal.getName());
