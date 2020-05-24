@@ -359,6 +359,29 @@ public class ApyController {
             	return "aplication/apy/refillquotes";
             }
     		
+    	} else if (page.contains("reloadnew")) {
+
+    		User user = userDao.findByUserName(principal.getName());
+            
+            //si el usuario no es nulo
+            if (user != null) {
+                
+                System.out.println(last);
+                List<Publication> pu =  publicationDao.findByUserNew(followDao.getUserFollow(user), last);
+                List<Publication> inverso = new ArrayList<>();
+                
+                
+                for (int i = pu.size()-1; i >= 0; i--){
+                    inverso.add(pu.get(i));
+                }
+                
+            	model.addAttribute("publications", inverso);
+            	model.addAttribute("imageDao", imageDao);
+            	model.addAttribute("publicationDao", publicationDao);
+            	
+            	return "aplication/apy/refill";
+            }
+    		
     	}
     	
     	
