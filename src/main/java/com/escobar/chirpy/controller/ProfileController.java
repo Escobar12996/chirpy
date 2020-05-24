@@ -35,6 +35,7 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserBan;
@@ -172,6 +173,74 @@ public class ProfileController {
         
         return "redirect:/home";
     }
+    
+    //TODO Ver imagenes del perfil
+    @RequestMapping(value={"/profileimages"}, method = RequestMethod.POST)
+    public String saveuserimages(Model model,
+    		Principal principal,
+    		@PathVariable Long id,
+    		HttpServletRequest request,
+                @RequestParam(value = "image[]", required = false) MultipartFile file[],
+    		HttpServletResponse response) {
+    	
+    	//cargamos el titulo
+        model.addAttribute("title", messages.getMessage("text.userimages.tittle", null, LocaleContextHolder.getLocale()));
+        
+        if (principal != null){
+            
+            User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
+        
+        
+            if (file != null) {
+                for(int i = 0; i < file.length; i++) {
+                    MultipartFile fi = file[i];
+
+                    //si no es nulo y no esta vacio, comprobamos que NO es una imagen valida para lanzar error
+                    if(fi != null && !fi.isEmpty()) {
+                        if (!fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
+
+                            model.addAttribute("errorimage", messages.getMessage("text.home.error.imageerror", null, LocaleContextHolder.getLocale()));
+
+                            //mostramos las tendencias de la ultima hora
+                            model.addAttribute("trends", hashtagDao.findUp());
+
+
+                            return "aplicacion/main";
+                        }
+                    }
+                }
+
+                for(int i = 0; i < file.length; i++) {
+
+                    MultipartFile fi = file[i];
+                    if (fi != null && !fi.isEmpty()) {
+
+                        try {
+                            Image v = new Image(fi.getBytes());
+                            v.setView(true);
+                            v.setUser(user);
+                            imageDao.save(v);
+                        } catch (IOException e) {}
+
+                    }
+                }
+                
+                return "redirect:/profileimages"+user.getId();
+            }
+            
+            
+        }
+        
+        return "redirect:/home";
+    }
+    
 
   //TODO Ver seguidos del perfil
     @RequestMapping(value={"/profilefollower/{id}"}, method = RequestMethod.GET)

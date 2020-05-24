@@ -1,0 +1,15 @@
+
+<div th:each="image : ${images}" class="publication border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2 sec" th:id="${image.id}">
+    <div class="row">
+        <div class="col-12">
+            <a  data-type="image"  th:href="${'/image/image/' + image.id}" data-toggle="lightbox" data-gallery="gallery">
+                <img class="img-fluid" th:src="${'/image/image/' + image.id}" >
+            </a>
+        </div>
+
+    <div class="col-12 mt-2" th:if="${user != null && user.id == userc.id}">
+        <button class="badge badge-primary deleteimage" th:id="'deletebutton' + ${image.id}" th:value="${image.id}" th:text="#{text.Images.delete}"></button>
+    </div>
+
+        </div>
+</div>

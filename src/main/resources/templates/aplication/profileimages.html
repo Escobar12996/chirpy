@@ -19,7 +19,7 @@ and open the template in the editor.
                     <div class="col-xl-7 ml-xl-auto">
                         
                         <div class="jumbotron mb-0">
-                            <div class="parent w-100 text-center justify-content-center">
+                            <div class="parent w-100 text-center justify-content-center pri" th:id="${userc.id}">
                             	<img th:if="${userc.imagesu != null}"  th:src="${'/image/imagesu/' + userc.id}" class="img-fluid imageusersu">
                         	</div>
                         
@@ -36,19 +36,18 @@ and open the template in the editor.
                         </div>
                         
                         <div class="row mt-0 ml-0 mt-1 text-center align-content-center">
-							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
-							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profileimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
-							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollower/' + userc.id}" th:text="#{text.userdetails.follower}"></a>
-							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollowers/' + userc.id}" th:text="#{text.userdetails.followers}"></a>
+                            <a class="col-3 bg-primary text-white border p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
+                            <a class="col-3 bg-primary text-white border p-2" th:href="${'/profileimages/' + userc.id}" th:text="#{text.userdetails.Images}"></a>
+                            <a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollower/' + userc.id}" th:text="#{text.userdetails.follower}"></a>
+                            <a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollowers/' + userc.id}" th:text="#{text.userdetails.followers}"></a>
                         </div>
-                        
                         
                         <div class="p-3 mt-3 jumbotron text-center" th:if="${#lists.isEmpty(images)}">
                         	<h3 class="text-danger" th:text="#{text.userimages.empty}"></h3>
                         </div>
                 
-               			<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}">
-               				<div th:each="image : ${images}" class="publication border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2">
+               			<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}" id="all-images">
+               				<div th:each="image : ${images}" class="publication border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2 sec" th:id="${image.id}">
                					<div class="row">
                						<div class="col-12">
                 						<a  data-type="image"  th:href="${'/image/image/' + image.id}" data-toggle="lightbox" data-gallery="gallery">

@@ -114,22 +114,22 @@ public class ImageController {
             	boolean flag = false;
             	
             	for (UserAuthority au :ua) {
-            		if (au.getAuthority().getAuthority().equals("admin"))
-            			flag = true;
+                    if (au.getAuthority().getAuthority().equals("admin"))
+                            flag = true;
             	}
             	
             	if (flag) {
-            		Image v = imageDao.findByIdAdmin(id);
-                	
-                	if (v != null && v.getImages() != null) {
-        		    	response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-        			    response.getOutputStream().write(v.getImages());
-        			    response.getOutputStream().close();
-        		    } else {
-        		    	response.getOutputStream().close();
-        		    }
+                    Image v = imageDao.findByIdAdmin(id);
+
+                    if (v != null && v.getImages() != null) {
+                        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+                        response.getOutputStream().write(v.getImages());
+                        response.getOutputStream().close();
+                    } else {
+                        response.getOutputStream().close();
+                    }
             	}
-        	}
+            }
         } 
-	}
+    }
 }

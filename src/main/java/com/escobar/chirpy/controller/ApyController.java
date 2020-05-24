@@ -436,6 +436,23 @@ public class ApyController {
             	return "aplication/apy/refill";
             }
     		
+    	} else if (page.contains("refillimages")) {
+
+    		User user = userDao.findById(find);
+            
+            //si el usuario no es nulo
+            if (user != null) {
+                
+                if (principal != null){
+                    model.addAttribute("user", userDao.findByUserName(principal.getName()));
+                }
+                
+                model.addAttribute("userc", user);
+            	model.addAttribute("images", imageDao.findByUserNext(user, last));
+            	
+            	return "aplication/apy/refillimages";
+            }
+    		
     	}
     	
     	

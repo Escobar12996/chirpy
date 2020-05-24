@@ -184,7 +184,7 @@ jQuery(function($){
 					
 				}
 			});
-		} else if(document.URL.split(window.location.host)[1].includes("/viewpublication") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+		} else if(document.URL.split(window.location.host)[1].includes("/viewpublication/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
 			let findval = $('.prin').attr('id');
 			let value = $('.sec').last().attr('id');
 			$.ajax({
@@ -205,7 +205,7 @@ jQuery(function($){
 					
 				}
 			});
-		} else if(document.URL.split(window.location.host)[1].includes("/profile") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+		} else if(document.URL.split(window.location.host)[1].includes("/profile/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
 			let findval = $('.prin').attr('id');
 			let value = $('.sec').last().attr('id');
 			$.ajax({
@@ -239,6 +239,27 @@ jQuery(function($){
 					
 					if (data){
 						$("#all-publications").append(data);
+					} else {
+						finish = true;
+					}
+					
+					
+				}
+			});
+		} else if(document.URL.split(window.location.host)[1].includes("/profileimages/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+			let value = $('.sec').last().attr('id');
+                        let fi = $('.pri').attr('id');
+			$.ajax({
+			type: "POST",
+		        url: "/refill/refillimages",
+		        data : { find: fi , last : value},
+		        beforeSend: function(xhr) {
+		            xhr.setRequestHeader(header, token);
+		        },
+				success:function(data){
+					
+					if (data){
+						$("#all-images").append(data);
 					} else {
 						finish = true;
 					}
