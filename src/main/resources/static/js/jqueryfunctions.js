@@ -249,3 +249,24 @@ jQuery(function($){
 		}
 	});
 });
+
+$(".new_reload").click(function(){
+    let value = $(this).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/refill/reloadnew",
+        data : { find: 0 , last : $('.publication').first().attr('id')},
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success:function(data){
+					
+            if (data){
+                $(".pri").before(data);
+            }
+
+
+        }
+    });
+});

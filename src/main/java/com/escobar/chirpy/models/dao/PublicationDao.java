@@ -69,7 +69,7 @@ public class PublicationDao {
         query.setParameter("user", user);
         return query.setMaxResults(10).getResultList();
     }
-
+    
     @Transactional(readOnly=true)
     public List<Publication> findByUserNext(User user, Long id) {
         TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id < :id and p.user = :user and view = true ORDER BY p.id desc", Publication.class); 
@@ -137,6 +137,18 @@ public class PublicationDao {
         query.setParameter("users", users);
         return query.setMaxResults(10).getResultList();
     }
+    
+    
+
+    @Transactional(readOnly=true)
+    public List<Publication> findByUserNew(List<User> users, Long id) {
+        TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id > :id and p.user in :users and view = true ORDER BY p.id asc", Publication.class); 
+        query.setParameter("users", users);
+        query.setParameter("id", id);
+        return query.setMaxResults(10).getResultList();
+    }
+    
+    
     
     @Transactional(readOnly=true)
     public List<Publication> findByUsersNext(List<User> users, Long lastId) {
