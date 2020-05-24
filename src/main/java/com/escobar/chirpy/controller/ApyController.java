@@ -453,6 +453,28 @@ public class ApyController {
             	return "aplication/apy/refillimages";
             }
     		
+    	} else if (page.contains("adminfimapro")) {
+
+    		//Cargamos el usuario buscado
+                User user = userDao.findByUserName(principal.getName());
+        	
+        	if (user != null) {
+        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
+            	boolean flag = false;
+            	
+            	for (UserAuthority au :ua) {
+            		if (au.getAuthority().getAuthority().equals("admin"))
+            			flag = true;
+            	}
+            
+                User u = userDao.findById(find);
+                //si el usuario es admin
+                if (flag) {
+                    model.addAttribute("images", imageDao.findByUserAdminNext(u, last));
+
+                    return "administration/apy/refillprofileimages";
+                }
+            }
     	}
     	
     	

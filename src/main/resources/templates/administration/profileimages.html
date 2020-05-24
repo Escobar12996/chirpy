@@ -8,7 +8,7 @@
 	
 		<div class="container">
 		
-		<div class="jumbotron mb-0">
+		<div class="jumbotron mb- find" th:id="${userc.id}" >
 			<p><span th:text="#{text.administration.users.user}"></span>: <a th:href="${'/administration/edituser/' + userc.id}" th:text="${userc.username}"></a></p>
 	       	<p><span th:text="#{text.administration.users.name}"></span>: <a th:text="${userc.name}"></a></p>
        </div>
@@ -21,8 +21,8 @@
 			<div class="col-1"></div>
 		</div>
 		
-		<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}">
-			<div th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2" th:classappend="${image.view} ? publication : bg-warning">
+		<div class="p-3 mt-3 row images" th:if="${!#lists.isEmpty(images)}" id="all-images">
+			<div th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2 last" th:classappend="${image.view} ? publication : bg-warning" th:id="${image.id}">
 				<div class="row">
 					<div class="col-12">
 						<a  data-type="image"  th:href="${'/image/admin/' + image.id}" data-toggle="lightbox" data-gallery="gallery">

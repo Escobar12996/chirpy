@@ -69,7 +69,7 @@ public class ImageDao {
 	
     @Transactional(readOnly=true)
     public List<Image> findAllAdminNext(Long id) {
-        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i:id < :last order by i.id desc", Image.class);
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.id < :last order by i.id desc", Image.class);
         query.setParameter("last", id);
         return query.setMaxResults(10).getResultList();
     }
@@ -83,7 +83,7 @@ public class ImageDao {
 	
     @Transactional(readOnly=true)
     public List<Image> findByUserAdminNext(User user, Long id) {
-        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i:id < :last and i.user = :id order by i.id desc", Image.class); 
+        TypedQuery<Image> query = em.createQuery("SELECT i FROM Image i WHERE i.id < :last and i.user = :id order by i.id desc", Image.class); 
         query.setParameter("id", user);
         query.setParameter("last", id);
         return query.setMaxResults(10).getResultList();
