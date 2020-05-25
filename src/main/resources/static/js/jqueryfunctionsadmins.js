@@ -51,27 +51,48 @@ jQuery(function($){
 				}
 			});
 		} else if(document.URL.split(window.location.host)[1].includes("/administration/userimages/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
-			let value = $('.last').last().attr('id');
-			let fin = $('.find').last().attr('id');
-                        
-			$.ajax({
-				type: "POST",
-		        url: "/refill/adminfimapro",
-		        data : { find: fin , last : value },
-		        beforeSend: function(xhr) {
-		            xhr.setRequestHeader(header, token);
-		        },
-				success:function(data){
-					
-					if (data){
-						$("#all-images").append(data);
-					} else {
-						finish = true;
-					}
-					
-					
-				}
-			});
+                    let value = $('.last').last().attr('id');
+                    let fin = $('.find').last().attr('id');
+
+                    $.ajax({
+                            type: "POST",
+                    url: "/refill/adminfimapro",
+                    data : { find: fin , last : value },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                            success:function(data){
+
+                                    if (data){
+                                            $("#all-images").append(data);
+                                    } else {
+                                            finish = true;
+                                    }
+
+
+                            }
+                    });
+		} else if(document.URL.split(window.location.host)[1].includes("/administration/images") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
+                    let value = $('.last').last().attr('id');
+
+                    $.ajax({
+                            type: "POST",
+                    url: "/refill/adminfimaall",
+                    data : { find: 0 , last : value },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                        success:function(data){
+
+                            if (data){
+                                    $("#all-images").append(data);
+                            } else {
+                                    finish = true;
+                            }
+
+
+                        }
+                    });
 		}
 		
 		

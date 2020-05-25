@@ -263,6 +263,7 @@ public class ApyController {
             	//le introducimos a la publicacion el usuario y la publicacion a la cual se responde y lo formateamos
             	publication.setPubli(publicationDao.findById(publiresp));
                 publication.setUser(user);
+                
                 publicationService.formatedAndSave(publication, file);
                 return "true";
             }
@@ -471,6 +472,27 @@ public class ApyController {
                 //si el usuario es admin
                 if (flag) {
                     model.addAttribute("images", imageDao.findByUserAdminNext(u, last));
+
+                    return "administration/apy/refillprofileimages";
+                }
+            }
+    	} else if (page.contains("adminfimaall")) {
+
+    		//Cargamos el usuario buscado
+                User user = userDao.findByUserName(principal.getName());
+        	
+        	if (user != null) {
+                    List<UserAuthority> ua = userAuthorityDao.findByUser(user);
+                    boolean flag = false;
+            	
+            	for (UserAuthority au :ua) {
+            		if (au.getAuthority().getAuthority().equals("admin"))
+            			flag = true;
+            	}
+
+                //si el usuario es admin
+                if (flag) {
+                    model.addAttribute("images", imageDao.findAllAdminNext(last));
 
                     return "administration/apy/refillprofileimages";
                 }

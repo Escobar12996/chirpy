@@ -284,7 +284,7 @@ $(".new_reload").click(function(){
         success:function(data){
 					
             if (data){
-                $(".pri").before(data);
+                $(".pri").after(data);
             }
 
 

@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-	<head th:replace="administration/layout/layout :: head"></head>
-	
-	<body>
-		<nav th:replace="administration/layout/layout :: navbar"></nav>
-	
-		<div class="container">
-		
-		<div class="p-3 mt-3 row" th:if="${!#lists.isEmpty(images)}" id="all-images">
-			<div th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2 last" th:id="${image.id}" th:classappend="${image.view} ? publication : bg-warning">
+
+<div xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:each="image : ${images}" class="border border-rounded p-3 text-center align-content-center col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mt-2 mb-2 last" th:classappend="${image.view} ? publication : bg-warning" th:id="${image.id}">
 				<div class="row">
 					<div class="col-12">
 						<a  data-type="image"  th:href="${'/image/admin/' + image.id}" data-toggle="lightbox" data-gallery="gallery">
@@ -19,20 +9,16 @@
 					
 					<div class="col-12 mt-2">
 						<form th:action="@{/administration/deleteimage}" method="post">
-							<input name="images" value="1" type="hidden">
 							<button th:if="${image.view == true}" name="deleteimage" class="btn btn-warning" th:value="${image.id}" th:text="#{text.administration.images.delete}"></button>
 							<button th:if="${image.view == false}" name="deleteimage" class="btn btn-success" th:value="${image.id}" th:text="#{text.administration.images.show}"></button>
 							<button name="removeimage" class="btn btn-danger" th:value="${image.id}" th:text="#{text.administration.images.remove}"></button>
 						</form>
                    	</div>
+					
 				</div>
+				
+				
 			</div>
-		</div>
 		
-		
-		
-		
-		</div>
-		<div th:replace="administration/layout/layout :: footer"></div>
-	</body>
-</html>
+
+
