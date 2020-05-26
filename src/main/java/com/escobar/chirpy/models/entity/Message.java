@@ -21,7 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @NamedQuery(name="Message.findAll", query="SELECT m from Message m")
 public class Message implements Serializable{
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,8 @@ public class Message implements Serializable{
     private User send;
     
     @ManyToOne
-    @JoinColumn(name = "receive_id")
-    private User receive;
+    @JoinColumn(name = "chat_id")
+    private Chat chat;
     
     @NotEmpty()
     private String text;
@@ -41,45 +41,45 @@ public class Message implements Serializable{
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfSend;
 
-	public Long getId() {
-		return id;
-	}
+    public Chat getChat() {
+        return chat;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
 
-	public User getSend() {
-		return send;
-	}
+    public Long getId() {
+            return id;
+    }
 
-	public void setSend(User send) {
-		this.send = send;
-	}
+    public void setId(Long id) {
+            this.id = id;
+    }
 
-	public User getReceive() {
-		return receive;
-	}
+    public User getSend() {
+            return send;
+    }
 
-	public void setReceive(User receive) {
-		this.receive = receive;
-	}
+    public void setSend(User send) {
+            this.send = send;
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getText() {
+            return text;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    public void setText(String text) {
+            this.text = text;
+    }
 
-	public String getDateOfSend() {
-            SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
-            String strDate = sm.format(dateOfSend);
-            return strDate;
-        }
+    public String getDateOfSend() {
+        SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
+        String strDate = sm.format(dateOfSend);
+        return strDate;
+    }
 
-	public void setDateOfSend(Date dateOfSend) {
-		this.dateOfSend = dateOfSend;
-	}
+    public void setDateOfSend(Date dateOfSend) {
+            this.dateOfSend = dateOfSend;
+    }
 }

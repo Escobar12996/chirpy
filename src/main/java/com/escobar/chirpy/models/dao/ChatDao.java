@@ -1,5 +1,6 @@
 package com.escobar.chirpy.models.dao;
 
+import com.escobar.chirpy.models.entity.Chat;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,35 +9,39 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.escobar.chirpy.models.entity.User;
-import com.escobar.chirpy.models.entity.Message;
 
 @Repository
-public class MessagesDao {
+public class ChatDao {
 
     @PersistenceContext
     private EntityManager em;
 	
     @Transactional(readOnly=true)
-    public List<Message> findChat(User userOne, User userTwo){
-    	TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m where (m.send = :userOne and m.receive = :userTwo) or (m.send = :userTwo and m.receive = :userOne)", Message.class);
+    public Chat findMessages(User userOne, User userTwo){
+    	TypedQuery<Chat> query = em.createQuery("Select c from Chat c where (c.userone = :userOne and c.usertwo = :userTwo) or (c.userone = :userTwo and c.usertwo = :userOne)", Chat.class);
     	query.setParameter("userOne", userOne);
     	query.setParameter("userTwo", userTwo);
-    	return query.getResultList();
+        
+        try {
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
     
     @Transactional
-    public void save(Message message) {
-        em.persist(message);	
+    public void save(Chat chat) {
+        em.persist(chat);	
     }
 
     @Transactional
-    public void update(Message message) {
-        em.merge(message);
+    public void update(Chat chat) {
+        em.merge(chat);
     }
 	
     @Transactional
-    public void remove(Message message) {
-        em.remove(message);
+    public void remove(Chat chat) {
+        em.remove(chat);
     }
     
     

@@ -1,8 +1,10 @@
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.ChatDao;
 import com.escobar.chirpy.models.dao.UserDao;
-import com.escobar.chirpy.models.dao.MessagesDao;
+import com.escobar.chirpy.models.dao.MessageDao;
 import com.escobar.chirpy.models.entity.Message;
+import com.escobar.chirpy.models.entity.Chat;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import java.security.Principal;
@@ -27,33 +29,35 @@ public class MessagesController {
     private UserDao userDao;
     
     @Autowired
-    private MessagesDao messagesDao;
+    private MessageDao messagesDao;
+    
+    @Autowired
+    private ChatDao chatDao;
     
     @RequestMapping(value={"/messages"}, method = RequestMethod.GET)
-    public String userimages(Model model, Principal principal) {
+    public String messages(Model model, Principal principal) {
         
-            User user = userDao.findByUserName(principal.getName());
-            
-            model.addAttribute("user", user);
-            return "aplication/messages";
+        
+        return "redirect:/home";
     }
     
     @RequestMapping(value={"/messages/{id}"}, method = RequestMethod.GET)
-    public String userimages(Model model, @PathVariable Long id, Principal principal, HttpSession session) {
-            
-        User user = userDao.findByUserName(principal.getName());
-        User userReceived = userDao.findById(id);
-        
-        if (userReceived != null){
-           model.addAttribute("user", user);
-           model.addAttribute("userr", userReceived);
-           
-           model.addAttribute("messages", messagesDao.findChat(user, userReceived));
+    public String chat(Model model, @PathVariable Long id, Principal principal, HttpSession session) {
 
-           model.addAttribute("message", new Message());
-           session.setAttribute("userreceived", userReceived);
-           return "aplication/chat"; 
+        User user_received = userDao.findById(id);
+        User user = userDao.findByUserName(principal.getName());
+        
+        if (user_received != null && principal != null){
+            
+            model.addAttribute("user", user);
+            model.addAttribute("messages", messagesDao.findMessages(user, user_received));
+            model.addAttribute("message", new Message());
+            session.setAttribute("user_received", user_received);
+            
+            return "aplication/messages";
+            
         }
+        
         
         
         return "redirect:/home";
@@ -63,17 +67,39 @@ public class MessagesController {
     public String senmessage( @Valid Message message,
     		BindingResult result, Model model, HttpSession session, Principal principal) {
         
-        if (result.hasErrors()){
-                return "redirect:/home";
+        User user_received = (User) session.getAttribute("user_received");
+        User user = userDao.findByUserName(principal.getName());
+        
+        if (user_received != null && user != null){
+            if (result.hasErrors()){
+                model.addAttribute("user", user);
+                model.addAttribute("messages", messagesDao.findMessages(user, user_received));
+                session.setAttribute("user_received", user_received);
+                return "aplication/messages";
+            }
+            
+            message.setDateOfSend(new Date());
+            message.setSend(user);
+            
+            Chat chat = chatDao.findMessages(user, user_received);
+            
+            if (chat == null){
+                chat = new Chat();
+                chat.setUserone(user);
+                chat.setUsertwo(user_received);
+                chatDao.save(chat);
+            }
+            
+            message.setChat(chat);
+            messagesDao.save(message);
+            
+            return "redirect:/messages/"+user_received.getId();
         }
         
-        message.setSend(userDao.findByUserName(principal.getName()));
-        message.setDateOfSend(new Date());
-        message.setReceive( (User) session.getAttribute("userreceived"));
-        session.removeAttribute("userreceived");
-            messagesDao.save(message);
         
-           return "redirect:/messages/" + message.getReceive().getId();
+        
+        
+        return "redirect:/home";
     }
     
 }

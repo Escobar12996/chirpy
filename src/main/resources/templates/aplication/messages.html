@@ -35,10 +35,56 @@
                             
                             <!--/* Fin Alertas */-->
                             
-                            <table>
-                                
-                            </table>
+                     <div class="chat row border rounded">
+                        <div class=" col-12 messages">
                             
+                            <div th:each="message : ${messages}">
+                                
+                                <div th:if="${message.send.id != user.id}" class="row justify-content-between">
+                                    <div class="col-6 border rounded p-3 lightblue">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send..id}" alt="Card image cap" style="width: 100px">
+                                                <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="text-primary" th:text="${message.send.username}"></p>
+                                                <p class="text-break" th:text="${message.text}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${message.send.id == user.id}" class="row justify-content-end">
+                                    <div class="col-6 border rounded p-3 springgreen" th:if="${message.send.id == user.id}">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send..id}" alt="Card image cap" style="width: 100px">
+                                                <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="text-primary" th:text="${message.send.username}"></p>
+                                                <p class="text-break" th:text="${message.text}"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                          
+                        </div>
+                         <form id="dialogueForm" th:object="${message}" th:action="@{/messages/send}" method="post"  class="col-12 border rounded pt-3 pb-0 bg-info">
+                            <div class="form-group">
+                                <div class="input-group clearfix">
+                                    <input th:field="*{text}" th:placeholder="#{'texto'}" class="form-control aliceblue" id="exampleFormControlTextarea1">
+                                    <button type="submit" class="btn btn-outline-success ml-3"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                    <span class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+                                </div>
+                            </div>
+			</form>
+                      </div>
+			
+			
+
                             
                             
                         </div>
@@ -47,9 +93,9 @@
                         
                         <!--/* Zona lateral, tendencias */-->
                        	
-                        <div th:replace="aplication/layout/layout :: tendence-1" ></div>
+						<div th:replace="aplication/layout/layout :: tendence-1" ></div>
 
-                        <!--/* Fin zona lateral */-->
+						<!--/* Fin zona lateral */-->
 
 
 

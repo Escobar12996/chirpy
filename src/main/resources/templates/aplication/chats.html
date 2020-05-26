@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<!--/* Header usado en la aplicacion */-->
+	
+	<head th:replace="aplication/layout/layout :: head"></head>
+
+	<!--/* fin header usado en la aplicacion */-->
+
+    <body>
+
+		<!--/* Cuerpo de la aplicacion */-->
+		<div class="wrapper d-flex align-items-stretch">
+		
+			<!--/* Navbar de la aplicacion */-->
+			
+			<nav th:replace="aplication/layout/layout :: navbar"></nav>
+
+			<!--/* Fin navbar de la aplicacion */-->
+
+			<!--/* Contenido de la aplicacion */-->
+			
+      		<div id="content" class="p-4 p-md-5 pt-5">
+                    <div class="row">
+                        
+                        <!--/* Zona central */-->
+                        
+                        <div class="col-xl-7 ml-xl-auto">
+                        
+                        	<!--/* Alertas */-->
+                        
+                            <div th:replace="aplication/layout/layout :: alerts"></div>
+                            
+                            <!--/* Fin Alertas */-->
+                            
+                            <div class="p-3 mt-3 bg-white card publication" th:each="message : ${messages}" th:if="${!(message.send.id == user.id && message.receive.id == user.id)}">
+                                <div th:if="${message.send.id != user.id}" class="row">
+                                    <div class="col-3 col-xl-2">
+                                        <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                        </div>
+                                        <div class="col-9 col-xl-10">
+                                        <div class="row">
+                                                <div class="col-12">
+                                                <p class="text-break"><a th:href="${'/userdetails/' + message.send.id}"><span class="font-weight-bold" th:text="${message.send.name}"></span> <span class="" th:text="'@' + ${message.send.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                </div>
+                                        </div>
+                                        <a th:href="${'/messages/' + message.send.id}" class="text-break" th:utext="${message.text}"></a>
+                                    </div>
+                                </div>
+                                
+                                <div th:if="${message.receive.id != user.id}" class="row">
+                                    <div class="col-3 col-xl-2">
+                                        <img class="img-fluid border" th:if="${message.receive.imageperf != null}" th:src="${'/image/user/' + message.receive.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${message.receive.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                        </div>
+                                        <div class="col-9 col-xl-10">
+                                        <div class="row">
+                                                <div class="col-12">
+                                                <p class="text-break"><a th:href="${'/userdetails/' + message.receive.id}"><span class="font-weight-bold" th:text="${message.receive.name}"></span> <span class="" th:text="'@' + ${message.receive.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                </div>
+                                        </div>
+                                        <a th:href="${'/messages/' + message.receive.id}" class="text-break" th:utext="${message.text}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <!--/* Fin zona central */-->
+                        
+                        <!--/* Zona lateral, tendencias */-->
+                       	
+                        <div th:replace="aplication/layout/layout :: tendence-1" ></div>
+
+                        <!--/* Fin zona lateral */-->
+
+
+
+
+                    </div> 
+                </div>
+                
+                <!--/* Fin contenido */-->
+                
+        	</div>
+        	
+        	<!--/* Fin cuerpo */-->
+        	
+       	<!--/* Footer */-->
+       	
+        <div th:replace="aplication/layout/layout :: footer"></div>
+        
+        <!--/* Fin footer */-->
+        
+    </body>
+</html>
