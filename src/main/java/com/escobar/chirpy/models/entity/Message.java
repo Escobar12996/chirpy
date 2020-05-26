@@ -11,6 +11,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.text.SimpleDateFormat;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "Messages")
@@ -22,11 +26,16 @@ public class Message implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
+    
+    @ManyToOne
+    @JoinColumn(name = "send_id")
     private User send;
     
+    @ManyToOne
+    @JoinColumn(name = "receive_id")
     private User receive;
     
+    @NotEmpty()
     private String text;
     
     @JsonFormat(pattern="yyyy-MM-dd")
@@ -64,9 +73,11 @@ public class Message implements Serializable{
 		this.text = text;
 	}
 
-	public Date getDateOfSend() {
-		return dateOfSend;
-	}
+	public String getDateOfSend() {
+            SimpleDateFormat sm = new SimpleDateFormat("dd-MM-yyyy");
+            String strDate = sm.format(dateOfSend);
+            return strDate;
+        }
 
 	public void setDateOfSend(Date dateOfSend) {
 		this.dateOfSend = dateOfSend;

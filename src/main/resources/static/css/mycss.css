@@ -119,3 +119,19 @@ background-repeat: no-repeat;
     color:#fff;
     background: #f7cb15;
 }
+
+.chat{
+  margin:0 auto;
+  overflow:hidden;
+}
+.chat .messages{
+  height:300px;
+  overflow:hidden;
+}
+.chat .messages:hover{
+  overflow-y:scroll;
+}
+.chat .messages > div{
+  padding:15px;
+  border-bottom:1px dashed #999;
+}

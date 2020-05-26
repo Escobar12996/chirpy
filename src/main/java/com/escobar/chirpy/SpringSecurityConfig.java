@@ -49,8 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/explorer",
             		"/image/{tipo}/{id}",
             		"/viewpublication/{id}",
-            		"/refill/{page}",
-            		"/viewemoticons"
+            		"/refill/{page}"
             		).permitAll()
             
                 .antMatchers(
@@ -67,7 +66,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
             		"/editpass",
             		"/imagesu",
             		"/editimageprofile",
-            		"/report/{id}"
+            		"/report/{id}",
+                        "/messages",
+                        "/messages/send",
+                        "/messages/{id}",
+            		"/viewemoticons"
             		).hasAuthority("user")
                 
                 .antMatchers(

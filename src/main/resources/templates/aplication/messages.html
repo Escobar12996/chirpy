@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+	<!--/* Header usado en la aplicacion */-->
+	
+	<head th:replace="aplication/layout/layout :: head"></head>
+
+	<!--/* fin header usado en la aplicacion */-->
+
+    <body>
+
+		<!--/* Cuerpo de la aplicacion */-->
+		<div class="wrapper d-flex align-items-stretch">
+		
+			<!--/* Navbar de la aplicacion */-->
+			
+			<nav th:replace="aplication/layout/layout :: navbar"></nav>
+
+			<!--/* Fin navbar de la aplicacion */-->
+
+			<!--/* Contenido de la aplicacion */-->
+			
+      		<div id="content" class="p-4 p-md-5 pt-5">
+                    <div class="row">
+                        
+                        <!--/* Zona central */-->
+                        
+                        <div class="col-xl-7 ml-xl-auto">
+                        
+                        	<!--/* Alertas */-->
+                        
+                            <div th:replace="aplication/layout/layout :: alerts"></div>
+                            
+                            <!--/* Fin Alertas */-->
+                            
+                            <table>
+                                
+                            </table>
+                            
+                            
+                            
+                        </div>
+                        
+                        <!--/* Fin zona central */-->
+                        
+                        <!--/* Zona lateral, tendencias */-->
+                       	
+                        <div th:replace="aplication/layout/layout :: tendence-1" ></div>
+
+                        <!--/* Fin zona lateral */-->
+
+
+
+
+                    </div> 
+                </div>
+                
+                <!--/* Fin contenido */-->
+                
+        	</div>
+        	
+        	<!--/* Fin cuerpo */-->
+        	
+       	<!--/* Footer */-->
+       	
+        <div th:replace="aplication/layout/layout :: footer"></div>
+        
+        <!--/* Fin footer */-->
+        
+    </body>
+</html>

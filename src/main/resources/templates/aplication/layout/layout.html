@@ -61,13 +61,14 @@
 							<a  href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" th:text="#{text.layout.nav.profile}"></a>
                 			<ul class="collapse list-unstyled" id="pageSubmenu">
 			                    <li><a sec:authorize="isAuthenticated()" th:href="${'/profile/' + user.id}" th:text="#{text.layout.nav.viewprofile}"></a></li>
-	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
-	                    		<li><a sec:authorize="isAuthenticated()" th:href="@{/viewemoticons}" th:text="#{text.administration.emoticon.tittle}"></a></li>
-	                    		<li>
+                                            <li><a sec:authorize="isAuthenticated()" th:href="@{/editprofile}" th:text="#{text.layout.nav.editprofile}"></a></li>
+                                            <li><a sec:authorize="isAuthenticated()" th:href="@{/messages}" th:text="#{text.layout.nav.chats}"></a></li>
+                                            <li><a sec:authorize="isAuthenticated()" th:href="@{/viewemoticons}" th:text="#{text.administration.emoticon.tittle}"></a></li>
+                                            <li>
 	                    			<form class="ml-0"   sec:authorize="isAuthenticated()" id="logout" th:action="@{/logout}" method="post">
 		                            	<button type="submit" class="btn btn-link text-warning pl-0 text-center" th:text="#{text.layout.nav.logout}"></button>
 		                        	</form>
-		                        </li>
+                                            </li>
                 			</ul>
 	           			</li>
            			</ul>

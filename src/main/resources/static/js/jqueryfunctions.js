@@ -286,8 +286,6 @@ $(".new_reload").click(function(){
             if (data){
                 $(".pri").after(data);
             }
-
-
         }
     });
 });
