@@ -131,13 +131,12 @@ background-repeat: no-repeat;
   overflow:hidden;
 }
 .chat .messages{
-  height: 100%;
-  overflow:hidden;
+  height: 80vh;
+  overflow-y:scroll;
 }
 .chat .messages:hover{
   overflow-y:scroll;
 }
 .chat .messages > div{
   padding:15px;
-  border-bottom:1px dashed #999;
 }

@@ -35,34 +35,34 @@
                             
                             <!--/* Fin Alertas */-->
                             
-                            <div class="p-3 mt-3 bg-white card publication" th:each="message : ${messages}" th:if="${!(message.send.id == user.id && message.receive.id == user.id)}">
-                                <div th:if="${message.send.id != user.id}" class="row">
+                            <div class="p-3 mt-3 bg-white card publication" th:each="chat : ${chats}" th:if="${!(chat.userone.id == user.id && chat.usertwo.id == user.id)}">
+                                <div th:if="${chat.userone.id != user.id}" class="row">
                                     <div class="col-3 col-xl-2">
-                                        <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send.id}" alt="Card image cap" style="width: 100px">
-                                        <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${chat.userone.imageperf != null}" th:src="${'/image/user/' + chat.userone.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${chat.userone.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
                                         </div>
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + message.send.id}"><span class="font-weight-bold" th:text="${message.send.name}"></span> <span class="" th:text="'@' + ${message.send.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.userone.id}"><span class="font-weight-bold" th:text="${chat.userone.name}"></span> <span class="" th:text="'@' + ${chat.userone.username}"></span></a> - <span class="" >fecha</span></p>
                                                 </div>
                                         </div>
-                                        <a th:href="${'/messages/' + message.send.id}" class="text-break" th:utext="${message.text}"></a>
+                                        <a th:href="${'/messages/' + chat.userone.id}" class="text-break" th:utext="${'sfdgsdgsdgf'}"></a>
                                     </div>
                                 </div>
                                 
-                                <div th:if="${message.receive.id != user.id}" class="row">
+                                <div th:if="${chat.usertwo.id != user.id}" class="row">
                                     <div class="col-3 col-xl-2">
-                                        <img class="img-fluid border" th:if="${message.receive.imageperf != null}" th:src="${'/image/user/' + message.receive.id}" alt="Card image cap" style="width: 100px">
-                                        <img class="img-fluid border" th:if="${message.receive.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${chat.usertwo.imageperf != null}" th:src="${'/image/user/' + chat.usertwo.id}" alt="Card image cap" style="width: 100px">
+                                        <img class="img-fluid border" th:if="${chat.usertwo.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
                                         </div>
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + message.receive.id}"><span class="font-weight-bold" th:text="${message.receive.name}"></span> <span class="" th:text="'@' + ${message.receive.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.usertwo.id}"><span class="font-weight-bold" th:text="${chat.usertwo.name}"></span> <span class="" th:text="'@' + ${chat.usertwo.username}"></span></a> - <span class="" th:text="${'fecha'}"></span></p>
                                                 </div>
                                         </div>
-                                        <a th:href="${'/messages/' + message.receive.id}" class="text-break" th:utext="${message.text}"></a>
+                                        <a th:href="${'/messages/' + chat.usertwo.id}" class="text-break" th:utext="${'sfdgsdgsdgf'}"></a>
                                     </div>
                                 </div>
                             </div>

@@ -15,6 +15,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,8 +38,22 @@ public class MessagesController {
     private ChatDao chatDao;
     
     @RequestMapping(value={"/messages"}, method = RequestMethod.GET)
-    public String messages(Model model, Principal principal) {
+    public String messages(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
         
+        if (principal != null){
+        	
+            User user = userDao.findByUserName(principal.getName());
+        	
+            model.addAttribute("user", user);
+            
+            if (!user.getNotLocker()) {
+            	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
+            
+            model.addAttribute("chats", chatDao.findChats(user));
+            return "aplication/chats";
+        }
         
         return "redirect:/home";
     }

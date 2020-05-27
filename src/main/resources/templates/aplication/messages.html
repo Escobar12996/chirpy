@@ -72,11 +72,11 @@
                           
                           
                         </div>
-                         <form id="dialogueForm" th:object="${message}" th:action="@{/messages/send}" method="post"  class="col-12 border rounded pt-3 pb-0 bg-info">
+                         <form id="dialogueForm" th:object="${message}" th:action="@{/messages/send}" method="post"  class="col-12 border rounded pt-3 pb-0 bg-secondary">
                             <div class="form-group">
                                 <div class="input-group clearfix">
                                     <input th:field="*{text}" th:placeholder="#{'texto'}" class="form-control aliceblue" id="exampleFormControlTextarea1">
-                                    <button type="submit" class="btn btn-outline-success ml-3"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                    <button type="submit" class="btn btn-outline-light ml-3"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                     <span class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
                                 </div>
                             </div>

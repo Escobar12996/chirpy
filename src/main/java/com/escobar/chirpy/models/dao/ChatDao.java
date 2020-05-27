@@ -29,6 +29,18 @@ public class ChatDao {
         }
     }
     
+    @Transactional(readOnly=true)
+    public Chat findChats(User userOne){
+    	TypedQuery<Chat> query = em.createQuery("Select c from Chat c where c.userone = :userOne or c.usertwo = :userOne", Chat.class);
+    	query.setParameter("userOne", userOne);
+        
+        try {
+            return query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
     @Transactional
     public void save(Chat chat) {
         em.persist(chat);	
