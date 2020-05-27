@@ -5,7 +5,6 @@ import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.MessageDao;
 import com.escobar.chirpy.models.entity.Message;
 import com.escobar.chirpy.models.entity.Chat;
-import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import java.security.Principal;
 import java.util.Date;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -52,6 +50,7 @@ public class MessagesController {
             }
             
             model.addAttribute("chats", chatDao.findChats(user));
+            
             return "aplication/chats";
         }
         
