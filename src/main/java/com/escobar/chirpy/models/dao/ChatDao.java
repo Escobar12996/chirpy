@@ -17,7 +17,7 @@ public class ChatDao {
     private EntityManager em;
 	
     @Transactional(readOnly=true)
-    public Chat findMessages(User userOne, User userTwo){
+    public Chat findChat(User userOne, User userTwo){
     	TypedQuery<Chat> query = em.createQuery("Select c from Chat c where (c.userone = :userOne and c.usertwo = :userTwo) or (c.userone = :userTwo and c.usertwo = :userOne)", Chat.class);
     	query.setParameter("userOne", userOne);
     	query.setParameter("userTwo", userTwo);

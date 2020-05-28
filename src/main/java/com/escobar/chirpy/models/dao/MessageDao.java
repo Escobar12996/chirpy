@@ -1,5 +1,6 @@
 package com.escobar.chirpy.models.dao;
 
+import com.escobar.chirpy.models.entity.Chat;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,6 +23,18 @@ public class MessageDao {
     	query.setParameter("userOne", userOne);
     	query.setParameter("userTwo", userTwo);
     	return query.getResultList();
+    }
+    
+    public Message findLastMessageFromChat(Chat chat){
+    	TypedQuery<Message> query = em.createQuery("SELECT m FROM Message m where m.chat = :chat order by m.id desc", Message.class);
+    	query.setParameter("chat", chat);
+    	
+        try {
+            return query.setMaxResults(1).getSingleResult();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
     }
     
     @Transactional

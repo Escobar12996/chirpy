@@ -35,6 +35,10 @@
                             
                             <!--/* Fin Alertas */-->
                             
+                            <div class="text-center bg-secondary p-2">
+                                <h1 class="text-white id-received" th:text="${'Chat con ' + userReceived.name}" th:id="${userReceived.id}"></h1>
+                            </div>
+                            
                      <div class="chat row border rounded">
                         <div class=" col-12 messages">
                             
@@ -43,12 +47,8 @@
                                 <div th:if="${message.send.id != user.id}" class="row justify-content-between">
                                     <div class="col-6 border rounded p-3 lightblue">
                                         <div class="row">
-                                            <div class="col-3">
-                                                <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send..id}" alt="Card image cap" style="width: 100px">
-                                                <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
-                                            </div>
                                             <div class="col-9">
-                                                <p class="text-primary" th:text="${message.send.username}"></p>
+                                                <p class="text-primary" th:text="${message.send.name}"></p>
                                                 <p class="text-break" th:text="${message.text}"></p>
                                             </div>
                                         </div>
@@ -57,37 +57,26 @@
                                 <div th:if="${message.send.id == user.id}" class="row justify-content-end">
                                     <div class="col-6 border rounded p-3 springgreen" th:if="${message.send.id == user.id}">
                                         <div class="row">
-                                            <div class="col-3">
-                                                <img class="img-fluid border" th:if="${message.send.imageperf != null}" th:src="${'/image/user/' + message.send..id}" alt="Card image cap" style="width: 100px">
-                                                <img class="img-fluid border" th:if="${message.send.imageperf == null}" th:src="@{/image/usuario.png}" alt="Card image cap" style="width: 100px">
-                                            </div>
                                             <div class="col-9">
-                                                <p class="text-primary" th:text="${message.send.username}"></p>
+                                                <p class="text-primary" th:text="${message.send.name}"></p>
                                                 <p class="text-break" th:text="${message.text}"></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                          
-                          
+                            </div>     
                         </div>
-                         <form id="dialogueForm" th:object="${message}" th:action="@{/messages/send}" method="post"  class="col-12 border rounded pt-3 pb-0 bg-secondary">
+                         <form id="dialogueForm" class="col-12 border rounded pt-3 pb-0 bg-secondary">
                             <div class="form-group">
                                 <div class="input-group clearfix">
-                                    <input th:field="*{text}" th:placeholder="#{'texto'}" class="form-control aliceblue" id="exampleFormControlTextarea1">
-                                    <button type="submit" class="btn btn-outline-light ml-3"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                                    <span class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+                                    <input th:placeholder="#{'texto'}" class="form-control aliceblue input" id="exampleFormControlTextarea1">
+                                    <button id="sender" class="btn btn-outline-light ml-3"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                 </div>
                             </div>
 			</form>
+                         
                       </div>
-			
-			
-
-                            
-                            
-                        </div>
+                    </div>
                         
                         <!--/* Fin zona central */-->
                         
@@ -95,10 +84,8 @@
                        	
 						<div th:replace="aplication/layout/layout :: tendence-1" ></div>
 
+
 						<!--/* Fin zona lateral */-->
-
-
-
 
                     </div> 
                 </div>
@@ -112,6 +99,81 @@
        	<!--/* Footer */-->
        	
         <div th:replace="aplication/layout/layout :: footer"></div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script>
+
+        jQuery(function($){
+            
+        
+            var stompClient = null;
+            var connected = false;
+
+
+            function connect() {
+                var socket = new SockJS('/chat-websocket');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                    connected = true;
+                    stompClient.subscribe('/user/queue/'+$(".id-received").attr('id')+'/messages', function (greeting) {
+                        console.log(JSON.parse(greeting.body).content);
+                        
+                        let parse = JSON.parse(greeting.body);
+                        
+                        let text = "";
+                        if ($(".id-received").attr('id') != parse.idReceived){
+                            text = text + "<div class='row justify-content-between'>";
+                            text = text + "    <div class='col-6 border rounded p-3 lightblue'>";
+                            text = text + "        <div class='row'>";
+                            text = text + "            <div class='col-9'>";
+                            text = text + "                <p class='text-primary'>"+parse.sender+"</p>";
+                            text = text + "                <p class='text-break'>"+parse.content+"</p>";
+                            text = text + "            </div>";
+                            text = text + "        </div>";
+                            text = text + "    </div>";
+                            text = text + "</div>";
+                        } else {
+                            text = text + "<div class='row justify-content-end'>";
+                            text = text + "    <div class='col-6 border rounded p-3 springgreen'>";
+                            text = text + "        <div class='row'>";
+                            text = text + "            <div class='col-9'>";
+                            text = text + "                <p class='text-primary'>"+parse.sender+"</p>";
+                            text = text + "                <p class='text-break'>"+parse.content+"</p>";
+                            text = text + "            </div>";
+                            text = text + "        </div>";
+                            text = text + "    </div>";
+                            text = text + "</div>";
+                        }
+                        
+                                
+                        $(".messages").append(text);
+                        $(".messages").animate({ scrollTop: $('.messages').prop("scrollHeight")}, 1000);
+
+                    });
+                });
+            }
+
+            $("#sender").click(function(e){
+                if (connected == true){
+                    e.preventDefault()        
+                    var chatMessage = {
+                      content: $(".input").val(),
+                      idReceived: $(".id-received").attr('id')
+                    };
+                    stompClient.send(`/send/message`, {}, JSON.stringify(chatMessage));
+
+                    $(".input").val("");
+                }
+
+            });
+            
+            $(".messages").animate({ scrollTop: $('.messages').prop("scrollHeight")}, 1000);
+            
+            connect();
+
+            });
+        </script>
         
         <!--/* Fin footer */-->
         

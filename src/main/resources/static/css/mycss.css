@@ -131,7 +131,7 @@ background-repeat: no-repeat;
   overflow:hidden;
 }
 .chat .messages{
-  height: 80vh;
+  height: 70vh;
   overflow-y:scroll;
 }
 .chat .messages:hover{

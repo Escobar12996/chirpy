@@ -62,15 +62,30 @@ public class UserDao {
             }
         }
         
-        public List<User> findUsersOnlyUsername(String username) {
-		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%')", User.class); 
+        public List<User> findUsersOnlyUsernameFirst(String username) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
 	    query.setParameter("username", username);
             
-            return query.getResultList();
+            return query.setMaxResults(5).getResultList();
+	}
+        
+        public List<User> findUsersOnlyUsernameNext(String username, Long id) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id > :id and u.username LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
+	    query.setParameter("username", username);
+            query.setParameter("id", id);
+
+            return query.setMaxResults(5).getResultList();
 	}
 
-        public List<User> findUsersNameUsername(String username) {
-		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%')", User.class); 
+        public List<User> findUsersNameUsernameFirst(String username) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
+	    query.setParameter("username", username);
+            
+            return query.setMaxResults(5).getResultList();
+	}
+        
+        public List<User> findUsersNameUsernameNext(String username, Long id) {
+		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id > :id and u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
 	    query.setParameter("username", username);
             
             return query.getResultList();

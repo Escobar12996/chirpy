@@ -35,7 +35,7 @@
                             
                             <!--/* Fin Alertas */-->
                             
-                            <div class="p-3 mt-3 bg-white card publication" th:each="chat : ${chats}" th:if="${!(chat.userone.id == user.id && chat.usertwo.id == user.id)}">
+                            <div class="p-3 mt-3 bg-white card publication" th:each="chat : ${chats}"  th:with="message = ${messagesDao.findLastMessageFromChat(chat)}" th:if="${!(chat.userone.id == user.id && chat.usertwo.id == user.id)}">
                                 <div th:if="${chat.userone.id != user.id}" class="row">
                                     <div class="col-3 col-xl-2">
                                         <img class="img-fluid border" th:if="${chat.userone.imageperf != null}" th:src="${'/image/user/' + chat.userone.id}" alt="Card image cap" style="width: 100px">
@@ -44,10 +44,10 @@
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.userone.id}"><span class="font-weight-bold" th:text="${chat.userone.name}"></span> <span class="" th:text="'@' + ${chat.userone.username}"></span></a> - <span class="" >fecha</span></p>
+                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.userone.id}"><span class="font-weight-bold" th:text="${chat.userone.name}"></span> <span class="" th:text="'@' + ${chat.userone.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
                                                 </div>
                                         </div>
-                                        <a th:href="${'/messages/' + chat.userone.id}" class="text-break" th:utext="${'sfdgsdgsdgf'}"></a>
+                                        <a th:href="${'/messages/' + chat.userone.id}" class="text-break" th:utext="${message.text}"></a>
                                     </div>
                                 </div>
                                 
@@ -59,10 +59,10 @@
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.usertwo.id}"><span class="font-weight-bold" th:text="${chat.usertwo.name}"></span> <span class="" th:text="'@' + ${chat.usertwo.username}"></span></a> - <span class="" th:text="${'fecha'}"></span></p>
+                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.usertwo.id}"><span class="font-weight-bold" th:text="${chat.usertwo.name}"></span> <span class="" th:text="'@' + ${chat.usertwo.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
                                                 </div>
                                         </div>
-                                        <a th:href="${'/messages/' + chat.usertwo.id}" class="text-break" th:utext="${'sfdgsdgsdgf'}"></a>
+                                        <a th:href="${'/messages/' + chat.usertwo.id}" class="text-break" th:utext="${message.text}"></a>
                                     </div>
                                 </div>
                             </div>
