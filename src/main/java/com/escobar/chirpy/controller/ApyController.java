@@ -16,7 +16,6 @@ import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserAuthority;
-import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.services.PublicationService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.security.Principal;

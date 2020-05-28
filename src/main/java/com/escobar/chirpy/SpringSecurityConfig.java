@@ -36,62 +36,63 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
     protected void configure(HttpSecurity http) throws Exception {
 
             http.authorizeRequests().antMatchers(
-            		"/resendemail",
-            		"/confirmaccount",
-            		"/profileimages/{id}",
-            		"/profile/{id}",
-            		"/profilefollower/{id}",
-            		"/profilefollowers/{id}",
-            		"/explorer/{hashtag}",
-            		"/register", "/css/**",
-            		"/js/**",
-            		"/",
-            		"/explorer",
-            		"/image/{tipo}/{id}",
-            		"/viewpublication/{id}",
-            		"/refill/{page}"
-            		).permitAll()
-            
+                    "/resendemail",
+                    "/confirmaccount",
+                    "/profileimages/{id}",
+                    "/profile/{id}",
+                    "/profilefollower/{id}",
+                    "/profilefollowers/{id}",
+                    "/explorer/{hashtag}",
+                    "/register",
+                    "/css/**",
+                    "/image/**",
+                    "/js/**",
+                    "/",
+                    "/explorer",
+                    "/refillexplorer",
+                    "/image/{tipo}/{id}",
+                    "/viewpublication/{id}",
+                    "/refill/{page}"
+                    ).permitAll()
                 .antMatchers(
-            		"/home",
-            		"/deleteimage/{id}",
-            		"/home/response",
-            		"/quotes",
-            		"/follow/{id}",
-            		"/unfollow/{id}",
-            		"/editprofile",
-            		"/getfollows",
-            		"/deletepost/{id}",
-            		"/editprofile/{id}",
-            		"/editpass",
-            		"/imagesu",
-            		"/editimageprofile",
-            		"/report/{id}",
-                        "/messages",
-                        "/messages/send",
-                        "/messages/{id}",
-            		"/viewemoticons"
-            		).hasAuthority("user")
-                
+                    "/home",
+                    "/deleteimage/{id}",
+                    "/home/response",
+                    "/quotes",
+                    "/follow/{id}",
+                    "/unfollow/{id}",
+                    "/editprofile",
+                    "/getfollows",
+                    "/deletepost/{id}",
+                    "/editprofile/{id}",
+                    "/editpass",
+                    "/imagesu",
+                    "/editimageprofile",
+                    "/report/{id}",
+                    "/messages",
+                    "/messages/send",
+                    "/messages/{id}",
+                    "/viewemoticons"
+                    ).hasAuthority("user")
                 .antMatchers(
-            		"/administration",
-            		"/administration/users",
-            		"/administration/userimages/{id}",
-            		"/administration/userpost/{id}",
-            		"/administration/deleteimage",
-            		"/administration/deletepost",
-            		"/administration/posts",
-            		"/administration/images",
-            		"/administration/edituser/{id}",
-            		"/activatedisableuser",
-            		"/blockunblockuser",
-            		"/administration/editImageprofile",
-            		"/administration/imagesu",
-            		"/administration/edituser",
-            		"/administration/editpass",
-            		"/administration/emoticons"
-        		).hasAuthority("admin")
-                
+                    "/administration",
+                    "/administration/users",
+                    "/administration/userimages/{id}",
+                    "/administration/userpost/{id}",
+                    "/administration/deleteimage",
+                    "/administration/deletepost",
+                    "/administration/posts",
+                    "/administration/images",
+                    "/administration/edituser/{id}",
+                    "/activatedisableuser",
+                    "/blockunblockuser",
+                    "/administration/editImageprofile",
+                    "/administration/imagesu",
+                    "/administration/edituser",
+                    "/administration/editpass",
+                    "/administration/emoticons"
+                    ).hasAuthority("admin")
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()

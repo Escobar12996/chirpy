@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -116,6 +117,15 @@ public class ExplorerController {
 		}
     	
         return "aplication/emoticons";
+    }
+    
+    //TODO Recargar main
+    @RequestMapping(value={"/refillexplorer"}, method = RequestMethod.POST)
+    public String refillexplorer(Principal principal, Model model,
+    		@RequestParam(value = "last", required = true) Long last,
+    		@PathVariable("page") String page) {
+        
+        
     }
     
 }
