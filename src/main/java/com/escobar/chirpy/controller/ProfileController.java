@@ -2,10 +2,6 @@ package com.escobar.chirpy.controller;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -27,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.escobar.chirpy.models.dao.FollowDao;
 import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.ImageDao;
@@ -39,7 +34,6 @@ import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
 import com.escobar.chirpy.models.entity.UserBan;
-import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.listener.UserBanEvent;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
 
@@ -199,22 +193,18 @@ public class ProfileController {
         
         
             if (file != null) {
-                for(int i = 0; i < file.length; i++) {
-                    MultipartFile fi = file[i];
-
+                for (MultipartFile fi : file) {
                     //si no es nulo y no esta vacio, comprobamos que NO es una imagen valida para lanzar error
-                    if(fi != null && !fi.isEmpty()) {
-                        if (!fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
+                    if(fi != null && !fi.isEmpty() && !fi.getContentType().contains("image/png") && !fi.getContentType().contains("image/jpeg") && !fi.getContentType().contains("image/gif")) {
 
-                            model.addAttribute("errorimage", messages.getMessage("text.home.error.imageerror", null, LocaleContextHolder.getLocale()));
+                        model.addAttribute("errorimage", messages.getMessage("text.home.error.imageerror", null, LocaleContextHolder.getLocale()));
 
-                            //mostramos las tendencias de la ultima hora
-                            model.addAttribute("trends", hashtagDao.findUp());
+                        //mostramos las tendencias de la ultima hora
+                        model.addAttribute("trends", hashtagDao.findUp());
 
-
-                            return "aplicacion/main";
-                        }
+                        return "aplicacion/main";
                     }
+
                 }
 
                 for(int i = 0; i < file.length; i++) {
@@ -394,7 +384,30 @@ public class ProfileController {
                     model.addAttribute("error", messages.getMessage("text.edituser.error.accountexists", null, LocaleContextHolder.getLocale()));
                 }
             }
+            
+            //comprobamos si el correo a cambiado
+            if (!userc.getEmail().equalsIgnoreCase(user.getEmail())){
                 
+                //comprobamos que no tenga otro usuario el mismo correo
+                if (userDao.findEmail(user.getEmail()) == null){
+                    
+                    //Comprobamos que sea valido el correo
+                    if (AccountController.esEmailCorrecto(user.getEmail())){
+                        userc.setEmail(user.getEmail());
+                        
+                    //si no es valido el correo
+                    } else {
+                        model.addAttribute("error", messages.getMessage("text.edituser.error.emailinvalid", null, LocaleContextHolder.getLocale()));
+                    }
+                    
+                //El email ya existe
+                }else {
+                    model.addAttribute("error", messages.getMessage("text.edituser.error.emailexists", null, LocaleContextHolder.getLocale()));
+                }
+                
+                
+            }
+            
             //Guardo el usuario
             userDao.update(userc);
             

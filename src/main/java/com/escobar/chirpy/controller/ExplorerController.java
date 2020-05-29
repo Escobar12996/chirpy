@@ -22,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,7 +94,7 @@ public class ExplorerController {
                 
                 session.setAttribute("find", find);
                 model.addAttribute("users", userDao.findUsersNameUsernameFirst(find));
-                model.addAttribute("publications", publicationDao.findText(find));
+                model.addAttribute("publications", publicationDao.findTextFirst(find));
                 
             }
         }
@@ -123,9 +122,35 @@ public class ExplorerController {
     @RequestMapping(value={"/refillexplorer"}, method = RequestMethod.POST)
     public String refillexplorer(Principal principal, Model model,
     		@RequestParam(value = "last", required = true) Long last,
-    		@PathVariable("page") String page) {
+                @RequestParam(value = "finder", required = true) String finder,
+                HttpSession session) {
         
+        String find = (String) session.getAttribute("find");
+        System.out.println(last);
         
+        if (finder.contains("user")){
+            
+            if (find.contains("@")){
+                
+                find = find.replace("@", "");
+                model.addAttribute("users", userDao.findUsersOnlyUsernameNext(find, last));
+
+            
+            } else {
+
+                model.addAttribute("users", userDao.findUsersNameUsernameNext(find, last));
+            }
+            
+            return "aplication/apy/refillexploreruser";
+            
+            
+        } else if (finder.contains("publication")){
+            System.out.println(last);
+            model.addAttribute("publications", publicationDao.findTextNext(find, last));
+            return "aplication/apy/refillexplorerpublications";
+        }
+        
+        return null;
     }
     
 }

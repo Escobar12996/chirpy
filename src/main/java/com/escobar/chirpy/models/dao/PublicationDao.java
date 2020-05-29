@@ -162,11 +162,19 @@ public class PublicationDao {
     
     
     
-    public List<Publication> findText(String text) {
-            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%') and view = true", Publication.class); 
+    public List<Publication> findTextFirst(String text) {
+            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.publication LIKE CONCAT('%',:text,'%') and view = true order by p.id asc", Publication.class); 
         query.setParameter("text", text);
 
-        return query.getResultList();
+        return query.setMaxResults(5).getResultList();
+    }
+    
+        public List<Publication> findTextNext(String text, Long last) {
+            TypedQuery<Publication> query = em.createQuery("SELECT p FROM Publication p WHERE p.id > :id and p.publication LIKE CONCAT('%',:text,'%') and view = true order by p.id asc", Publication.class); 
+        query.setParameter("text", text);
+        query.setParameter("id", last);
+
+        return query.setMaxResults(5).getResultList();
     }
     
     @Transactional(readOnly=true)

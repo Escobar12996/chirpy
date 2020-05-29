@@ -152,23 +152,26 @@ public class ApyController {
     public List<User> getfollows(Principal principal) {
     	
     	//cargamos el usuario registrado
-        User user = userDao.findByUserName(principal.getName());
         
-        
-        if (user != null) {
-        	//creamos la lista con las personas a las que sigue, pero le quitamos las imagenes
-        	List<User> list = new ArrayList<User>();
-        
-        
-        	for (User fo : followDao.getUserFollow(user)){
-                fo.setPassword("");
-                fo.setImageperf(null);
-                fo.setImagesu(null);
-                list.add(fo);
+        if (principal != null){
+            User user = userDao.findByUserName(principal.getName());
+
+
+            if (user != null) {
+                    //creamos la lista con las personas a las que sigue, pero le quitamos las imagenes
+                    List<User> list = new ArrayList<User>();
+
+
+                    for (User fo : followDao.getUserFollow(user)){
+                    fo.setPassword("");
+                    fo.setImageperf(null);
+                    fo.setImagesu(null);
+                    list.add(fo);
+                }
+
+                    //devolvemos la lista
+                    return list;
             }
-        	
-        	//devolvemos la lista
-        	return list;
         }
         
         

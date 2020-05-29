@@ -1,9 +1,13 @@
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
     var finish = false;
+    var users = null;
     var bottomOffset = 200; // the distance (in px) from the page bottom when you want to load more posts
+    var finishuser = false;
+    var finishpubli = false;
     
-$(".followbutton").click(function(){
+
+$('#users').on('click', '.followbutton', function() {
     let value = $(this).val();
     
     $.ajax({
@@ -20,7 +24,7 @@ $(".followbutton").click(function(){
     });
 });
 
-$(".unfollowbutton").click(function(){
+$('#users').on('click', '.unfollowbutton', function() {
     let value = $(this).val();
 
     $.ajax({
@@ -51,6 +55,13 @@ $(".deletebutton").click(function(){
     });
 });
 
+function detectfollows(){
+    $.each(users,function(indice,objeto){
+            $("#followbutton"+objeto.id).hide();
+            $("#unfollowbutton"+objeto.id).show();
+        });
+}
+
 function loadFollow(){
     $.ajax({
         type: "POST",
@@ -59,10 +70,8 @@ function loadFollow(){
             xhr.setRequestHeader(header, token);
         },
         success: function(response){
-            $.each(response,function(indice,objeto){
-                $("#followbutton"+objeto.id).hide();
-                $("#unfollowbutton"+objeto.id).show();
-            });
+            users = response;
+            detectfollows();
         }
     });
 }
@@ -92,6 +101,7 @@ $(".r-button").click(function(e) {
     
     let res = $(this).attr("value");
     e.preventDefault();
+    console.log(res);
     setCookie("resp", res, 1);
 });
 
@@ -123,7 +133,7 @@ $("#sendPublication").submit(function(event){
         return false;
 });
 
-$(".div-buttom").click(function() {
+$('#publications').on('click', '.div-buttom', function() {
 	  window.location = "/viewpublication/"+$(this).attr('id'); 
 	  return false;
 });
@@ -282,10 +292,61 @@ $(".new_reload").click(function(){
             xhr.setRequestHeader(header, token);
         },
         success:function(data){
-					
+
             if (data){
                 $(".pri").after(data);
             }
         }
     });
+    
+});
+
+$(".refilluser").click(function(){
+    let lasts = $('.user').last().attr('id');
+
+    if (finishuser === false){
+            $.ajax({
+            type: "POST",
+            url: "/refillexplorer",
+            data : { last: lasts , finder : "user"},
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success:function(data){
+
+                if (data){
+                    $("#users").append(data);
+                } else {
+                    finishuser = true;
+                }
+            }
+        });
+    }
+    
+});
+
+
+
+$(".refillpublications").click(function(){
+    let lasts = $('.publication').last().attr('id');
+
+    if (finishpubli  === false){
+        $.ajax({
+            type: "POST",
+            url: "/refillexplorer",
+            data : { last: lasts , finder : "publication"},
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success:function(data){
+
+                if (data){
+                    $("#publications").append(data);
+                    console.log(data);
+                } else {
+                    finishpubli = true;
+                }
+            }
+        });
+    }
 });

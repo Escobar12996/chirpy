@@ -87,6 +87,7 @@ public class UserDao {
         public List<User> findUsersNameUsernameNext(String username, Long id) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id > :id and u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
 	    query.setParameter("username", username);
+            query.setParameter("id", id);
             
             return query.getResultList();
 	}

@@ -103,8 +103,8 @@ and open the template in the editor.
                                 </p>
 
                                 <p>
-                                        <label for="email" class="sr-only">Correo</label> 
-                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required autofocus th:errorclass="'form-control alert-danger'" hidden /> 
+                                        <label for="email" th:text="#{text.edituser.email}"></label> 
+                                        <input type="email" id="namealasname" th:field="*{email}" class="form-control border" required autofocus th:errorclass="'form-control alert-danger'" /> 
                                         <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                                 </p>
                                 

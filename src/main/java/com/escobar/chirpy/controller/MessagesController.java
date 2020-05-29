@@ -1,14 +1,18 @@
 package com.escobar.chirpy.controller;
 
 import com.escobar.chirpy.models.dao.ChatDao;
+import com.escobar.chirpy.models.dao.EmoticonDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.MessageDao;
 import com.escobar.chirpy.models.entity.Message;
 import com.escobar.chirpy.models.entity.Chat;
 import com.escobar.chirpy.models.entity.ChatMessage;
+import com.escobar.chirpy.models.entity.Emoticon;
 import com.escobar.chirpy.models.entity.User;
 import java.security.Principal;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.unbescape.html.HtmlEscape;
 
 @Controller
 public class MessagesController {
@@ -40,7 +45,12 @@ public class MessagesController {
     private ChatDao chatDao;
     
     @Autowired
+    private EmoticonDao emoticonDao;
+    
+    @Autowired
     private SimpMessagingTemplate messageSender;
+    
+    private Pattern patternemoticon = Pattern.compile(":[A-Za-z0-9\\s]+:");
     
     @RequestMapping(value={"/messages"}, method = RequestMethod.GET)
     public String messages(Model model, Principal principal, HttpServletRequest request, HttpServletResponse response) {
@@ -129,14 +139,29 @@ public class MessagesController {
     public void receivedMessage(ChatMessage chatmessage, Principal principal){
 
         User user = userDao.findByUserName(principal.getName());
-        User userReceived = userDao.findById(chatmessage.getIdReceived());
+        User userReceived = userDao.findById(chatmessage.getIdReceived());        
+        chatmessage.setContent(HtmlEscape.escapeHtml5(chatmessage.getContent()));
         
         Message message = new Message();
-        System.out.println("algo");
-        System.out.println(userReceived.getName());
-        System.out.println(user.getName());
-        System.out.println(chatmessage.getContent());
+
         if (userReceived != null && user != null && chatmessage.getContent().length() > 1){
+            
+            Matcher matcheremoticon = patternemoticon.matcher(chatmessage.getContent());
+            
+            if (matcheremoticon.find()){
+
+                    String emoticon = matcheremoticon.group().replace(":", "");
+                    emoticon = emoticon.trim();
+                    
+                    Emoticon emoti = emoticonDao.findemoticon(emoticon);
+                    
+                    if (emoti != null) {
+                        chatmessage.setContent(chatmessage.getContent().replace(matcheremoticon.group(), "<img class=\"img-fluid\" src=\"/image/emoji/"+ emoti.getId() +"\" alt=\""+emoti.getComment()+"\">"));
+                    }
+                    
+                }
+            
+            
             
             message.setText(chatmessage.getContent());
             
