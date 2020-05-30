@@ -1,5 +1,6 @@
 package com.escobar.chirpy.models.listener;
 
+import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ import com.escobar.chirpy.models.entity.User;
 public class UserBanListener implements
   ApplicationListener<UserBanEvent> {
  
+        @Autowired
+	private UserAuthorityDao userAuthDao;
+    
 	@Autowired
 	private UserDao userdao;
 	
@@ -27,7 +31,7 @@ public class UserBanListener implements
     private void confirmEvent(UserBanEvent event) {
         User user = event.getUser();
         
-        if (userBanDao.findByUserBan(user).size() > 10) {
+        if (userBanDao.findByUserBan(user).size() > 10 && !userAuthDao.isAdmin(user)) {
         	
         	user.setNotLocker(false);
         	user.setSystenBan(true);

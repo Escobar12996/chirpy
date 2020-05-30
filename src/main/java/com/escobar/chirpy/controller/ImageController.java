@@ -107,28 +107,19 @@ public class ImageController {
         	//si estas buscando imagenes como administrador
         } else if(tipo.equals("admin")) {
         	
-        	User user = userDao.findByUserName(principal.getName());
-        	
-        	if (user != null) {
-        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
-            	boolean flag = false;
-            	
-            	for (UserAuthority au :ua) {
-                    if (au.getAuthority().getAuthority().equals("admin"))
-                            flag = true;
-            	}
-            	
-            	if (flag) {
-                    Image v = imageDao.findByIdAdmin(id);
+            User user = userDao.findByUserName(principal.getName());
 
-                    if (v != null && v.getImages() != null) {
-                        response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
-                        response.getOutputStream().write(v.getImages());
-                        response.getOutputStream().close();
-                    } else {
-                        response.getOutputStream().close();
-                    }
-            	}
+            if (user != null && userAuthorityDao.isAdmin(user)) {
+
+                Image v = imageDao.findByIdAdmin(id);
+
+                if (v != null && v.getImages() != null) {
+                    response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+                    response.getOutputStream().write(v.getImages());
+                    response.getOutputStream().close();
+                } else {
+                    response.getOutputStream().close();
+                }
             }
         } 
     }

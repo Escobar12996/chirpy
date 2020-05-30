@@ -11,6 +11,7 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.Authority;
 import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
@@ -372,49 +373,29 @@ public class ApyController {
     		//Cargamos el usuario buscado
 			User user = userDao.findByUserName(principal.getName());
         	
-        	if (user != null) {
-        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
-            	boolean flag = false;
-            	
-            	for (UserAuthority au :ua) {
-            		if (au.getAuthority().getAuthority().equals("admin"))
-            			flag = true;
-            	}
-            
-            	User u = userDao.findById(find);
-	            //si el usuario es admin
-	            if (flag) {
-	            	System.out.println(last);
-	            	model.addAttribute("publications", publicationDao.findByUserAdminNext(u, last));
-	            	model.addAttribute("imageDao", imageDao);
-	            	model.addAttribute("publicationDao", publicationDao);
-	            	
-	            	return "administration/apy/refillprofile";
-	            }
+        	if (user != null && userAuthorityDao.isAdmin(user)) {
+        		
+                    User u = userDao.findById(find);
+                    model.addAttribute("publications", publicationDao.findByUserAdminNext(u, last));
+                    model.addAttribute("imageDao", imageDao);
+                    model.addAttribute("publicationDao", publicationDao);
+
+                    return "administration/apy/refillprofile";
         	}
     		
     	} else if (page.contains("allpublicationsadmin")) {
 
     		//Cargamos el usuario buscado
-			User user = userDao.findByUserName(principal.getName());
+                User user = userDao.findByUserName(principal.getName());
         	
-        	if (user != null) {
-        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
-            	boolean flag = false;
-            	
-            	for (UserAuthority au :ua) {
-            		if (au.getAuthority().getAuthority().equals("admin"))
-            			flag = true;
-            	}
-            
-	            //si el usuario es admin
-	            if (flag) {
-            	model.addAttribute("publications", publicationDao.findAdminNext(last));
-            	model.addAttribute("imageDao", imageDao);
-            	model.addAttribute("publicationDao", publicationDao);
-            	
-            	return "administration/apy/refillpublications";
-	            }
+        	if (user != null && userAuthorityDao.isAdmin(user)) {
+
+                    model.addAttribute("publications", publicationDao.findAdminNext(last));
+                    model.addAttribute("imageDao", imageDao);
+                    model.addAttribute("publicationDao", publicationDao);
+
+                    return "administration/apy/refillpublications";
+
         	}
     	} else if (page.contains("reloadnew")) {
 
@@ -461,48 +442,28 @@ public class ApyController {
     		//Cargamos el usuario buscado
                 User user = userDao.findByUserName(principal.getName());
         	
-        	if (user != null) {
-        		List<UserAuthority> ua = userAuthorityDao.findByUser(user);
-            	boolean flag = false;
-            	
-            	for (UserAuthority au :ua) {
-            		if (au.getAuthority().getAuthority().equals("admin"))
-            			flag = true;
-            	}
+        	if (user != null && userAuthorityDao.isAdmin(user)) {
+
             
-                User u = userDao.findById(find);
-                //si el usuario es admin
-                if (flag) {
+                    User u = userDao.findById(find);
+
                     model.addAttribute("images", imageDao.findByUserAdminNext(u, last));
 
                     return "administration/apy/refillprofileimages";
-                }
+
             }
     	} else if (page.contains("adminfimaall")) {
 
-    		//Cargamos el usuario buscado
-                User user = userDao.findByUserName(principal.getName());
-        	
-        	if (user != null) {
-                    List<UserAuthority> ua = userAuthorityDao.findByUser(user);
-                    boolean flag = false;
-            	
-            	for (UserAuthority au :ua) {
-            		if (au.getAuthority().getAuthority().equals("admin"))
-            			flag = true;
-            	}
+            //Cargamos el usuario buscado
+            User user = userDao.findByUserName(principal.getName());
 
-                //si el usuario es admin
-                if (flag) {
-                    model.addAttribute("images", imageDao.findAllAdminNext(last));
+            if (user != null && userAuthorityDao.isAdmin(user)) {
 
-                    return "administration/apy/refillprofileimages";
-                }
+                model.addAttribute("images", imageDao.findAllAdminNext(last));
+
+                return "administration/apy/refillprofileimages";
             }
     	}
-    	
-    	
-        
         return null;
     }
 }

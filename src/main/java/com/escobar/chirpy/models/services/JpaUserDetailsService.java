@@ -61,8 +61,8 @@ public class JpaUserDetailsService implements UserDetailsService{
 		//cargo el rol/roles que tiene el usuario
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
-        for(UserAuthority userauth : userAuthDao.findByUser(user)){
-            authorities.add(new SimpleGrantedAuthority(userauth.getAuthority().getAuthority()));
+        for(Authority userauth : userAuthDao.findByUser(user)){
+            authorities.add(new SimpleGrantedAuthority(userauth.getAuthority()));
             session.setAttribute("email", user.getEmail());
         }
         

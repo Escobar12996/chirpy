@@ -1,5 +1,6 @@
 package com.escobar.chirpy.controller;
 
+import com.escobar.chirpy.models.dao.AuthorityDao;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.escobar.chirpy.models.dao.HashtagDao;
 import com.escobar.chirpy.models.dao.HashtagPublicationDao;
 import com.escobar.chirpy.models.dao.ImageDao;
 import com.escobar.chirpy.models.dao.PublicationDao;
+import com.escobar.chirpy.models.dao.UserAuthorityDao;
 import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
@@ -43,6 +45,7 @@ import com.escobar.chirpy.models.entity.HashtagPublication;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
+import com.escobar.chirpy.models.entity.UserAuthority;
 import com.escobar.chirpy.models.entity.UserBan;
 import com.escobar.chirpy.models.entity.UserQuotePublication;
 import com.escobar.chirpy.models.miscellaneous.ImageResizer;
@@ -67,9 +70,15 @@ public class AdministrationController {
 	
 	@Autowired
 	private UserBanDao userBan;
+        
+        @Autowired
+	private UserAuthorityDao userAuthorityDao;
 
 	@Autowired
 	private HashtagPublicationDao hashtagPublicationDao;
+        
+        @Autowired
+	private AuthorityDao authorityDao;
 	
 	@Autowired
 	private UserQuotePublicationDao userQuotePublicationDao;
@@ -335,10 +344,15 @@ public class AdministrationController {
     	
     	User userc = userDao.findById(id);
     	
-    	model.addAttribute("user", userc);
-    	session.setAttribute("useredit", userc);
+        if (userc.getId() != 1){
+           model.addAttribute("user", userc);
+            model.addAttribute("userAuthorityDao", userAuthorityDao);
+            session.setAttribute("useredit", userc);
+
+            return "administration/profileedit"; 
+        }
     	
-    	return "administration/profileedit";
+        return "redirect:/administration/users";
     }
     
     
@@ -349,9 +363,37 @@ public class AdministrationController {
     	
     	User us = userDao.findById(id);
     	
-    	if (us != null) {
+    	if (us != null && us.getId() != 1) {
     		us.setEnabled(!us.getEnabled());
     		userDao.update(us);
+    		return "redirect:/administration/edituser/"+us.getId();
+    	}
+    	
+    	return "redirect:/administration/users";
+    }
+    
+    //TODO Explorer metodo post
+    @RequestMapping(value={"/adminchange"}, method = RequestMethod.POST)
+    public String adminchange(Model model, Principal principal,
+    		@RequestParam(value = "id") Long id) {
+    	
+    	User us = userDao.findById(id);
+    	
+    	if (us != null && us.getId() != 1) {
+                if (userAuthorityDao.isAdmin(us)){
+                    //le añadimos su rol
+                    UserAuthority au = new UserAuthority();
+                    au.setUser(us);
+                    au.setAuthority(authorityDao.findByName("admin"));
+                    userAuthorityDao.remove(userAuthorityDao.findUserAuthority(au));
+                } else {
+                    //le añadimos su rol
+                    UserAuthority au = new UserAuthority();
+                    au.setUser(us);
+                    au.setAuthority(authorityDao.findByName("admin"));
+                    userAuthorityDao.save(au);
+                }
+    		
     		return "redirect:/administration/edituser/"+us.getId();
     	}
     	
@@ -369,41 +411,68 @@ public class AdministrationController {
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(((User) session.getAttribute("useredit")).getUsername());
         
-        //si hay algun error, volvemos para atras
-        if ( result.hasFieldErrors("username") || 
-        		result.hasFieldErrors("name") || 
-        		result.hasFieldErrors("email")){
-        	
-            return "administration/profileedit";
-        }    
-           
-        //guardamos la descripcion y el nombre
-        userc.setDescription(user.getDescription());
-        userc.setName(user.getName());
-        
-        //comprobamos si el nombre de usuario ha cambiado
-        if (!userc.getUsername().equalsIgnoreCase(user.getUsername())){
+        if (userc.getId() != 1){
+            //si hay algun error, volvemos para atras
+            if ( result.hasFieldErrors("username") || 
+                            result.hasFieldErrors("name") || 
+                            result.hasFieldErrors("email")){
 
-            //comprobamos que no tenga otro usuario el mismo nombre
-            if (userDao.findByUserName(user.getUsername()) == null){
-            
-                //introduzco el nuevo usuario
-                userc.setUsername(user.getUsername());
-                
-            //Si ya existe un usuario
-            } else if (userDao.findByUserName(user.getUsername()) != null){
-                model.addAttribute("error", messages.getMessage("text.edituser.error.accountexists", null, LocaleContextHolder.getLocale()));
+                return "administration/profileedit";
+            }    
+
+            //guardamos la descripcion y el nombre
+            userc.setDescription(user.getDescription());
+            userc.setName(user.getName());
+
+            //comprobamos si el nombre de usuario ha cambiado
+            if (!userc.getUsername().equalsIgnoreCase(user.getUsername())){
+
+                //comprobamos que no tenga otro usuario el mismo nombre
+                if (userDao.findByUserName(user.getUsername()) == null){
+
+                    //introduzco el nuevo usuario
+                    userc.setUsername(user.getUsername());
+
+                //Si ya existe un usuario
+                } else if (userDao.findByUserName(user.getUsername()) != null){
+                    model.addAttribute("error", messages.getMessage("text.edituser.error.accountexists", null, LocaleContextHolder.getLocale()));
+                }
             }
-        }
+
+            //comprobamos si el correo a cambiado
+                if (!userc.getEmail().equalsIgnoreCase(user.getEmail())){
+
+                    //comprobamos que no tenga otro usuario el mismo correo
+                    if (userDao.findEmail(user.getEmail()) == null){
+
+                        //Comprobamos que sea valido el correo
+                        if (AccountController.esEmailCorrecto(user.getEmail())){
+                            userc.setEmail(user.getEmail());
+
+                        //si no es valido el correo
+                        } else {
+                            model.addAttribute("error", messages.getMessage("text.edituser.error.emailinvalid", null, LocaleContextHolder.getLocale()));
+                        }
+
+                    //El email ya existe
+                    }else {
+                        model.addAttribute("error", messages.getMessage("text.edituser.error.emailexists", null, LocaleContextHolder.getLocale()));
+                    }
+
+
+                }
+
+            //Guardo el usuario
+            userDao.update(userc);
+
+            model.addAttribute("user", userc);
+            session.setAttribute("useredit", userc);
+
+            return "administration/profileedit";
             
-        //Guardo el usuario
-        userDao.update(userc);
+        }
         
-        model.addAttribute("user", userc);
-    	session.setAttribute("useredit", userc);
-        
-        return "administration/profileedit";
-        
+        return "redirect:/administration/users";
     }
     
     
@@ -414,7 +483,7 @@ public class AdministrationController {
     	
     	User us = userDao.findById(id);
     	
-    	if (us != null) {
+    	if (us != null && us.getId() != 1) {
     		us.setNotLocker(!us.getNotLocker());
     		userDao.update(us);
     		return "redirect:/administration/edituser/"+us.getId();
@@ -429,7 +498,7 @@ public class AdministrationController {
         
         User userc = userDao.findByUserName(((User) session.getAttribute("useredit")).getUsername());
         
-        if (userc != null) {
+        if (userc != null && userc.getId() != 1) {
         	if (password.length() < 7) {
                 model.addAttribute("error", messages.getMessage("Size.user.password", null, LocaleContextHolder.getLocale()));
             } else {

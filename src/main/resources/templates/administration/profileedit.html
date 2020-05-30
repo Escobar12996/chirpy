@@ -25,7 +25,7 @@
                     
                     
                     <div class="row ml-0 mr-0 mt-3">
-                    	<div class="col-6">
+                    	<div class="col-4 text-center">
 	                    	<div class="card text-center">
 	                        	<div class="card-header" th:text="#{text.administration.edituser.enabled}"></div>
 	                       		<div class="card-body">
@@ -36,7 +36,18 @@
 	                    		</div>
 	                    	</div>
                     	</div>
-                    	<div class="col-6 text-center">
+                    	<div class="col-4 text-center">
+	                    	<div class="card text-center">
+	                        	<div class="card-header" th:text="#{text.administration.edituser.admin}"></div>
+	                       		<div class="card-body">
+		                    		<form th:action="@{/adminchange}" method="post">
+                                                    <button class="btn btn-success" th:if="${userAuthorityDao.isAdmin(user) == true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.yes}"></button>
+                                                    <button class="btn btn-warning" th:if="${userAuthorityDao.isAdmin(user) != true}" type="submit" name="id" th:value="${user.id}" th:text="#{text.administration.users.no}"></button>
+                                                </form>
+	                    		</div>
+	                    	</div>
+                    	</div>
+                    	<div class="col-4 text-center">
 							<div class="card">
 	                        	<div class="card-header" th:text="#{text.administration.edituser.notLocker}"></div>
 	                       		<div class="card-body">

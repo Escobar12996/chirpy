@@ -7,7 +7,7 @@
     var finishpubli = false;
     
 
-$('#users').on('click', '.followbutton', function() {
+$(document).on('click', '.followbutton', function() {
     let value = $(this).val();
     
     $.ajax({
@@ -24,7 +24,7 @@ $('#users').on('click', '.followbutton', function() {
     });
 });
 
-$('#users').on('click', '.unfollowbutton', function() {
+$(document).on('click', '.unfollowbutton', function() {
     let value = $(this).val();
 
     $.ajax({
@@ -40,7 +40,7 @@ $('#users').on('click', '.unfollowbutton', function() {
     });
 });
 
-$(".deletebutton").click(function(){
+$(document).on('click', '.deletebutton', function(){
     let value = $(this).val();
 
     $.ajax({
@@ -97,7 +97,7 @@ $(document).on('click', '[data-toggle="lightbox"]', function(event) {
   $(this).ekkoLightbox();
 });
 
-$(".r-button").click(function(e) {
+$(document).on('click', '.r-button', function(e) {
     
     let res = $(this).attr("value");
     e.preventDefault();
@@ -133,14 +133,14 @@ $("#sendPublication").submit(function(event){
         return false;
 });
 
-$('#publications').on('click', '.div-buttom', function() {
+$(document).on('click', '.div-buttom', function() {
 	  window.location = "/viewpublication/"+$(this).attr('id'); 
 	  return false;
 });
 
-$(".deleteimage").click(function(){
+$(document).on('click', '.deleteimage', function(){
     let value = $(this).val();
-
+    console.log(value);
     $.ajax({
         type: "POST",
         url: "/deleteimage/"+value,
@@ -169,7 +169,7 @@ jQuery(function($){
 	fullHeight();
 
 	$('#sidebarCollapse').on('click', function () {
-      $('#sidebar').toggleClass('active');
+            $('#sidebar').toggleClass('active');
 	});
  
 	$(window).scroll(function() {
@@ -281,8 +281,7 @@ jQuery(function($){
 	});
 });
 
-$(".new_reload").click(function(){
-    let value = $(this).val();
+$(document).on('click', '.new_reload', function(){
 
     $.ajax({
         type: "POST",
@@ -301,7 +300,7 @@ $(".new_reload").click(function(){
     
 });
 
-$(".refilluser").click(function(){
+$(document).on('click', '.refilluser', function(){
     let lasts = $('.user').last().attr('id');
 
     if (finishuser === false){
@@ -326,8 +325,7 @@ $(".refilluser").click(function(){
 });
 
 
-
-$(".refillpublications").click(function(){
+$(document).on('click', '.refillpublications', function(){
     let lasts = $('.publication').last().attr('id');
 
     if (finishpubli  === false){
