@@ -196,7 +196,6 @@ public class ProfileController {
     @RequestMapping(value={"/profileimages"}, method = RequestMethod.POST)
     public String saveuserimages(Model model,
     		Principal principal,
-    		@PathVariable Long id,
     		HttpServletRequest request,
                 @RequestParam(value = "image[]", required = false) MultipartFile file[],
     		HttpServletResponse response) {
@@ -246,7 +245,7 @@ public class ProfileController {
                     }
                 }
                 
-                return "redirect:/profileimages"+user.getId();
+                return "redirect:/profileimages/"+user.getId();
             }
             
             

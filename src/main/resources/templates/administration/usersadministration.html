@@ -50,16 +50,16 @@
 		
 			<div class="col-12">
 				
-				<div class="row mt-5 mb-5">
-					<div class="col"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=1'}">&lt;&lt;</a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pageprevious != null}" th:href="${'/administration/users?page=' + pageprevious}">&lt;</a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pagepreviousprevious != null}" th:href="${'/administration/users?page='+ pagepreviousprevious}" th:text="${pagepreviousprevious}"></a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pageprevious != null}" th:href="${'/administration/users?page='+ pageprevious}" th:text="${pageprevious}"></a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ page}" th:text="${page}"></a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pagenext != null}" th:href="${'/administration/users?page='+ pagenext}" th:text="${pagenext}"></a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pagenextnext != null}" th:href="${'/administration/users?page='+ pagenextnext}" th:text="${pagenextnext}"></a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:if="${pagenext != null}" th:href="${'/administration/users?page=' + pagenext}">&gt;</a></div>
-					<div class="col"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=' + numpag}">&gt;&gt;</a></div>
+				<div class="row mt-5 mb-5 justify-content-center">
+					<div class="col col-auto"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=1'}">&lt;&lt;</a></div>
+					<div class="col col-auto" th:if="${pageprevious != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=' + pageprevious}">&lt;</a></div>
+					<div class="col col-auto" th:if="${pagepreviousprevious != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ pagepreviousprevious}" th:text="${pagepreviousprevious}"></a></div>
+					<div class="col col-auto"th:if="${pageprevious != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ pageprevious}" th:text="${pageprevious}"></a></div>
+					<div class="col col-auto"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ page}" th:text="${page}"></a></div>
+					<div class="col col-auto" th:if="${pagenext != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ pagenext}" th:text="${pagenext}"></a></div>
+					<div class="col col-auto" th:if="${pagenextnext != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page='+ pagenextnext}" th:text="${pagenextnext}"></a></div>
+					<div class="col col-auto" th:if="${pagenext != null}"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=' + pagenext}">&gt;</a></div>
+					<div class="col col-auto"><a class="btn btn-outline-primary" th:href="${'/administration/users?page=' + numpag}">&gt;&gt;</a></div>
 				</div>
 				
 				

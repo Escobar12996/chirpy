@@ -127,8 +127,17 @@ $("#sendPublication").submit(function(event){
             xhr.setRequestHeader(header, token);
         },
         success: function(response){
-        	
-        	$("#errorview").html(response);
+        	if (response == "true"){
+                    $('#myModal').modal('toggle');
+                    $('#sendPublication')[0].reset();
+                    if (document.URL.split(window.location.host)[1].includes("/home")){
+                        newreload();
+                    }
+                    
+                } else {
+                    $("#errorview").html(response);
+                }
+                
         }});
         return false;
 });
@@ -258,7 +267,7 @@ jQuery(function($){
 			});
 		} else if(document.URL.split(window.location.host)[1].includes("/profileimages/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
 			let value = $('.sec').last().attr('id');
-                        let fi = $('.pri').attr('id');
+                        let fi = $('.prin').attr('id');
 			$.ajax({
 			type: "POST",
 		        url: "/refill/refillimages",
@@ -282,7 +291,10 @@ jQuery(function($){
 });
 
 $(document).on('click', '.new_reload', function(){
+    newreload();
+});
 
+function newreload(){
     $.ajax({
         type: "POST",
         url: "/refill/reloadnew",
@@ -297,8 +309,9 @@ $(document).on('click', '.new_reload', function(){
             }
         }
     });
-    
-});
+}
+
+
 
 $(document).on('click', '.refilluser', function(){
     let lasts = $('.user').last().attr('id');
