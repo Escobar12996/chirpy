@@ -55,7 +55,7 @@ and open the template in the editor.
                             <a class="col-3 bg-primary text-white border p-2" th:href="${'/profilefollowers/' + userc.id}" th:text="#{text.userdetails.followers}"></a>
                         </div>
                             
-                        <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalimagenes" th:text="#{text.userimages.uploadimages}">
+                        <button sec:authorize="isAuthenticated()" th:if="${user.id == userc.id}" type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalimagenes" th:text="#{text.userimages.uploadimages}">
                         </button>
                         
                         <div class="p-3 mt-3 jumbotron text-center" th:if="${#lists.isEmpty(images)}">
