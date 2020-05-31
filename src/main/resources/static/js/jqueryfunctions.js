@@ -149,7 +149,6 @@ $(document).on('click', '.div-buttom', function() {
 
 $(document).on('click', '.deleteimage', function(){
     let value = $(this).val();
-    console.log(value);
     $.ajax({
         type: "POST",
         url: "/deleteimage/"+value,
@@ -157,7 +156,7 @@ $(document).on('click', '.deleteimage', function(){
             xhr.setRequestHeader(header, token);
         },
         success: function (response) {
-            $("#post"+value).hide();
+            $("#image"+value).hide();
         }
     });
 });
@@ -227,6 +226,7 @@ jQuery(function($){
 		} else if(document.URL.split(window.location.host)[1].includes("/profile/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
 			let findval = $('.prin').attr('id');
 			let value = $('.sec').last().attr('id');
+                        value = value.replace("post", "");
 			$.ajax({
 				type: "POST",
 		        url: "/refill/profile",
@@ -268,6 +268,7 @@ jQuery(function($){
 		} else if(document.URL.split(window.location.host)[1].includes("/profileimages/") && $(window).scrollTop() + $(window).height() == $(document).height() && finish === false){
 			let value = $('.sec').last().attr('id');
                         let fi = $('.prin').attr('id');
+                        value = value.replace("image", "");
 			$.ajax({
 			type: "POST",
 		        url: "/refill/refillimages",

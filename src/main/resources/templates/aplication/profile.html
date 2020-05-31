@@ -62,7 +62,7 @@ and open the template in the editor.
 						</div>
                     
                         <div id="all-publications">
-                        	<div class="publication p-4 mt-3 bg-white card sec" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${publi.id}">
+                        	<div class="publication p-4 mt-3 bg-white card sec" th:if="${!#lists.isEmpty(publications)}" th:each="publi : ${publications}" th:id="${'post'+publi.id}">
 	                            <div class="row">
 	                            
 	                                <div class="col-3 col-xl-2">
