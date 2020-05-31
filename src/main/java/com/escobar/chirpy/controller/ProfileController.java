@@ -30,6 +30,7 @@ import com.escobar.chirpy.models.dao.PublicationDao;
 import com.escobar.chirpy.models.dao.UserBanDao;
 import com.escobar.chirpy.models.dao.UserDao;
 import com.escobar.chirpy.models.dao.UserQuotePublicationDao;
+import com.escobar.chirpy.models.entity.Follow;
 import com.escobar.chirpy.models.entity.Image;
 import com.escobar.chirpy.models.entity.Publication;
 import com.escobar.chirpy.models.entity.User;
@@ -84,6 +85,8 @@ public class ProfileController {
     		HttpServletRequest request,
     		HttpServletResponse response) {
     	
+        User user = null;
+        
     	if (id != null) {
     		
     		//cargamos el titulo
@@ -92,7 +95,7 @@ public class ProfileController {
             //cargamos el usaurio registrado
             if (principal != null){
 
-            	User user = userDao.findByUserName(principal.getName());
+            	user = userDao.findByUserName(principal.getName());
             	
                 model.addAttribute("user", user);
                 
@@ -114,6 +117,15 @@ public class ProfileController {
                 //cargamos las tendencias
                 model.addAttribute("trends", hashtagDao.findUp());
                 
+                //cargamos si esta seguido o no por mi
+                if (user != null){
+                    Follow fo = new Follow(user, userc);
+                    if (followDao.findFollow(fo) != null){
+                        model.addAttribute("followedformy", true);
+                    } else {
+                        model.addAttribute("followedformy", false);
+                    }
+                }
                 
                 //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
                 model.addAttribute("imageDao", imageDao);
@@ -139,8 +151,10 @@ public class ProfileController {
     	//cargamos el titulo
         model.addAttribute("title", messages.getMessage("text.userimages.tittle", null, LocaleContextHolder.getLocale()));
         
+        User user = null;
+        
         if (principal != null){
-        	User user = userDao.findByUserName(principal.getName());
+        	user = userDao.findByUserName(principal.getName());
         	
             model.addAttribute("user", user);
             
@@ -157,6 +171,16 @@ public class ProfileController {
         	if (userc != null) {
         		model.addAttribute("userc", userDao.findById(id));
                 model.addAttribute("images", imageDao.findByUser(userDao.findById(id)));
+                
+                //cargamos si esta seguido o no por mi
+                if (user != null){
+                    Follow fo = new Follow(user, userc);
+                    if (followDao.findFollow(fo) != null){
+                        model.addAttribute("followedformy", true);
+                    } else {
+                        model.addAttribute("followedformy", false);
+                    }
+                }
                 
                 //cargamos las tendencias
                 model.addAttribute("trends", hashtagDao.findUp());
@@ -243,8 +267,10 @@ public class ProfileController {
     	//cargamos el titulo
         model.addAttribute("title", messages.getMessage("text.userdetails.follower", null, LocaleContextHolder.getLocale()));
         
+        User user = null;
+        
         if (principal != null){
-        	User user = userDao.findByUserName(principal.getName());
+        	user = userDao.findByUserName(principal.getName());
         	
             model.addAttribute("user", user);
             
@@ -259,6 +285,18 @@ public class ProfileController {
         	User userc = userDao.findById(id);
         	
         	if (userc != null) {
+                    
+                    //cargamos si esta seguido o no por mi
+                if (user != null){
+                    Follow fo = new Follow(user, userc);
+                    if (followDao.findFollow(fo) != null){
+                        model.addAttribute("followedformy", true);
+                    } else {
+                        model.addAttribute("followedformy", false);
+                    }
+                }
+                    
+                    
         		model.addAttribute("userc", userc);
                 model.addAttribute("users", followDao.getUserFollow(userc));
                 //cargamos las tendencias
@@ -282,9 +320,10 @@ public class ProfileController {
     	
     	//cargamos el titulo
         model.addAttribute("title", messages.getMessage("text.userdetails.follower", null, LocaleContextHolder.getLocale()));
+        User user = null;
         
         if (principal != null){
-        	User user = userDao.findByUserName(principal.getName());
+        	user = userDao.findByUserName(principal.getName());
         	
             model.addAttribute("user", user);
             
@@ -299,6 +338,18 @@ public class ProfileController {
         	User userc = userDao.findById(id);
         	
         	if (userc != null) {
+                    
+                    //cargamos si esta seguido o no por mi
+                if (user != null){
+                    Follow fo = new Follow(user, userc);
+                    System.out.println(fo.getFollowed());
+                    if (followDao.findFollow(fo) != null){
+                        model.addAttribute("followedformy", true);
+                    } else {
+                        model.addAttribute("followedformy", false);
+                    }
+                }
+                    
         		model.addAttribute("userc", userc);
                 model.addAttribute("users", followDao.getUserFollowers(userc));
                 

@@ -51,7 +51,7 @@
 		  			<!--/* Listado de las direcciones de la aplicacion */-->
 		  			
 	        		<ul class="list-unstyled components mb-5">
-		          		<li><a th:href="@{/home}" th:text="#{text.layout.nav.main}"></a></li>
+                                    <li><a th:href="@{/home}" class="points"><span th:text="#{text.layout.nav.main}"></span></a></li>
 		          		<li><a th:href="@{/explorer}" th:text="#{text.layout.nav.explorer}"></a></li>
 						<li><a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{text.layout.nav.login}"></a></li>
 						<li><a sec:authorize="isAuthenticated()" th:href="${'/quotes'}"><span th:text="#{text.layout.nav.mention}"></span> <span th:text="${user.quotes}"></span></a></li>

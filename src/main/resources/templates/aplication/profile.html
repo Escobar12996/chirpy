@@ -29,11 +29,24 @@ and open the template in the editor.
                                     <img th:if="${userc.imageperf != null}" class="img-fluid border w-100 imageuser" th:src="${'/image/user/' + userc.id}">
                                 </div>
                                 <div class="col-12 col-sm-9 text-center text-lg-left">
+                                    <p class="text-break text-left font-weight-bold text-primary"> <span th:text="${'@'+userc.username}"></span> <span th:text="${userc.name}"></span></p>
                                     <p class="text-break"  th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
                                     <p class="text-break"  th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
                                 </div>
                             </div>
-                 		</div>
+                            <div class="row justify-content-end">
+                                <div class="col-4 text-right" sec:authorize="isAuthenticated()" th:if="${userc.username != #authentication.name}">
+                                    <div th:if="${followedformy}">
+                                        <button class="badge badge-primary followbutton" th:id="'followbutton' + ${userc.id}" th:value="${userc.id}" style="display: none;" th:text="#{text.explorer.follow}"></button>
+                                        <button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${userc.id}" th:value="${userc.id}" th:text="#{text.explorer.ufollow}"></button>
+                                    </div>
+                                    <div th:if="${!followedformy}">
+                                        <button class="badge badge-primary followbutton" th:id="'followbutton' + ${userc.id}" th:value="${userc.id}" th:text="#{text.explorer.follow}"></button>
+                                        <button class="badge badge-danger unfollowbutton" th:id="'unfollowbutton' + ${userc.id}" th:value="${userc.id}" style="display: none;" th:text="#{text.explorer.ufollow}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             
 						<div class="row mt-0 ml-0 mr-0 mt-2 text-center align-content-center">
 							<a class="col-3 bg-primary text-white border p-2" th:href="${'/profile/' + userc.id}" th:text="#{text.userdetails.profile}"></a>
