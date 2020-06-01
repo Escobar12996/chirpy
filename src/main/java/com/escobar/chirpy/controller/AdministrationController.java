@@ -343,7 +343,8 @@ public class AdministrationController {
     		@PathVariable Long id, HttpSession session) {
     	
     	User userc = userDao.findById(id);
-    	
+    	model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
+        
         if (userc.getId() != 1){
            model.addAttribute("user", userc);
             model.addAttribute("userAuthorityDao", userAuthorityDao);
@@ -351,7 +352,7 @@ public class AdministrationController {
 
             return "administration/profileedit"; 
         }
-    	
+        
         return "redirect:/administration/users";
     }
     
@@ -407,6 +408,7 @@ public class AdministrationController {
         
         //introducimos el titulo
         model.addAttribute("title", messages.getMessage("text.edituser.tittle", null, LocaleContextHolder.getLocale()));
+        model.addAttribute("userAuthorityDao", userAuthorityDao);
         
         //cargamos usuario de la base de datos
         User userc = userDao.findByUserName(((User) session.getAttribute("useredit")).getUsername());
@@ -416,7 +418,6 @@ public class AdministrationController {
             if ( result.hasFieldErrors("username") || 
                             result.hasFieldErrors("name") || 
                             result.hasFieldErrors("email")){
-
                 return "administration/profileedit";
             }    
 
@@ -475,6 +476,10 @@ public class AdministrationController {
         return "redirect:/administration/users";
     }
     
+    @RequestMapping(value={"/administration/edituser"}, method = RequestMethod.GET)
+    public String blockunblockuser(Model model){
+        return "redirect:/administration";
+    }
     
     //TODO Explorer metodo post
     @RequestMapping(value={"/blockunblockuser"}, method = RequestMethod.POST)
