@@ -9,6 +9,7 @@
 		<meta name="_csrf" th:content="${_csrf.token}"/>
 		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 		<title th:text="'Chirpy - ' + ${title}"></title>
+                <link rel="icon" type="image/ico" th:href="@{/Chirpy.png}"/>
 		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 		<link rel="stylesheet" th:href="@{/css/style.css}"/>
 		<link rel="stylesheet" th:href="@{/css/mycss.css}" />
@@ -31,19 +32,19 @@
 		    </div>
 		    <div class="mx-auto order-0">
 		        <ul class="navbar-nav mr-auto">
-		            <li class="nav-item active">
+		            <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/administration' ? 'active':''}">
 		                <a class="nav-link" th:href="@{/administration}" th:text="#{text.administration.nav.main}"></a>
 		            </li>
-		            <li class="nav-item">
+		            <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/administration/users' ? 'active':''}">
 		                <a class="nav-link" th:href="@{/administration/users}" th:text="#{text.administration.nav.user}"></a>
 		            </li>
-		            <li class="nav-item">
+		            <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/administration/posts' ? 'active':''}">
 		                <a class="nav-link" th:href="@{/administration/posts}" th:text="#{text.administration.nav.publications}"></a>
 		            </li>
-		            <li class="nav-item">
+		            <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/administration/images' ? 'active':''}">
 		                <a class="nav-link" th:href="@{/administration/images}" th:text="#{text.administration.nav.multimedia}"></a>
 		            </li>
-		            <li class="nav-item">
+		            <li class="nav-item" th:classappend="${#httpServletRequest.getRequestURI() == '/administration/emoticons' ? 'active':''}">
 		                <a class="nav-link" th:href="@{/administration/emoticons}" th:text="#{text.administration.nav.emoticons}"></a>
 		            </li>
 		        </ul>
