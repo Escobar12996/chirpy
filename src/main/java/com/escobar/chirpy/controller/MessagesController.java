@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
@@ -45,6 +47,9 @@ public class MessagesController {
     private ChatDao chatDao;
     
     @Autowired
+    private MessageSource messages;
+    
+    @Autowired
     private EmoticonDao emoticonDao;
     
     @Autowired
@@ -68,6 +73,10 @@ public class MessagesController {
             
             model.addAttribute("chats", chatDao.findChats(user));
             model.addAttribute("messagesDao", messagesDao);
+            model.addAttribute("title", messages.getMessage("text.chats.tittle", null, LocaleContextHolder.getLocale()));
+            
+            
+            
             return "aplication/chats";
         }
         
@@ -85,7 +94,8 @@ public class MessagesController {
             model.addAttribute("user", user);
             model.addAttribute("userReceived", user_received);
             model.addAttribute("messages", messagesDao.findMessages(user, user_received));
-
+            model.addAttribute("title", messages.getMessage("text.chat.tittle", null, LocaleContextHolder.getLocale()));
+            
             return "aplication/messages";
             
         }

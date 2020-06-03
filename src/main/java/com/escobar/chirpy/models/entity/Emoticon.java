@@ -25,11 +25,11 @@ public class Emoticon implements Serializable{
 	private int id;
 	
 	@NotNull
-	@Size(min = 3)
+	@Size(min = 3, max = 20)
 	private String comment;
 	
 	@NotNull
-	@Size(min = 3)
+	@Size(min = 3, max = 20)
 	@Column(unique = true)
 	private String command;
 	

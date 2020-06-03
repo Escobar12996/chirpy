@@ -39,7 +39,7 @@ public class User implements Serializable {
     @Column(unique = true)
     private String username;
 
-    @Size(min = 3)
+    @Size(min = 3, max = 100)
     @NotEmpty
     private String name;
 

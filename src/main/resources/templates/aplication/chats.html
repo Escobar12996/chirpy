@@ -44,7 +44,7 @@
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.userone.id}"><span class="font-weight-bold" th:text="${chat.userone.name}"></span> <span class="" th:text="'@' + ${chat.userone.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/profile/' + chat.userone.id}"><span class="font-weight-bold" th:text="${chat.userone.name}"></span> <span class="" th:text="'@' + ${chat.userone.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
                                                 </div>
                                         </div>
                                         <a th:href="${'/messages/' + chat.userone.id}" class="text-break" th:utext="${message.text}"></a>
@@ -59,7 +59,7 @@
                                         <div class="col-9 col-xl-10">
                                         <div class="row">
                                                 <div class="col-12">
-                                                <p class="text-break"><a th:href="${'/userdetails/' + chat.usertwo.id}"><span class="font-weight-bold" th:text="${chat.usertwo.name}"></span> <span class="" th:text="'@' + ${chat.usertwo.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
+                                                <p class="text-break"><a th:href="${'/profile/' + chat.usertwo.id}"><span class="font-weight-bold" th:text="${chat.usertwo.name}"></span> <span class="" th:text="'@' + ${chat.usertwo.username}"></span></a> - <span class="" th:text="${message.dateOfSend}"></span></p>
                                                 </div>
                                         </div>
                                         <a th:href="${'/messages/' + chat.usertwo.id}" class="text-break" th:utext="${message.text}"></a>

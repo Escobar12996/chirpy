@@ -8,6 +8,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.escobar.chirpy.models.entity.Hashtag;
+import java.util.Calendar;
+import java.util.Date;
 
 @Repository
 public class HashtagDao {
@@ -28,7 +30,12 @@ public class HashtagDao {
     }
     
     public List<Hashtag> findUp() {
-        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h order by h.usos DESC, datelast DESC", Hashtag.class); 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.HOUR, -1);
+        System.out.println(calendar.getTime());
+        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h where h.datelast >= :fecha order by h.usos DESC, datelast DESC", Hashtag.class); 
+        query.setParameter("fecha", calendar.getTime());
         query.setMaxResults(10);
 
     	return query.getResultList();
