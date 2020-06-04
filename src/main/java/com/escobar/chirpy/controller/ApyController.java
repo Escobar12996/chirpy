@@ -332,9 +332,7 @@ public class ApyController {
             
             //si el usuario no es nulo
             if (pu != null) {
-            	System.out.println(last);
             	model.addAttribute("publications", publicationDao.findResponseNext(pu, last));
-            	System.out.println(publicationDao.findResponseNext(pu, last).size());
             	model.addAttribute("imageDao", imageDao);
             	model.addAttribute("publicationDao", publicationDao);
             	
@@ -403,8 +401,7 @@ public class ApyController {
             
             //si el usuario no es nulo
             if (user != null) {
-                
-                System.out.println(last);
+
                 List<Publication> pu =  publicationDao.findByUserNew(followDao.getUserFollow(user), last);
                 List<Publication> inverso = new ArrayList<>();
                 

@@ -59,9 +59,11 @@ public class ExplorerController {
                 HttpSession session) {
         
     	//introducimos el titulo y las tendencias
+        model.addAttribute("news", false);
     	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
     	model.addAttribute("trends", hashtagDao.findUp());
-    	
+        model.addAttribute("publications", publicationDao.findnews());
+        
     	//si existe usuario logeado, lo introducimos
         if (principal != null){
         	
@@ -77,13 +79,13 @@ public class ExplorerController {
         
         //si no a buscado con mas de 3 letras, devuelve error
         if (find != null) {
-            System.out.println(find);
         	if(find.length() < 3){
+                model.addAttribute("news", true);
                 model.addAttribute("error", messages.getMessage("text.explorer.find.error", null, LocaleContextHolder.getLocale()));
                     
             //si la busqueda contiene un @ busca solo usuarios
             } else if (find.contains("@")){
-                
+                model.addAttribute("news", true);
                 session.setAttribute("find", find);
                 find = find.replace("@", "");
                 model.addAttribute("users", userDao.findUsersOnlyUsernameFirst(find));
@@ -91,15 +93,14 @@ public class ExplorerController {
                 
             //sino lo busca todo
             } else {
-                
+                model.addAttribute("news", true);
                 session.setAttribute("find", find);
                 model.addAttribute("users", userDao.findUsersNameUsernameFirst(find));
                 model.addAttribute("publications", publicationDao.findTextFirst(find));
                 
             }
         }
-        
-        
+
         return "aplication/explorer";
     }
     
@@ -126,7 +127,6 @@ public class ExplorerController {
                 HttpSession session) {
         
         String find = (String) session.getAttribute("find");
-        System.out.println(last);
         
         if (finder.contains("user")){
             
@@ -145,7 +145,6 @@ public class ExplorerController {
             
             
         } else if (finder.contains("publication")){
-            System.out.println(last);
             model.addAttribute("publications", publicationDao.findTextNext(find, last));
             return "aplication/apy/refillexplorerpublications";
         }

@@ -32,6 +32,7 @@ and open the template in the editor.
                                     <p class="text-break text-left font-weight-bold text-primary"> <span th:text="${'@'+userc.username}"></span> <span th:text="${userc.name}"></span></p>
                                     <p class="text-break"  th:if="*{userc.description!=null and #strings.length(userc.description)>0}" th:text="${userc.description}"></p>
                                     <p class="text-break"  th:if="*{userc.description==null || #strings.length(userc.description)==0}" th:text="#{text.userdetails.descriptionEmpty}"></p>
+                                    <a class="btn btn-success btn-block" th:if="${user != null && userc.id != user.id}" th:href="${'/messages/' + userc.id}" th:text="#{text.chat.private}"></a>
                                 </div>
                             </div>
                             <div class="row justify-content-end">

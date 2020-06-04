@@ -48,6 +48,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
                     "/image/**",
                     "/js/**",
                     "/",
+                    "/error",
                     "/getfollows",
                     "/explorer",
                     "/refillexplorer",
@@ -90,7 +91,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter  {
                     "/administration/imagesu",
                     "/administration/edituser",
                     "/administration/editpass",
-                    "/administration/emoticons"
+                    "/administration/emoticons",
+                    "/deleteemoticon"
                     ).hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and()

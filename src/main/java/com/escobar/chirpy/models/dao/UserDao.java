@@ -76,7 +76,7 @@ public class UserDao {
 
             return query.setMaxResults(5).getResultList();
 	}
-
+        
         public List<User> findUsersNameUsernameFirst(String username) {
 		TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:username,'%') or u.name LIKE CONCAT('%',:username,'%') order by u.id asc", User.class); 
 	    query.setParameter("username", username);
@@ -93,10 +93,15 @@ public class UserDao {
 	}
         
     public int userCount() {
-		TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class); 
-		return query.getResultList().size();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.enabled = true and u.notLocker = true", User.class); 
+        return query.getResultList().size();
     }
         
+    public int userBanned() {
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.enabled = true and u.notLocker = false", User.class); 
+        return query.getResultList().size();
+    }
+    
     public List<User> findUsers(Long position, Long numbers){
     	TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id > :idActual order by u.id", User.class); 
 	    query.setParameter("idActual", (position*numbers)-numbers);

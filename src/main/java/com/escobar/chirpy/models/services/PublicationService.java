@@ -153,13 +153,13 @@ public class PublicationService {
         	Hashtag ha = new Hashtag();
         	ha.setDatelast(new Date());
         	ha.setHashtagname(h);
-        	ha.setUsos(1);
+        	ha.setApplications(1);
         	
         	try {
         		hashtagDao.save(ha);
         	} catch (Exception e) {
         		ha = hashtagDao.findByHashtagName(ha.getHashtagname());
-        		ha.setUsos(ha.getUsos()+1);
+        		ha.setApplications(ha.getApplications()+1);
         		ha.setDatelast(new Date());
         		hashtagDao.update(ha);
         	}

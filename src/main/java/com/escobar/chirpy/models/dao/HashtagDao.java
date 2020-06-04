@@ -33,8 +33,7 @@ public class HashtagDao {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.HOUR, -1);
-        System.out.println(calendar.getTime());
-        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h where h.datelast >= :fecha order by h.usos DESC, datelast DESC", Hashtag.class); 
+        TypedQuery<Hashtag> query = em.createQuery("SELECT h FROM Hashtag h where h.datelast >= :fecha order by h.applications DESC, datelast DESC", Hashtag.class); 
         query.setParameter("fecha", calendar.getTime());
         query.setMaxResults(10);
 

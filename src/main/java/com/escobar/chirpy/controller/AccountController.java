@@ -217,6 +217,7 @@ public class AccountController {
     public String confirmAccount (Model model,
     		@RequestParam(value = "token", required = false) String token) {
         
+        model.addAttribute("title", messages.getMessage("text.login.tittle", null, LocaleContextHolder.getLocale()));
     	//si el token no es nulo
         if (token != null) {
         	

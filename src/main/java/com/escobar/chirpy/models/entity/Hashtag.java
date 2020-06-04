@@ -22,7 +22,7 @@ public class Hashtag implements Serializable{
     @Id
     private String hashtagname;
     
-    private int usos;
+    private int applications;
     
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date datelast;
@@ -35,12 +35,12 @@ public class Hashtag implements Serializable{
 		this.hashtagname = hashtagname;
 	}
 
-	public int getUsos() {
-		return usos;
+	public int getApplications() {
+		return applications;
 	}
 
-	public void setUsos(int usos) {
-		this.usos = usos;
+	public void setApplications(int applications) {
+		this.applications = applications;
 	}
 
 	public Date getDatelast() {

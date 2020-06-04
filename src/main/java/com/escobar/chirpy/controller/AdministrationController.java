@@ -95,7 +95,10 @@ public class AdministrationController {
 
     	//introducimos el titulo
     	model.addAttribute("title", messages.getMessage("text.administration.main.tittle", null, LocaleContextHolder.getLocale()));
-    	
+    	model.addAttribute("useractive", userDao.userCount());
+        model.addAttribute("userban", userDao.userBanned());
+        model.addAttribute("images", imageDao.imagesscount());
+        model.addAttribute("posts", publicationDao.publicationscount());
         return "administration/home";
     }
 	
@@ -513,7 +516,8 @@ public class AdministrationController {
                 userDao.update(userc);
             }
         }
-        
+        model.addAttribute("title", messages.getMessage("text.administration.main.tittle", null, LocaleContextHolder.getLocale()));
+        model.addAttribute("userAuthorityDao", userAuthorityDao);
         model.addAttribute("user", userc);
         return "administration/profileedit";
     }
@@ -665,6 +669,27 @@ public class AdministrationController {
     public String editImageSu() {
         return "redirect:/administration";
     }
+    
+    @RequestMapping(value={"/deleteemoticon"}, method = RequestMethod.GET)
+    public String deleteemoticon() {
+        return "redirect:/administration";
+    }
+    
+    @RequestMapping(value={"/deleteemoticon"}, method = RequestMethod.POST)
+    public String deleteemoticon(@RequestParam(value = "delete", required = true) Long delete) {
+        
+        if (delete != null){
+            Emoticon emo = emoticonDao.findemoticonId(delete);
+            
+            if (emo != null){
+                emoticonDao.remove(emo);
+                return "redirect:/administration/emoticons";
+            }
+        }
+        
+        return "redirect:/administration";
+    }
+    
     
     private void deleteallpublication(Publication publis) {
     	

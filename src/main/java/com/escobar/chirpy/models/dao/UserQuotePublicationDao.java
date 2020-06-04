@@ -29,7 +29,6 @@ public class UserQuotePublicationDao {
     
     @Transactional
     public List<UserQuotePublication> findByUserNext(User user, Long last) {
-    	System.out.println(last);
         TypedQuery<UserQuotePublication> query = em.createQuery("SELECT u FROM UserQuotePublication u WHERE u.id < :last and u.user = :user order by u.id desc", UserQuotePublication.class); 
         query.setParameter("user", user);
         query.setParameter("last", last);

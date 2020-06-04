@@ -31,9 +31,7 @@ public class MessageDao {
     	
         try {
             return query.setMaxResults(1).getSingleResult();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        } catch (Exception e) {}
         return null;
     }
     

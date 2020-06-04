@@ -157,7 +157,7 @@ and open the template in the editor.
 	                                    		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
 	                                    			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
 	                                    		</a>
-	                                    		<a th:href="${'/sendban/' + publi.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
+	                                    		<a th:href="${'/report/' + publi.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
 	                                    	</div>
 	                                    	
 	                                    </div>

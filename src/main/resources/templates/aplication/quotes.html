@@ -22,7 +22,7 @@ and open the template in the editor.
                             	<h3 class="text-danger text-center"  th:text="#{text.quotes.empty}"></h3>
                             </div>
                     		<div id="all-publications">
-	                            <div class="p-3 mt-3 bg-white card div-buttom publication sec" th:if="${!#lists.isEmpty(quotepublications)}" th:each="quotepublication : ${quotepublications}" th:id="${quotepublication.id}">
+	                            <div class="p-3 mt-3 bg-white card div-buttom publication sec" th:if="${!#lists.isEmpty(quotepublications)}" th:each="quotepublication : ${quotepublications}" th:id="${quotepublication.publication.id}">
 	                                <div class="row">
 	                                    <div class="col-3 col-xl-2">
 	                                    	<img class="img-fluid border" th:if="${quotepublication.publication.user.imageperf != null}" th:src="${'/image/user/' + quotepublication.publication.user.id}" alt="Card image cap" style="width: 100px">

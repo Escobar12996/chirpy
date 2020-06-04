@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button th:if="${!#lists.isEmpty(publications)}" class="refillpublications btn btn-outline-primary btn-lg btn-block mt-3" th:text="#{text.explorer.more}"></button>
+                            <button th:if="${!#lists.isEmpty(publications) && news == true}" class="refillpublications btn btn-outline-primary btn-lg btn-block mt-3" th:text="#{text.explorer.more}"></button>
                             <!--/* Fin listado de publicaciones encontradas */-->
                             
                             <!--/* Si no se ha encontrado nada */-->

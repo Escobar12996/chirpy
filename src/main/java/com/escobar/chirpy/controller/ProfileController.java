@@ -341,7 +341,6 @@ public class ProfileController {
                     //cargamos si esta seguido o no por mi
                 if (user != null){
                     Follow fo = new Follow(user, userc);
-                    System.out.println(fo.getFollowed());
                     if (followDao.findFollow(fo) != null){
                         model.addAttribute("followedformy", true);
                     } else {
@@ -659,10 +658,18 @@ public class ProfileController {
         	
         	UserBan usb = new UserBan(u, pu.getUser(), pu);
         	
+                
+                
+                
         	try {
     			userBanDao.save(usb);
     		} catch (Exception e) {}
 
+                if (userBanDao.countpublication(pu) > 2){
+                    pu.setView(false);
+                    publicationDao.save(pu);
+                }
+                
         	eventPublisher.publishEvent(new UserBanEvent(pu.getUser()));
 
         	return "redirect:/home?report";

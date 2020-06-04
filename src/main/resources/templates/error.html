@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="aplication/layout/layout :: head"></head>
+    <body class="bg-gradient-chirpy">
+    
+    	<!--/* Contenido de la pagina */-->
+    
+        <div class="container">
+            <div class="row justify-content-center align-items-center minh-100">
+                <div class="col-12">
+                
+                	<!--/* Row con el contenido */-->
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="row justify-content-center">
+                            
+                            	<!--/* Izquierda */-->
+                                <div class="col-md-8 card text-center">
+                                    <p><img class="card-img-top" th:src="@{/image/Chirpy.png}" alt="Card image cap" style="width: 100px"></p>
+                                
+                                    <div class="alert alert-danger" 
+                                         ><span th:text="#{text.error.pageerror}"></span> <br> <span  th:text="#{text.error.pageerrorreturn}"></span> <a th:href="@{/explorer}" th:text="#{text.layout.nav.explorer}"></a></div>
+                                    
+                                
+                                	
+                                    
+                                </div>
+                                
+                                <!--/* Fin derecha */-->
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--/* Fin row con el contenido */-->
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!--/* Fin contenido de la pagina */-->
+        
+        <!--/* Footer */-->
+        
+        <footer th:replace="aplication/layout/layout :: footer"></footer>
+        
+        <!--/* Fin Footer */-->
+        
+    </body>
+</html>

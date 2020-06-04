@@ -23,6 +23,7 @@
 					    		<th scope="col" th:text="#{text.administration.emoticon.command}"></th>
 					      		<th scope="col" th:text="#{text.administration.emoticon.coment}"></th>
 					      		<th scope="col" th:text="#{text.administration.emoticon.image}"></th>
+                                                        <th scope="col" th:text="#{text.administration.emoticon.delete}"></th>
 					    	</tr>
 					  	</thead>
 					  	<tbody>
@@ -30,6 +31,11 @@
 					      		<td class="font-weight-bold" th:text="${':'+emoticon.command+':'}"></td>
 					      		<td th:text="${emoticon.comment}"></td>
 					      		<td><img th:alt="${emoticon.comment}" th:src="${'/image/emoji/' + emoticon.id}"></td>
+                                                        <td>
+                                                            <form th:action="@{/deleteemoticon}" method="post">
+                                                                <button class="btn btn-danger" name="delete" th:value="${emoticon.id}" th:text="#{text.administration.emoticon.delete}"></button>
+                                                            </form>
+                                                        </td>
 					      	</tr>
 				  		</tbody>
 					</table>

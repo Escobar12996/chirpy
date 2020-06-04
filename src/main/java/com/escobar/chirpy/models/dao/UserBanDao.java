@@ -42,6 +42,16 @@ public class UserBanDao {
         
         return query.getResultList();
 	}
+        
+        
+        @Transactional(readOnly = true)
+	public int countpublication(Publication pu) {
+		TypedQuery<UserBan> query = em.createQuery("SELECT u FROM UserBan u WHERE u.publi = :id", UserBan.class); 
+        query.setParameter("id", pu);
+        
+        return query.getResultList().size();
+	}
+        
 	
 	@Transactional
 	public void save(UserBan usb) {

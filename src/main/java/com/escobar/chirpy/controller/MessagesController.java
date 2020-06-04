@@ -89,7 +89,7 @@ public class MessagesController {
         User user_received = userDao.findById(id);
         User user = userDao.findByUserName(principal.getName());
         
-        if (user_received != null && principal != null){
+        if (user.getId() != user_received.getId() && user_received != null && principal != null){
             
             model.addAttribute("user", user);
             model.addAttribute("userReceived", user_received);
