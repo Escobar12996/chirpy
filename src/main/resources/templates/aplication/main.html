@@ -39,17 +39,17 @@ and open the template in the editor.
 											<p class="text-break"><label for="1" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
-												<input id="1" name="image[]" type="file" style='display: none;'/>
+												<input id="1" name="image[]" multiple="" type="file" style='display: none;'/>
 											</p>
 										</div>
 										
-										<div class="col-6 text-center">
+										<!--<div class="col-6 text-center">
 											<p class="text-break"><label for="2" class="subir">
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
 												<input id="2" name="image[]" type="file" style='display: none;'/>
 											</p>
-										</div>
+										</div>-->
 										
 									</div>
 									<span class="text-danger" th:if="${errorimage != null}" th:text="${errorimage}"></span>

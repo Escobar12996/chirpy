@@ -59,10 +59,9 @@ public class ExplorerController {
                 HttpSession session) {
         
     	//introducimos el titulo y las tendencias
-        model.addAttribute("news", false);
     	model.addAttribute("title", messages.getMessage("text.explorer.tittle", null, LocaleContextHolder.getLocale()));
     	model.addAttribute("trends", hashtagDao.findUp());
-        model.addAttribute("publications", publicationDao.findnews());
+        
         
     	//si existe usuario logeado, lo introducimos
         if (principal != null){
@@ -99,6 +98,10 @@ public class ExplorerController {
                 model.addAttribute("publications", publicationDao.findTextFirst(find));
                 
             }
+        } else {
+            model.addAttribute("publications", publicationDao.findnews());
+            model.addAttribute("news", false);
+
         }
 
         return "aplication/explorer";

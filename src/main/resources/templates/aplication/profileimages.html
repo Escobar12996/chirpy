@@ -58,7 +58,7 @@ and open the template in the editor.
                         <button sec:authorize="isAuthenticated()" th:if="${user.id == userc.id}" type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalimagenes" th:text="#{text.userimages.uploadimages}">
                         </button>
                             
-                        <div class="jumbotron p-3 mt-3" th:if="${#lists.isEmpty(publications)}">
+                        <div class="jumbotron p-3 mt-3" th:if="${#lists.isEmpty(images)}">
               			<div class="text-center">
                   			<h5 class="card-title text-danger" th:text="#{text.explorer.empty}"></h5>
               			</div>
