@@ -136,7 +136,7 @@ public class PublicationController {
             //introducimos el dao de las imagenes para poder cargar imagenes y el de las publicaciones
             model.addAttribute("imageDao", imageDao);
             model.addAttribute("publicationDao", publicationDao);
-
+            
             return "aplication/main";
             
         //si ha escrito mas palabras de las necesarias en la publicacion, mostramos el error
@@ -186,7 +186,7 @@ public class PublicationController {
 	                        model.addAttribute("imageDao", imageDao);
 	                        model.addAttribute("publicationDao", publicationDao);
 	                        
-	                        return "aplicacion/main";
+	                        return "aplication/main";
 	                	}
 	            	}
 	            }

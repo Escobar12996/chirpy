@@ -222,10 +222,11 @@ public class ProfileController {
 
                         model.addAttribute("errorimage", messages.getMessage("text.home.error.imageerror", null, LocaleContextHolder.getLocale()));
 
+                        
                         //mostramos las tendencias de la ultima hora
                         model.addAttribute("trends", hashtagDao.findUp());
 
-                        return "aplicacion/main";
+                        return "aplication/main";
                     }
 
                 }
