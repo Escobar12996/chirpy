@@ -112,7 +112,7 @@ public class AdministrationController {
     	//introducimos el titulo
     	model.addAttribute("title", messages.getMessage("text.administration.user.tittle", null, LocaleContextHolder.getLocale()));
     	
-    	int numuser = userDao.userCount();
+    	int numuser = userDao.userCountAdmin();
     	int numpag = 1;
     	
     	model.addAttribute("userBan", userBan);

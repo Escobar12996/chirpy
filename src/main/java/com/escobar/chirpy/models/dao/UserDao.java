@@ -96,7 +96,12 @@ public class UserDao {
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.enabled = true and u.notLocker = true", User.class); 
         return query.getResultList().size();
     }
-        
+       
+    public int userCountAdmin() {
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class); 
+        return query.getResultList().size();
+    }
+    
     public int userBanned() {
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.enabled = true and u.notLocker = false", User.class); 
         return query.getResultList().size();

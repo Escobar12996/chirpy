@@ -88,13 +88,13 @@ and open the template in the editor.
                                     	</div>
                                     	
                                     	<div class="row mt-2">
-                                    		<button sec:authorize="isAuthenticated()" type="button" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publicationview.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
-                                    		<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment-1.buttonanswer}">
+                                    		<button sec:authorize="isAuthenticated()" type="button" class="ml-3 btn btn-outline-success r-button col" data-toggle="modal" data-target="#myModal" th:value="${publicationview.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
+                                    		<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success col" th:text="#{text.layout.coment-1.buttonanswer}">
                                     		</a> 
-                                    		<a th:href="${'/viewpublication/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:value="${publicationview.id}">
+                                    		<a th:href="${'/viewpublication/' + publicationview.id}" class="ml-3 btn btn-outline-success col" th:value="${publicationview.id}">
                                     			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publicationview))}"></span>
                                     		</a>
-                                    		<a th:href="${'/report/' + publicationview.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
+                                    		<a th:href="${'/report/' + publicationview.id}" class="ml-3 btn btn-outline-success col" th:text="#{text.layout.coment.sendban}"></a>
                                     	</div>
                                     	
                                     </div>

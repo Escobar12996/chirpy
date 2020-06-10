@@ -36,10 +36,10 @@ and open the template in the editor.
 									<div class="row">
 									
 										<div class="col-6 text-center">
-											<p class="text-break"><label for="1" class="subir">
+											<p class="text-break"><label for="1" class="subir" style='display: none;'>
 								    			<i class="fas fa-cloud-upload-alt"></i> <span th:text="#{text.home.uploadimage}"></span>
 												</label>
-												<input id="1" name="image[]" multiple="" type="file" style='display: none;'/>
+												<input id="1" name="image[]" multiple="" type="file" />
 											</p>
 										</div>
 										
@@ -141,13 +141,13 @@ and open the template in the editor.
                                     	</div>
                                     	
                                     	<div class="row mt-2">
-                                    		<button type="button" sec:authorize="isAuthenticated()" class="ml-3 btn btn-outline-success r-button" data-toggle="modal" data-target="#myModal" th:value="${publi.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
+                                    		<button type="button" sec:authorize="isAuthenticated()" class="ml-3 btn btn-outline-success r-button col" data-toggle="modal" data-target="#myModal" th:value="${publi.id}" th:text="#{text.layout.coment-1.buttonanswer}"></button>
 											<a sec:authorize="!isAuthenticated()"  th:href="${'/login'}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment-1.buttonanswer}">
                                     		</a>                                    		
-                                    		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success" th:value="${publi.id}">
+                                    		<a th:href="${'/viewpublication/' + publi.id}" class="ml-3 btn btn-outline-success col" th:value="${publi.id}">
                                     			 <span th:text="#{text.layout.coment-1.buttonanswers}"></span> <span th:text="${#lists.size(publicationDao.findResponse(publi))}"></span>
                                     		</a>
-                                    		<a th:href="${'/report/' + publi.id}" class="ml-3 btn btn-outline-success" th:text="#{text.layout.coment.sendban}"></a>
+                                    		<a th:href="${'/report/' + publi.id}" class="ml-3 btn btn-outline-success col" th:text="#{text.layout.coment.sendban}"></a>
                                     	</div>
                                     </div>
                                 </div>

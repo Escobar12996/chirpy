@@ -49,7 +49,7 @@ public class RegistrationListener implements
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + " http://localhost" + confirmationUrl);
+        email.setText(message + "\r\n" + " http://escobar.asuscomm.com" + confirmationUrl);
         mailSender.send(email);
     }
 }
