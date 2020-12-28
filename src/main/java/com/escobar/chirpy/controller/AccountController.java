@@ -194,9 +194,7 @@ public class AccountController {
             
             userDao.save(user);
             
-            //enviamos el correo de activar cuenta
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
-            		LocaleContextHolder.getLocale(), request.getContextPath()));
+            
             
             //hacemos que se siga a si mismo
             followDao.save(new Follow(user, user));
@@ -207,6 +205,9 @@ public class AccountController {
             au.setAuthority(authorityDao.findByName("user"));
             userAuthorityDao.save(au);
             
+            //enviamos el correo de activar cuenta
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
+            		LocaleContextHolder.getLocale(), request.getContextPath()));
             
             return "redirect:/login?register"; 
         }
