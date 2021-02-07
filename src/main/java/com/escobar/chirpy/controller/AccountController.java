@@ -192,6 +192,14 @@ public class AccountController {
             user.setNotLocker(true);
             user.setSystenBan(false);
             
+            try {
+                //enviamos el correo de activar cuenta
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
+            		LocaleContextHolder.getLocale(), request.getContextPath()));
+            } catch (Exception e) {
+                user.setEnabled(true);
+            }
+            
             userDao.save(user);
             
             
@@ -199,15 +207,15 @@ public class AccountController {
             //hacemos que se siga a si mismo
             followDao.save(new Follow(user, user));
             
+            
+            
+            
             //le añadimos su rol
             UserAuthority au = new UserAuthority();
             au.setUser(user);
             au.setAuthority(authorityDao.findByName("user"));
             userAuthorityDao.save(au);
             
-            //enviamos el correo de activar cuenta
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, 
-            		LocaleContextHolder.getLocale(), request.getContextPath()));
             
             return "redirect:/login?register"; 
         }
